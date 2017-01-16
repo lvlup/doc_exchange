@@ -1,0 +1,12 @@
+﻿@using DocumentsExchange.WebUI.ViewModels
+@model DocumentsExchange.WebUI.ViewModels.FileViewModel
+
+<div class="page-header text-center">
+    <h3>@Model.FileCategory.Name</h3>
+</div>
+
+<div class="container-fluid" id="FilesTable">
+   @Html.Action("FilesTable", new {orgId = Model.OrganizationId, categoryId = Model.FileCategory.Id})
+</div>
+
+@Html.Action("Create",new { orgId = Model.OrganizationId, categoryId = Model.FileCategory.Id})

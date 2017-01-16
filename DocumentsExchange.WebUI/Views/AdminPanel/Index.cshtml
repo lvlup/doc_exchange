@@ -1,0 +1,22 @@
+﻿<div>
+    <div id="Tabs" role="tabpanel">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+
+            <li class="active">
+                @Ajax.ActionLink("Справочники", "Index", "Dictionaries", new AjaxOptions() {UpdateTargetId = "adminTabContent"},
+                    new {@role = "tab"})
+            </li>
+
+            <li>
+                @Ajax.ActionLink("Управление сайтом", "Index", "SiteControl", new AjaxOptions() {UpdateTargetId = "adminTabContent"},
+                    new {@role = "tab"})
+            </li>
+        </ul>
+
+        <div id="adminTabContent" role="tabpanel" class="tab-pane active">
+            @Html.Action("Index", "Dictionaries")
+        </div>
+
+    </div>
+</div>

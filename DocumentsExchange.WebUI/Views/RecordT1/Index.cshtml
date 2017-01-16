@@ -1,0 +1,74 @@
+﻿@using DocumentsExchange.WebUI.ViewModels
+@model DocumentsExchange.WebUI.ViewModels.RecordsT1ViewModel
+    
+<div class="container-fluid" id="RecordsFromTable1">
+    <table class="table table-bordered table-condensed">
+        <thead>
+            <tr>
+                @foreach (var name in RecordsT1ViewModel.PropertyNames)
+                {
+                     <th>@name</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+        @{
+            var records = Model.Records;
+            if (records != null)
+            {
+                foreach (var r1 in records)
+                {
+                    <tr>
+                        <td>
+                            <span class="lead">@r1.CreatedDateTime</span>
+                        </td>
+                        <td>
+                            <span class="lead">@r1.NumberPaymentOrder</span>
+                        </td>
+                        <td>
+                            <span class="lead">@r1.OrganizationSender</span>
+                        </td>
+                        <td>
+                            <span class="lead">@r1.OrganizationReceiver</span>
+                        </td>
+                        <td>
+                            <span class="lead">@r1.Amount</span>
+                        </td>
+                        <td>
+                            <span class="lead">@r1.Percent</span>
+                        </td>
+                        <td>
+                            <span class="lead">@r1.Course</span>
+                        </td>
+                        <td>
+                            <span class="lead">@r1.AmountInCurrency</span>
+                        </td>
+                        <td>
+                            <span class="lead">@r1.Swift</span>
+                        </td>
+                        <td>
+                            <span class="lead">@r1.Sent</span>
+                        </td>
+                        <td>
+                            <span class="lead">@r1.Currency</span>
+                        </td>
+                        <td>
+                            <span class="lead">@r1.SenderFullName</span>
+                        </td>
+                        <td>
+                            <span class="lead">@r1.AmountInCurrency</span>
+                        </td>
+                        <td>
+                            <span class="lead">@r1.Total</span>
+                        </td>
+                        <td>
+                            <span class="lead">@r1.Logs</span>
+                        </td>
+                    </tr>
+                }
+            }
+        }
+        </tbody>
+    </table>
+</div>
+

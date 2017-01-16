@@ -1,0 +1,19 @@
+﻿@model IEnumerable<DocumentsExchange.DataLayer.Entity.Organization>
+    
+<div id="OrganizationTable" class="container-fluid">
+    <table class="table table-bordered table-condensed">
+        <tbody>
+        @if (@Model != null)
+        {
+            foreach (var org in @Model.Where(o => o.IsActive))
+            {
+                <tr >
+                    <td >
+                        @Ajax.ActionLink(@org.Name, "Get", "Organizations", new { id = org.Id }, new AjaxOptions {UpdateTargetId = "TabCotrollerView" })
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+</div>

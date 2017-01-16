@@ -1,0 +1,62 @@
+﻿@using DocumentsExchange.WebUI.ViewModels
+@model DocumentsExchange.WebUI.ViewModels.RecordsT2ViewModel
+
+<div class="container-fluid" id="RecordsFromTable2">
+    <table class="table table-bordered table-condensed">
+        <thead>
+            <tr>
+                @foreach (var name in RecordsT2ViewModel.PropertyNames)
+                {
+                    <th>@name</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var records = Model.Records;
+                if (records != null)
+                {
+                    foreach (var r2 in records)
+                    {
+                        <tr>
+                            <td>
+                                <span class="lead">@r2.CreatedDateTime.ToString("dd/MM/yyyy")</span>
+                            </td>
+                            <td>
+                                @*<span class="lead">@r2.NumberPaymentOrder</span>*@
+                                @Html.ActionLink(@r2.NumberPaymentOrder.ToString(), "DownloadPaymentOrder", new {id = r2.FilePathId})
+                            </td>
+                            <td>
+                                <span class="lead">@r2.OrganizationSender</span>
+                            </td>
+                            <td>
+                                <span class="lead">@r2.OrganizationReceiver</span>
+                            </td>
+                            <td>
+                                <span class="lead">@r2.Amount</span>
+                            </td>
+                            <td>
+                                <span class="lead">@r2.Percent</span>
+                            </td>
+                            <td>
+                                <span class="lead">@r2.Deduction</span>
+                            </td>
+                            <td>
+                                <span class="lead">@r2.Received</span>
+                            </td>
+                            <td>
+                                <span class="lead">@r2.SenderFullName</span>
+                            </td>
+
+                            <td>
+                                <span class="lead">@r2.Logs</span>
+                            </td>
+                        </tr>
+                    }
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+

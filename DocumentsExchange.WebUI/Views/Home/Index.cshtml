@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "Перспектива";
+}
+
+<div class="container" style="width: 100%" id="mainViewId">
+    <div class="row">
+        <div class="pull-left col-md-10">
+            <input type="button" id="adminPanel" class="btn btn-default" value="Панель администратора"/>
+        </div>
+        <div class="col-md-1">
+            <input type="button" id="userName" class="btn btn-default" value="Ivan Ivanov"/>
+        </div>
+        <div class="pull-right col-md-1">
+            <input type="button" id="logout" class="btn btn-default" value="выход"/>
+        </div>
+    </div>
+
+
+
+    <div class="row" style="margin-top: 25px">
+
+        <div class="col-md-1" id="OrganizationsTableMain">
+            <span class="pull-left">@Html.Action("Index", "Organizations")</span>
+        </div>
+
+        <div class="col-md-9" id="TabCotrollerView">
+        </div>
+
+        <div id="ChatView" class="col-md-2">
+            @Html.Action("Index", "Message")
+        </div>
+    </div>
+
+</div>
+
+
+
+
+

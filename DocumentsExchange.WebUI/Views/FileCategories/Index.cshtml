@@ -1,0 +1,29 @@
+﻿@using DocumentsExchange.WebUI.ViewModels
+@model DocumentsExchange.WebUI.ViewModels.FileCategoriesViewModel
+
+<div id="FileCategoryTable">
+    <table class="table table-bordered table-condensed">
+        <tbody>
+        @{
+            if (Model != null)
+            {
+                foreach (var category in @Model.FileCategories.Where(o => o.IsActive))
+                {
+                    <tr>
+                        <td>
+                            @Ajax.ActionLink(@category.Name, "Get", "FileCategories", 
+                           new { id = category.Id,orgId = Model.OrganizationId }, 
+                           new AjaxOptions { UpdateTargetId = "FilesTableView" })
+                        </td>
+                    </tr>
+                }
+            }
+        }
+        </tbody>
+    </table>
+</div>
+
+<div id="FilesTableView">
+    
+</div>
+

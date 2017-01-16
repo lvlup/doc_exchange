@@ -1,0 +1,38 @@
+﻿@using DocumentsExchange.WebUI.ViewModels
+@model DocumentsExchange.WebUI.ViewModels.FileViewModel
+
+<table class="table table-bordered table-condensed">
+    <thead>
+    <tr>
+        @foreach (var name in FileViewModel.PropertyNames)
+        {
+            <th>@name</th>
+        }
+    </tr>
+    </thead>
+    <tbody>
+    @{
+        var files = Model.Files;
+        if (files != null)
+        {
+            foreach (var file in files)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(@file.FileName, "DownloadFile", new {id = file.Id})
+                    </td>
+                    <td>
+                        <span class="text-center">@file.AddedDateTime.ToString("dd/MM/yyyy")</span>
+                    </td>
+                    <td>
+                        <span class="text-center">@file.User.FirstName</span>
+                    </td>
+                    <td>
+                        <span class="text-center">@file.FileType</span>
+                    </td>
+                </tr>
+            }
+        }
+    }
+    </tbody>
+</table>
