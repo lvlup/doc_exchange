@@ -109,11 +109,116 @@ namespace DocumentsExchange.DataAccessLayer.Repository
                     var recordSet = context.Set<RecordT2>();
                     var existing =
                         await recordSet
+                            .Include(x => x.Log)
                             .Where(x => x.Id == record.Id)
-                            .FirstOrDefaultAsync();
+                            .FirstOrDefaultAsync().ConfigureAwait(false);
 
                     if (existing == null)
                         throw new Exception("");
+
+                    List<Change> changes = new List<Change>();
+
+                    var now = DateTime.UtcNow;
+
+
+                    if (existing.NumberPaymentOrder != record.NumberPaymentOrder)
+                    {
+                        changes.Add(new Change()
+                        {
+                            CurrentValue = record.NumberPaymentOrder.ToString(),
+                            OldValue = existing.NumberPaymentOrder.ToString(),
+                            PropertyName = "п/п №",
+                            UserId = record.SenderUserId,
+                            TimeSpan = now
+                        });
+                    }
+
+                    if (existing.SenderUserId != record.SenderUserId)
+                    {
+                        changes.Add(new Change()
+                        {
+                            CurrentValue = record.SenderUserId.ToString(),
+                            OldValue = existing.SenderUserId.ToString(),
+                            PropertyName = "Отправитель",
+                            UserId = record.SenderUserId,
+                            TimeSpan = now
+                        });
+                    }
+
+                    if (existing.Amount != record.Amount)
+                    {
+                        changes.Add(new Change()
+                        {
+                            CurrentValue = record.Amount.ToString(),
+                            OldValue = existing.Amount.ToString(),
+                            PropertyName = "Сумма",
+                            UserId = record.SenderUserId,
+                            TimeSpan = now
+                        });
+                    }
+
+                    if (existing.Deduction != record.Deduction)
+                    {
+                        changes.Add(new Change()
+                        {
+                            CurrentValue = record.Deduction.ToString(),
+                            OldValue = existing.Deduction.ToString(),
+                            PropertyName = "Вычет",
+                            UserId = record.SenderUserId,
+                            TimeSpan = now
+                        });
+                    }
+
+                    if (existing.Received != record.Received)
+                    {
+                        changes.Add(new Change()
+                        {
+                            CurrentValue = record.Received.ToString(),
+                            OldValue = existing.Received.ToString(),
+                            PropertyName = "Получено",
+                            UserId = record.SenderUserId,
+                            TimeSpan = now
+                        });
+                    }
+
+                    if (existing.Percent != record.Percent)
+                    {
+                        changes.Add(new Change()
+                        {
+                            CurrentValue = record.Percent.ToString(),
+                            OldValue = existing.Percent.ToString(),
+                            PropertyName = "%",
+                            UserId = record.SenderUserId,
+                            TimeSpan = now
+                        });
+                    }
+
+                    if (existing.OrganizationSender != record.OrganizationSender)
+                    {
+                        changes.Add(new Change()
+                        {
+                            CurrentValue = record.OrganizationSender,
+                            OldValue = existing.OrganizationSender,
+                            PropertyName = "Наименование получателя",
+                            UserId = record.SenderUserId,
+                            TimeSpan = now
+                        });
+                    }
+
+                    if (existing.OrganizationReceiver != record.OrganizationReceiver)
+                    {
+                        changes.Add(new Change()
+                        {
+                            CurrentValue = record.OrganizationReceiver,
+                            OldValue = existing.OrganizationReceiver,
+                            PropertyName = "Наименование получателя",
+                            UserId = record.SenderUserId,
+                            TimeSpan = now
+                        });
+                    }
+
+                    record.Log = existing.Log;
+                    changes.ForEach(change => record.Log.Changes.Add(change));
 
                     context.Entry(existing).State = EntityState.Detached;
                     recordSet.Attach(record);

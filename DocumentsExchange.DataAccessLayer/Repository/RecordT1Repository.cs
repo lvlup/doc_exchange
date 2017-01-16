@@ -151,6 +151,30 @@ namespace DocumentsExchange.DataAccessLayer.Repository
                         });
                     }
 
+                    if (existing.OrganizationSender != record.OrganizationSender)
+                    {
+                        changes.Add(new Change()
+                        {
+                            CurrentValue = record.OrganizationSender,
+                            OldValue = existing.OrganizationSender,
+                            PropertyName = "Наименование получателя",
+                            UserId = record.SenderUserId,
+                            TimeSpan = now
+                        });
+                    }
+
+                    if (existing.OrganizationReceiver != record.OrganizationReceiver)
+                    {
+                        changes.Add(new Change()
+                        {
+                            CurrentValue = record.OrganizationReceiver,
+                            OldValue = existing.OrganizationReceiver,
+                            PropertyName = "Наименование получателя",
+                            UserId = record.SenderUserId,
+                            TimeSpan = now
+                        });
+                    }
+
                     if (existing.Amount != record.Amount)
                     {
                         changes.Add(new Change()

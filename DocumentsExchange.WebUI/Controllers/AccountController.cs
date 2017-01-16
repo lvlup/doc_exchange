@@ -54,7 +54,7 @@ namespace DocumentsExchange.WebUI.Controllers
                 if (!string.IsNullOrEmpty(returnUrl))
                     return Redirect(returnUrl);
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home", new {userId = user.Id});
             }
 
             return View(login);

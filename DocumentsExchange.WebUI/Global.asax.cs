@@ -65,7 +65,7 @@ namespace DocumentsExchange.WebUI
             var admin = userManager.FindByName("admin");
             if (admin == null)
             {
-                var result = userManager.Create(new User {UserName = "admin"}, "admin123");
+                var result = userManager.Create(new User {UserName = "admin",FirstName = "Иван",LastName = "Иванов"}, "admin123");
                 if (!result.Succeeded)
                     throw new Exception("Initialization failed");
 

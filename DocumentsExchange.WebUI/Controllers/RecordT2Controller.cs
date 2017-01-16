@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using DocumentsExchange.BusinessLayer.Services.Interfaces;
 using DocumentsExchange.DataLayer.Entity;
@@ -32,7 +33,7 @@ namespace DocumentsExchange.WebUI.Controllers
             var record = new RecordT2()
             {
                 OranizationId = orgId,
-                CreatedDateTime = DateTime.Now
+                CreatedDateTime = DateTime.UtcNow
             };
             return PartialView(record);
         }
@@ -143,6 +144,12 @@ namespace DocumentsExchange.WebUI.Controllers
             }, JsonRequestBehavior.DenyGet);
         }
 
+        public async Task<PartialViewResult> Edit(int recordId)
+        {
+            return PartialView(await _recordT2Provider.Get(recordId));
+        }
+
+
         private RecordsT2ViewModel CreateRecordT2Vm(int orgId)
         {
             var records = _recordT2Provider.GetAll(orgId).Result;
@@ -152,5 +159,78 @@ namespace DocumentsExchange.WebUI.Controllers
             if (records != null) recordsVm.Records = new List<RecordT2>(records);
             return recordsVm;
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Exclude = nameof(RecordT2.SenderUser))]RecordT2 record)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var existingRecord =
+                        _recordT2Provider.Find(new SearchParams()
+                        {
+                            NumberPaymentOrder = record.NumberPaymentOrder,
+                            OrganizationSender = record.OrganizationSender
+                        }).Result;
+
+                    if (existingRecord != null && existingRecord.Id != record.Id && DateTime.UtcNow < existingRecord.CreatedDateTime.AddMonths(3))
+                    {
+                        ModelState.AddModelError("record", $"Record with specified data already exists");
+                        throw new ValidationException(ModelState);
+                    }
+
+                    if (Request.Files != null && Request.Files.Count > 0)
+                    {
+                        var upload = Request.Files[0];
+
+                        if (upload != null)
+                        {
+                            if (!_fileValidator.Validate(upload.FileName))
+                            {
+                                ModelState.AddModelError("file", $"Unsupported file {upload.FileName}");
+                                throw new ValidationException(ModelState);
+                            }
+
+                            var stream = upload.InputStream;
+
+                            // and optionally write the file to disk
+                            var fileName = Path.GetFileName(upload.FileName);
+                            var newFileName = $"{Guid.NewGuid().ToString("n")}{Path.GetExtension(fileName)}";
+
+                            // ReSharper disable once AssignNullToNotNullAttribute
+                            var path = Path.Combine(Server.MapPath("~/App_Data/PaymentOrders"), newFileName);
+
+                            using (var fileStream = System.IO.File.Create(path))
+                            {
+                                stream.CopyTo(fileStream);
+                            }
+
+                            record.File.OriginalFileName = fileName;
+                            record.File.FileName = fileName;
+                        }
+                    }
+
+                    if (!_recordT2Provider.Update(record).Result)
+                    {
+                        ModelState.AddModelError("model", "Something went wrong");
+                        throw new ValidationException(ModelState);
+                    }
+                }
+                else
+                {
+                    return PartialView();
+                }
+            }
+            catch (RetryLimitExceededException)
+            {
+                ModelState.AddModelError("", "Невозможно сохранить изменения. Попробуйте позже.");
+            }
+
+            return PartialView("Index", CreateRecordT2Vm(record.OranizationId));
+        }
+
     }
 }

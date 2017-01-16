@@ -11,6 +11,8 @@ namespace DocumentsExchange.BusinessLayer.Services.Interfaces
     {
         Task<IEnumerable<RecordT2>> GetAll(int orgId);
 
+        Task<RecordT2> Get(int recordId);
+
         Task<bool> Add(RecordT2 recordT1);
 
         Task<bool> Update(RecordT2 recordT1);

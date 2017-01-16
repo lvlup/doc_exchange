@@ -36,7 +36,7 @@ namespace DocumentsExchange.WebUI.Controllers
             var record = new RecordT1()
             {
                 OranizationId = orgId,
-                CreatedDateTime = DateTime.Now
+                CreatedDateTime = DateTime.UtcNow
             };
 
             return PartialView(record);
