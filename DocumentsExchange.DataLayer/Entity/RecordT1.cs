@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DocumentsExchange.DataLayer.Entity
 {
@@ -21,14 +19,17 @@ namespace DocumentsExchange.DataLayer.Entity
 
     public class RecordT1
     {
+        public RecordT1()
+        {
+            File = new FilePath();
+        }
+
         public int Id { get; set; }
 
         public virtual Organization Organization { get; set; }
         public int OranizationId { get; set; }
 
-        public virtual FilePath File { get; set; }
-
-        public int FilePathId { get; set; }
+        public FilePath File { get; set; }
 
         [DisplayName("Дата")]
         public DateTime CreatedDateTime { get; set; }
@@ -75,6 +76,8 @@ namespace DocumentsExchange.DataLayer.Entity
         public decimal Total { get; set; }
 
         [DisplayName("log")]
-        public virtual ICollection<Log> Logs { get; set; }
+        public virtual Log Log { get; set; }
+
+        public int LogId { get; set; }
     }
 }

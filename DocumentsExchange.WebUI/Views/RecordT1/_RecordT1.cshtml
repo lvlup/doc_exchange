@@ -1,0 +1,125 @@
+﻿@using DocumentsExchange.Common.Extensions
+@using DocumentsExchange.DataLayer.Entity
+@model DocumentsExchange.DataLayer.Entity.RecordT1
+
+@if (Model.Id > 0)
+{
+    @Html.HiddenFor(model => model.LogId)   
+}
+
+@Html.HiddenFor(model => model.Id)
+@Html.HiddenFor(model => model.OranizationId)
+@Html.HiddenFor(model => model.SenderUserId)
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">Дата отправки:</label>
+    <div class="col-sm-10">
+        <div class="input-group datepicker">
+            @*@Html.EditorFor(p => p.CreatedDateTime, new {@class = "form-control ", tabindex = 1})*@
+            @Html.TextBoxFor(model => model.CreatedDateTime, "{0:dd/MM/yyyy}", new { @class = "form-control datepicker" })
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+            @Html.ValidationMessageFor(p => p.CreatedDateTime, null, new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">Наименование отправителя:</label>
+    <div class="col-sm-10">
+        @Html.TextBoxFor(p => p.OrganizationSender, new { @class = "form-control" })
+        @Html.ValidationMessageFor(p => p.OrganizationSender, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">Отправитель:</label>
+    <div class="col-sm-10">
+        @Html.TextBoxFor(p => p.SenderUser.FirstName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(p => p.SenderUser.FirstName, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">Файл:</label>
+    <div class="col-sm-8">
+        @Html.TextBoxFor(p => p.File.OriginalFileName, new { @class = "form-control", @readonly = "readonly" })
+    </div>
+    <div class="col-sm-2" style="padding: 5px">
+        <input type="file" name="upload" id="uploadFileBtn" style="width: 125px;" />
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">П/П №</label>
+    <div class="col-sm-10">
+        @Html.TextBoxFor(p => p.NumberPaymentOrder, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.NumberPaymentOrder, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">Наименование получателя:</label>
+    <div class="col-sm-10">
+        @Html.TextBoxFor(p => p.OrganizationReceiver, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.OrganizationReceiver, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">Сумма:</label>
+    <div class="col-sm-10">
+        @Html.TextBoxFor(p => p.Amount, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Amount, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">Валюта:</label>
+    <div class="col-sm-10">
+        @*@Html.TextBoxFor(p => p.Currency, new { @class = "form-control", tabindex = 8 })*@
+
+        @Html.DropDownListFor(m => m.Currency,
+                    new SelectList(Enum.GetValues(typeof(Currency)).OfType<Currency>().Select(x => new SelectListItem()
+                    {
+                        Value = x.ToString(),
+                        Text = x.GetValueFromDescriptionAttribute(),
+                        Selected = Model.Currency == x
+                    }), "Value", "Text"),
+                    null, new { @class = "form-control", tabindex = 8, @id = "currencyDropDown", data_url = Url.Action("GetCurrency") })
+        @Html.ValidationMessageFor(model => model.Currency, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">Курс:</label>
+    <div class="col-sm-10">
+        @Html.TextBoxFor(p => p.Course, new { @class = "form-control", tabindex = 9, @id = "currentCourse" })
+        @Html.ValidationMessageFor(model => model.Course, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+@*<div class="form-group">
+        <label class="col-sm-2 control-label">Сумма в указанной валюте:</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(p => p.AmountInCurrency, new { @class = "form-control", tabindex = 1 })
+            @Html.ValidationMessageFor(model => model.AmountInCurrency, null, new { @class = "text-danger" })
+        </div>
+    </div>*@
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">Процент:</label>
+    <div class="col-sm-10">
+        @Html.TextBoxFor(p => p.Percent, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Percent, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">Swift:</label>
+    <div class="col-sm-10">
+        @Html.TextBoxFor(p => p.Swift, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Swift, null, new { @class = "text-danger" })
+    </div>
+</div>

@@ -1,0 +1,48 @@
+﻿@using DocumentsExchange.DataLayer.Entity
+@using DocumentsExchange.Common.Extensions;
+@model DocumentsExchange.DataLayer.Entity.RecordT1
+
+@using (Html.BeginForm("Edit", "RecordT1", null, FormMethod.Post, new { enctype = "multipart/form-data", id = "EditRecord1Form" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true)
+        @Html.Partial("_RecordT1", Model)
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default" id="editRecord1Btn">Обновить запись</button>
+            </div>
+        </div>
+
+    </div>
+}
+
+<script type="text/javascript">
+    $(function() {
+        $('.datepicker').datetimepicker(
+        {
+            locale: 'ru',
+            format: 'DD.MM.YYYY'
+        });
+
+        new RecordCreator.manager({
+            currency: {
+                currencyDropdown: '#currencyDropDown',
+                coursePlaceholder: '#currentCourse'
+            },
+
+            controls: {
+                uploadBtn: '#uploadFileBtn',
+                addRecordBtn: "#editRecord1Btn",
+                dataPlaceholder: "#tabContent",
+                fileNamePlaceholder: 'input[name$=OriginalFileName]'
+            },
+
+            urls: {
+                fileValidationUrl: '@Url.Action("ValidateFiles")',
+                uploadUrl: '@Url.Action("Edit", "RecordT1")'
+            }
+        });
+    });
+</script>

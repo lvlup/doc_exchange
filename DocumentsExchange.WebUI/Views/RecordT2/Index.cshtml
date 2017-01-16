@@ -23,8 +23,7 @@
                                 <span class="lead">@r2.CreatedDateTime.ToString("dd/MM/yyyy")</span>
                             </td>
                             <td>
-                                @*<span class="lead">@r2.NumberPaymentOrder</span>*@
-                                @Html.ActionLink(@r2.NumberPaymentOrder.ToString(), "DownloadPaymentOrder", new {id = r2.FilePathId})
+                                <a target="_blank" href="@Url.Action("DownloadPaymentOrder", new { fileName = r2.File.FileName, originalFileName = r2.File.OriginalFileName })"><span class="lead">@r2.NumberPaymentOrder</span></a>
                             </td>
                             <td>
                                 <span class="lead">@r2.OrganizationSender</span>
@@ -49,7 +48,7 @@
                             </td>
 
                             <td>
-                                <span class="lead">@r2.Logs</span>
+                                <a href="javascript:void(0)" target="_blank"><span class="lead" title="@r2.Log.ToString()">show</span></a>
                             </td>
                         </tr>
                     }

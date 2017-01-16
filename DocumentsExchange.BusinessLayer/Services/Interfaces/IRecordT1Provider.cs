@@ -7,9 +7,20 @@ using DocumentsExchange.DataLayer.Entity;
 
 namespace DocumentsExchange.BusinessLayer.Services.Interfaces
 {
-  public  interface IRecordT1Provider
+    public class SearchParams
+    {
+        public string OrganizationSender { get; set; }
+
+        public int NumberPaymentOrder { get; set; }
+    }
+
+    public interface IRecordT1Provider
     {
         Task<IEnumerable<RecordT1>> GetAll(int orgId);
+
+        Task<RecordT1> Get(int orgId);
+
+        Task<RecordT1> Find(SearchParams searchParams);
 
         Task<bool> Add(RecordT1 recordT1);
 

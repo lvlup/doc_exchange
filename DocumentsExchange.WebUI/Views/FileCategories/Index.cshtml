@@ -1,29 +1,41 @@
 ﻿@using DocumentsExchange.WebUI.ViewModels
 @model DocumentsExchange.WebUI.ViewModels.FileCategoriesViewModel
 
-<div id="FileCategoryTable">
-    <table class="table table-bordered table-condensed">
-        <tbody>
-        @{
-            if (Model != null)
-            {
-                foreach (var category in @Model.FileCategories.Where(o => o.IsActive))
+<div style="float: left; width: 25%; height: 100%; position: relative; border-right: 1px solid black">
+    @foreach (var category in @Model.FileCategories.Where(o => o.IsActive))
+    {
+        <div>
+            @Ajax.ActionLink(@category.Name, "Get", "FileCategories",
+                new {id = category.Id, orgId = Model.OrganizationId},
+                new AjaxOptions {UpdateTargetId = "FilesTableView"})
+        </div>
+    }
+    @*<table class="table table-bordered table-condensed">
+            <tbody>
+            @{
+                if (Model != null)
                 {
-                    <tr>
-                        <td>
-                            @Ajax.ActionLink(@category.Name, "Get", "FileCategories", 
-                           new { id = category.Id,orgId = Model.OrganizationId }, 
-                           new AjaxOptions { UpdateTargetId = "FilesTableView" })
-                        </td>
-                    </tr>
+                    foreach (var category in @Model.FileCategories.Where(o => o.IsActive))
+                    {
+                        <tr>
+                            <td>
+                                @Ajax.ActionLink(@category.Name, "Get", "FileCategories",
+                                    new {id = category.Id, orgId = Model.OrganizationId},
+                                    new AjaxOptions {UpdateTargetId = "FilesTableView"})
+                            </td>
+                        </tr>
+                    }
                 }
             }
-        }
-        </tbody>
-    </table>
+            </tbody>
+        </table>*@
+</div>
+<div id="FilesTableView" style="float: left; width: 75%; height: 100%; position: relative;">
+
 </div>
 
-<div id="FilesTableView">
+@*<div id="FileCategoryTable" style="overflow-y: auto; height: 100%; min-height: 1px;">
     
-</div>
+</div>*@
+
 

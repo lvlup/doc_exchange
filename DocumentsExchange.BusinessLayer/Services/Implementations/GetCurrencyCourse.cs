@@ -89,9 +89,9 @@ namespace DocumentsExchange.BusinessLayer.Services.Implementations
                 case Currency.Usd:
                    return _usdCurrency;
                 case Currency.Euro:
-                   return _usdCurrency;
+                   return _euroCurrency;
                 default:
-                   return 0;
+                   return 1;
            }
        }
 

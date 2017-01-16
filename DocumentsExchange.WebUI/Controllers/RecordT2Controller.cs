@@ -2,23 +2,24 @@
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.IO;
-using System.Threading.Tasks;
+using System.Linq;
 using System.Web.Mvc;
 using DocumentsExchange.BusinessLayer.Services.Interfaces;
 using DocumentsExchange.DataLayer.Entity;
+using DocumentsExchange.WebUI.Exceptions;
 using DocumentsExchange.WebUI.ViewModels;
 
 namespace DocumentsExchange.WebUI.Controllers
 {
-    public class RecordT2Controller : Controller
+    public class RecordT2Controller : BaseController
     {
         private readonly IRecordT2Provider _recordT2Provider;
-        private readonly IFilePathProvider _filePathProvider;
+        private readonly IFileValidator _fileValidator;
 
-        public RecordT2Controller(IRecordT2Provider recordT2Provider, IFilePathProvider iFilePathProvider)
+        public RecordT2Controller(IRecordT2Provider recordT2Provider, IFileValidator fileValidator)
         {
             _recordT2Provider = recordT2Provider;
-            _filePathProvider = iFilePathProvider;
+            _fileValidator = fileValidator;
         }
 
         public PartialViewResult Index(int id)
@@ -44,38 +45,64 @@ namespace DocumentsExchange.WebUI.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    var existingRecord =
+                        _recordT2Provider.Find(new SearchParams()
+                        {
+                            NumberPaymentOrder = record.NumberPaymentOrder,
+                            OrganizationSender = record.OrganizationSender
+                        }).Result;
+
+                    if (existingRecord != null && DateTime.UtcNow < existingRecord.CreatedDateTime.AddMonths(3))
+                    {
+                        ModelState.AddModelError("record", $"Record with specified data already exists");
+                        throw new ValidationException(ModelState);
+                    }
+
                     if (Request.Files != null && Request.Files.Count > 0)
                     {
                         var upload = Request.Files[0];
                         bool result;
                         if (upload != null)
                         {
+                            if (!_fileValidator.Validate(upload.FileName))
+                            {
+                                ModelState.AddModelError("file", $"Unsupported file {upload.FileName}");
+                                throw new ValidationException(ModelState);
+                            }
+
                             var stream = upload.InputStream;
                             // and optionally write the file to disk
                             var fileName = Path.GetFileName(upload.FileName);
+                            var newFileName = $"{Guid.NewGuid().ToString("n")}{Path.GetExtension(fileName)}";
                             var filePath = new FilePath();
-                            if (fileName != null)
+
+                            var path = Path.Combine(Server.MapPath("~/App_Data/PaymentOrders"), newFileName);
+                            using (var fileStream = System.IO.File.Create(path))
                             {
-                                var path = Path.Combine(Server.MapPath("~/App_Data/PaymentOrders"), fileName);
-                                using (var fileStream = System.IO.File.Create(path))
-                                {
-                                    stream.CopyTo(fileStream);
-                                }
-                                filePath.FileName = fileName;
-                                //result = _filePathProvider.Add(filePath).Result;
+                                stream.CopyTo(fileStream);
                             }
 
+                            filePath.FileName = newFileName;
+                            filePath.OriginalFileName = fileName;
+
+                            var now = DateTime.UtcNow;
                             var r = new RecordT2()
                             {
-                                CreatedDateTime = record.CreatedDateTime,
+                                CreatedDateTime = now,
                                 NumberPaymentOrder = record.NumberPaymentOrder,
                                 OrganizationSender = record.OrganizationSender,
                                 OrganizationReceiver = record.OrganizationReceiver,
                                 Amount = record.Amount,
                                 Percent = record.Percent,
-                                SenderUser = new User() { FirstName = "user record2"},
+                                SenderUserId = UserId,
                                 File = filePath,
-                                OranizationId = record.OranizationId
+                                OranizationId = record.OranizationId,
+
+                                Log = new Log()
+                                {
+                                    UserId = UserId,
+                                    CreatedDateTime = now
+                                }
                             };
                              result = _recordT2Provider.Add(r).Result;
                         }
@@ -96,14 +123,24 @@ namespace DocumentsExchange.WebUI.Controllers
             return PartialView("Index", CreateRecordT2Vm(record.OranizationId));
         }
 
-        public FileResult DownloadPaymentOrder(int id)
+        public FileResult DownloadPaymentOrder(string fileName, string originalFileName)
         {
-            var filepath = _filePathProvider.Get(id).Result;
-
-            var path = Path.Combine(Server.MapPath("~/App_Data/PaymentOrders"), filepath.FileName);
+            var path = Path.Combine(Server.MapPath("~/App_Data/PaymentOrders"), fileName);
             byte[] fileContent = System.IO.File.ReadAllBytes(path);
+            return File(fileContent, System.Net.Mime.MediaTypeNames.Application.Octet, originalFileName);
+        }
 
-            return File(fileContent, System.Net.Mime.MediaTypeNames.Application.Octet, filepath.FileName);
+        [HttpPost]
+        public JsonResult ValidateFiles(string[] fileNames)
+        {
+            return Json(new
+            {
+                ValidationResult = fileNames.Select(x => new
+                {
+                    FileName = x,
+                    Valid = _fileValidator.Validate(x)
+                }).ToArray()
+            }, JsonRequestBehavior.DenyGet);
         }
 
         private RecordsT2ViewModel CreateRecordT2Vm(int orgId)

@@ -1,33 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using DocumentsExchange.DataLayer.Entity;
 
 namespace DocumentsExchange.Common.Extensions
 {
-  public static class EnumExtension
+    public static class EnumExtension
     {
-        public static ICollection<string> GetValuesFromDescriptionAttribute<TEnum>(this Currency currency)
+        public static string GetValueFromDescriptionAttribute<TEnum>(this TEnum currency)
             where TEnum : struct, IComparable, IConvertible, IFormattable
         {
-            var result = new List<string>();
+            string result = currency.ToString();
 
-            var enumValues = Enum.GetValues(typeof(TEnum));
+            FieldInfo fi = typeof(TEnum).GetField(currency.ToString());
 
-            foreach (var enumVal in enumValues)
-            {
-                FieldInfo fi = enumVal.GetType().GetField(enumVal.ToString());
-            
-                DescriptionAttribute[] attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+            DescriptionAttribute[] attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
 
-                result.Add(attributes.Length > 0 ? attributes[0].Description : enumVal.ToString());
-            }
+            if (attributes.Length > 0)
+                result = attributes[0].Description;
 
             return result;
+        }
+
+        public static string[] GetEnumDescriptions<TEnum>()
+            where TEnum : struct, IComparable, IConvertible, IFormattable
+        {
+            return Enum.GetValues(typeof(TEnum)).OfType<TEnum>().Select(x => x.GetValueFromDescriptionAttribute()).ToArray();
         }
     }
 }

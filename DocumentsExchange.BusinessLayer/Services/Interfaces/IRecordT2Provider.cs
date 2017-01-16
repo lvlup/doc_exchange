@@ -7,7 +7,7 @@ using DocumentsExchange.DataLayer.Entity;
 
 namespace DocumentsExchange.BusinessLayer.Services.Interfaces
 {
-   public interface IRecordT2Provider
+    public interface IRecordT2Provider
     {
         Task<IEnumerable<RecordT2>> GetAll(int orgId);
 
@@ -16,5 +16,6 @@ namespace DocumentsExchange.BusinessLayer.Services.Interfaces
         Task<bool> Update(RecordT2 recordT1);
 
         Task<bool> Delete(int id);
+        Task<RecordT2> Find(SearchParams searchParams);
     }
 }

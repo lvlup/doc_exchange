@@ -2,12 +2,12 @@
 
 namespace DocumentsExchange.DataAccessLayer
 {
-   public class DocumentsExchangeContextFactory : IDbContextFactory<DocumentsExchangeContext>
+    public class DocumentsExchangeContextFactory : IDbContextFactory<DocumentsExchangeContext>
     {
-       public DocumentsExchangeContext Create()
-       {
-           return new DocumentsExchangeContext();
-       }
+        public DocumentsExchangeContext Create()
+        {
+            return new DocumentsExchangeContext();
+        }
 
         public DocumentsExchangeContext Create(string connectionString)
         {

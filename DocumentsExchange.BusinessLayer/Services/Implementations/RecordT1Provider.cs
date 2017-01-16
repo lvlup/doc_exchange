@@ -20,6 +20,21 @@ namespace DocumentsExchange.BusinessLayer.Services.Implementations
             return await _recordT1Repository.GetRecordsFromTable1(orgId).ConfigureAwait(false);
         }
 
+       public async Task<RecordT1> Get(int recordId)
+       {
+           return await _recordT1Repository.Get(recordId).ConfigureAwait(false);
+       }
+
+       public async Task<RecordT1> Find(SearchParams searchParams)
+       {
+           return
+               await
+                   _recordT1Repository.Get(
+                       x =>
+                           x.OrganizationSender == searchParams.OrganizationSender &&
+                           x.NumberPaymentOrder == searchParams.NumberPaymentOrder).ConfigureAwait(false);
+       }
+
        public async Task<bool> Add(RecordT1 recordT1)
        {
            return await _recordT1Repository.Create(recordT1).ConfigureAwait(false);

@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DocumentsExchange.DataLayer.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace DocumentsExchange.DataLayer.Entity
 {
-    public class User
+    public class User : IdentityUser<int, AppUserLogin, AppUserRole, AppUserClaim>
     {
         [DisplayName("id")]
-        public int Id { get; set; }
+        public override int Id { get; set; }
 
         [DisplayName("Логин")]
-        public string UserName { get; set; }
+        public override string UserName { get; set; }
 
         //[DisplayName("Имя")]
         public string FirstName { get; set; }
@@ -31,7 +29,7 @@ namespace DocumentsExchange.DataLayer.Entity
         [NotMapped]
         [DisplayName("ФИО")]
         public string FullName => FirstName + " " + LastName;
-
+        
         //todo role
 
         //public virtual Organization Organization { get; set; }

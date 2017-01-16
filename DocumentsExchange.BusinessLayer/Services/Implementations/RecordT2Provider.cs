@@ -34,5 +34,15 @@ namespace DocumentsExchange.BusinessLayer.Services.Implementations
         {
             return await _recordT2Repository.Delete(id).ConfigureAwait(false);
         }
+
+        public async Task<RecordT2> Find(SearchParams searchParams)
+        {
+            return
+               await
+                   _recordT2Repository.Get(
+                       x =>
+                           x.OrganizationSender == searchParams.OrganizationSender &&
+                           x.NumberPaymentOrder == searchParams.NumberPaymentOrder).ConfigureAwait(false);
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Autofac.Extras.NLog;
 using DocumentsExchange.DataLayer.Entity;
@@ -27,7 +28,8 @@ namespace DocumentsExchange.DataAccessLayer.Repository
                 try
                 {
                     var records = await context.Set<Organization>()
-                        .Include(o=>o.RecordT2s)
+                        .Include(o=>o.RecordT2s.Select(r => r.Log.Changes))
+                        .Include(o => o.RecordT2s.Select(r => r.Log.User))
                         .FirstOrDefaultAsync(x => x.Id == orgId).ConfigureAwait(false);
 
                     return records.RecordT2s;
@@ -48,20 +50,7 @@ namespace DocumentsExchange.DataAccessLayer.Repository
             {
                 try
                 {
-                    RecordT2 r2 = new RecordT2()
-                    {
-                        CreatedDateTime = record.CreatedDateTime,
-                        NumberPaymentOrder = record.NumberPaymentOrder,
-                        OrganizationSender = record.OrganizationSender,
-                        OrganizationReceiver = record.OrganizationReceiver,
-                        Amount = record.Amount,
-                        Percent = record.Percent,
-                        SenderUser = record.SenderUser,
-                        File = record.File,
-                        OranizationId = record.OranizationId
-                    };
-
-                    context.Set<RecordT2>().Add(r2);
+                    context.Set<RecordT2>().Add(record);
                     context.ChangeTracker.DetectChanges();
                     result = await context.SaveChangesAsync().ConfigureAwait(false) > 0;
                 }
@@ -85,6 +74,24 @@ namespace DocumentsExchange.DataAccessLayer.Repository
                 catch (Exception e)
                 {
                     _logger.Error("Error getting record {0}", id);
+                    _logger.Error(e);
+                }
+            }
+
+            return null;
+        }
+
+        public async Task<RecordT2> Get(Expression<Func<RecordT2, bool>> selector)
+        {
+            using (var context = _contextFactory.Create())
+            {
+                try
+                {
+                    return await context.Set<RecordT2>().FirstOrDefaultAsync(selector).ConfigureAwait(false);
+                }
+                catch (Exception e)
+                {
+                    _logger.Error("Error getting record");
                     _logger.Error(e);
                 }
             }
