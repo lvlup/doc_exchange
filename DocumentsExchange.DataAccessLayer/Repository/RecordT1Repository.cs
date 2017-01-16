@@ -76,7 +76,9 @@ namespace DocumentsExchange.DataAccessLayer.Repository
             {
                 try
                 {
-                    return await context.Set<RecordT1>().FindAsync(id).ConfigureAwait(false);
+                    return await context.Set<RecordT1>().Include(r => r.SenderUser)
+                        .SingleOrDefaultAsync(r => r.Id == id)
+                        .ConfigureAwait(false);
                 }
                 catch (Exception e)
                 {
@@ -157,7 +159,7 @@ namespace DocumentsExchange.DataAccessLayer.Repository
                         {
                             CurrentValue = record.OrganizationSender,
                             OldValue = existing.OrganizationSender,
-                            PropertyName = "Наименование получателя",
+                            PropertyName = "Наименование отправителя",
                             UserId = record.SenderUserId,
                             TimeSpan = now
                         });
