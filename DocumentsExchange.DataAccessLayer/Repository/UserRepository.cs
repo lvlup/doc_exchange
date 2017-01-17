@@ -26,7 +26,9 @@ namespace DocumentsExchange.DataAccessLayer.Repository
             {
                 try
                 {
-                    return await context.Set<User>().ToListAsync().ConfigureAwait(false);
+                    return await context.Set<User>()
+                        .Include(u=>u.Roles)
+                        .ToListAsync().ConfigureAwait(false);
                 }
                 catch (Exception e)
                 {

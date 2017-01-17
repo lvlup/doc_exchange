@@ -55,5 +55,19 @@ namespace DocumentsExchange.WebUI.Controllers
 
             return View();
         }
+
+        public PartialViewResult Edit(int userId)
+        {
+            var user = _userProvider.Get(userId).Result;
+            return PartialView(user);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(User user)
+        {
+            return PartialView();
+        }
     }
 }

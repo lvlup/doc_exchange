@@ -379,6 +379,7 @@
     <Content Include="Views\RecordT2\_RecordT2.cshtml" />
     <Content Include="Views\RecordT2\Edit.cshtml" />
     <Content Include="Views\SiteControl\Index.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

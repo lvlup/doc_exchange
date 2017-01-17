@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using DocumentsExchange.DataLayer.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -11,8 +12,15 @@ namespace DocumentsExchange.DataLayer.Entity
         [DisplayName("id")]
         public override int Id { get; set; }
 
+        [NotMapped]
+        [DisplayName("ФИО")]
+        public string FullName => FirstName + " " + LastName;
+
         [DisplayName("Логин")]
         public override string UserName { get; set; }
+
+        [DisplayName("Активность")]
+        public bool IsActive { get; set; }
 
         //[DisplayName("Имя")]
         public string FirstName { get; set; }
@@ -21,14 +29,13 @@ namespace DocumentsExchange.DataLayer.Entity
         public string LastName { get; set; }
 
 
-        [DisplayName("Активность")]
-        public bool IsActive { get; set; }
+        [DisplayName("Роль")]
+        [NotMapped]
+        public string Role => Roles.First().ToString();
 
         public virtual ICollection<Message> Messages { get; set; }
 
-        [NotMapped]
-        [DisplayName("ФИО")]
-        public string FullName => FirstName + " " + LastName;
+      
         
         //todo role
 
