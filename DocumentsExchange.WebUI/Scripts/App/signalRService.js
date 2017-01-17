@@ -28,6 +28,10 @@
             this.handlers.splice(this.handlers.indexOf(handlers[0]), 1);
     };
 
+    EventHandler.prototype.clear = function() {
+        this.handlers.length = 0;
+    };
+
     var eventHandlers = {
         pingBack: new EventHandler(),
         onMessageReceived: new EventHandler(),

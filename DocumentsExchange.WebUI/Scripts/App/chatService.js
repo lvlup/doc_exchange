@@ -128,6 +128,8 @@
                 sendMessage();
             }.bind(this));
 
+            SignalR.Hub.onMessageReceived().clear();
+
             SignalR.Hub.onMessageReceived().add(function(message) {
                 this._addMessage(message);
                 this._scrollDown();
