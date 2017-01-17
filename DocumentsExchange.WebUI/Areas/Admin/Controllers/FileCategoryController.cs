@@ -31,7 +31,7 @@ namespace DocumentsExchange.WebUI.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public PartialViewResult Create(FileCategory fileCategory)
+        public ActionResult Create(FileCategory fileCategory)
         {
             try
             {
@@ -49,7 +49,7 @@ namespace DocumentsExchange.WebUI.Areas.Admin.Controllers
                 ModelState.AddModelError("", "Невозможно сохранить изменения. Попробуйте позже.");
             }
 
-            return PartialView();
+            return RedirectToAction("Index", "AdminPanel");
         }
 
 

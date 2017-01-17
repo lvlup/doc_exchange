@@ -22,7 +22,7 @@
 
         </thead>
 
-        <tbody>
+        <tbody id="allOrgsTableBody">
         @if (@Model != null)
         {
             foreach (var org in Model)
@@ -34,7 +34,7 @@
                     </td>
 
                     <td>
-                        <a href="javascript:void(0)" id="editOrgLink" data-url="@Url.Action("Edit", new {orgId = org.Id})">@org.Name</a>
+                        <a href="javascript:void(0)" data-url="@Url.Action("Edit", new {orgId = org.Id})">@org.Name</a>
                     </td>
 
                     <td>
@@ -56,8 +56,8 @@
 </div>
 
 <script>
-    $(function() {
-        $('#editOrgLink').on('click', function (e) {
+    $(function () {
+        $('#allOrgsTableBody').on('click', 'td >  a[data-url]', function (e) {
             $('#addingOrgForm').load($(this).data('url'));
         });
     });

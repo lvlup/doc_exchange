@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<DocumentsExchange.DataLayer.Entity.FileCategory>
 
-<div id="OrganizationTable" class="container-fluid">
+<div id="allFileCategoriesTable" class="container-fluid">
     <table class="table table-bordered table-condensed">
 
         <thead>
@@ -22,7 +22,7 @@
 
         </thead>
 
-        <tbody>
+        <tbody id="allFileCategoriesTableBody">
         @if (@Model != null)
         {
             foreach (var fc in Model)
@@ -34,7 +34,7 @@
                     </td>
 
                     <td>
-                        <a href="javascript:void(0)" id="editFileCategoryLink" data-url="@Url.Action("Edit", new {id = fc.Id})">@fc.Name</a>
+                        <a href="javascript:void(0)" data-url="@Url.Action("Edit", new {id = fc.Id})">@fc.Name</a>
                     </td>
 
                     <td>
@@ -56,8 +56,8 @@
 </div>
 
 <script>
-    $(function() {
-        $('#editFileCategoryLink').on('click', function (e) {
+    $(function () {
+        $('#allFileCategoriesTableBody').on('click', 'td >  a[data-url]', function (e) {
             $('#addingFileCategoryForm').load($(this).data('url'));
         });
     });
