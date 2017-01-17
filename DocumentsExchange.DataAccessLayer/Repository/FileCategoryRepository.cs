@@ -94,7 +94,7 @@ namespace DocumentsExchange.DataAccessLayer.Repository
                     var existing =
                         await categoriesSet
                             .Where(x => x.Id == fileCategory.Id)
-                            .FirstOrDefaultAsync();
+                            .FirstOrDefaultAsync().ConfigureAwait(false);
 
                     if (existing == null)
                         throw new Exception("");
@@ -117,22 +117,22 @@ namespace DocumentsExchange.DataAccessLayer.Repository
             return result;
         }
 
-        public async Task<bool> Delete(int categoryId)
+        public async Task<bool> Delete(int fileCategoryId)
         {
             bool result = false;
             using (var context = _contextFactory.Create())
             {
                 try
                 {
-                    var existingOrg =
-                        await context.Set<Organization>()
-                            .Where(x => x.Id == categoryId)
-                            .FirstOrDefaultAsync();
+                    var existingFileCategory =
+                        await context.Set<FileCategory>()
+                            .Where(x => x.Id == fileCategoryId)
+                            .FirstOrDefaultAsync().ConfigureAwait(false);
 
-                    if (existingOrg == null)
+                    if (existingFileCategory == null)
                         throw new Exception("");
 
-                    context.Set<Organization>().Remove(existingOrg);
+                    context.Set<FileCategory>().Remove(existingFileCategory);
 
                     context.ChangeTracker.DetectChanges();
                     result = await context.SaveChangesAsync().ConfigureAwait(false) > 0;
@@ -140,7 +140,7 @@ namespace DocumentsExchange.DataAccessLayer.Repository
 
                 catch (Exception e)
                 {
-                    _logger.Error("Error removing org {0} from db", categoryId);
+                    _logger.Error("Error removing file category {0} from db", fileCategoryId);
                     _logger.Error(e);
                 }
             }

@@ -66,5 +66,11 @@ namespace DocumentsExchange.WebUI.Areas.Admin.Controllers
         {
             return PartialView();
         }
+
+        public ActionResult Delete(int id)
+        {
+            var res = _userProvider.Delete(id).Result;
+            return RedirectToAction("Index", "AdminPanel");
+        }
     }
 }

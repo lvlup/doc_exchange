@@ -28,6 +28,14 @@ namespace DocumentsExchange.WebUI.Controllers
             return View();
         }
 
+        [Authorize]
+        public ActionResult Logout()
+        {
+            var authManager = HttpContext.GetOwinContext().Authentication;
+            authManager.SignOut();
+            return RedirectToAction("Login");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]

@@ -150,7 +150,7 @@ namespace DocumentsExchange.DataAccessLayer.Repository
                     var existingUser =
                         await context.Set<User>()
                             .Where(x => x.Id == userId)
-                            .FirstOrDefaultAsync();
+                            .FirstOrDefaultAsync().ConfigureAwait(false);
 
                     if (existingUser == null)
                         throw new Exception("");

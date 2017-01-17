@@ -45,18 +45,7 @@ namespace DocumentsExchange.DataAccessLayer.Repository
             {
                 try
                 {
-                    Organization org = new Organization()
-                    {
-                        Id = organization.Id,
-                        CreatedDateTime = organization.CreatedDateTime,
-                        IsActive = organization.IsActive,
-                        Files = organization.Files,
-                        Name = organization.Name,
-                        RecordT1s = organization.RecordT1s,
-                        RecordT2s = organization.RecordT2s
-                    };
-
-                    context.Set<Organization>().Add(org);
+                    context.Set<Organization>().Add(organization);
                     context.ChangeTracker.DetectChanges();
                     result = await context.SaveChangesAsync().ConfigureAwait(false) > 0;
                 }
@@ -98,7 +87,7 @@ namespace DocumentsExchange.DataAccessLayer.Repository
                     var existing =
                         await organizationSet
                             .Where(x => x.Id == organization.Id)
-                            .FirstOrDefaultAsync();
+                            .FirstOrDefaultAsync().ConfigureAwait(false);
 
                     if (existing == null)
                         throw new Exception("");
@@ -131,7 +120,7 @@ namespace DocumentsExchange.DataAccessLayer.Repository
                     var existingOrg =
                         await context.Set<Organization>()
                             .Where(x => x.Id == organizationId)
-                            .FirstOrDefaultAsync();
+                            .FirstOrDefaultAsync().ConfigureAwait(false);
 
                     if (existingOrg == null)
                         throw new Exception("");
