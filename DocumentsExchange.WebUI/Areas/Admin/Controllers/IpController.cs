@@ -6,9 +6,9 @@ using System.Web.Mvc;
 
 namespace DocumentsExchange.WebUI.Areas.Admin.Controllers
 {
-    public class ActivitySiteController : Controller
+    public class IpController : Controller
     {
-        // GET: Admin/ActivitySite
+        // GET: Admin/Ip
         public ActionResult Index()
         {
             return View();

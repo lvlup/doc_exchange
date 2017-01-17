@@ -305,6 +305,8 @@
     <Content Include="Areas\Admin\Views\Organization\_Organization.cshtml" />
     <Content Include="Areas\Admin\Views\FileCategory\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\FileCategory\_FileCategory.cshtml" />
+    <Content Include="Areas\Admin\Views\Ip\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ActiveSite\Index.cshtml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\App\chatService.js" />
     <Content Include="Scripts\App\recordCreation.js" />
@@ -331,6 +333,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\ActiveSiteController.cs" />
+    <Compile Include="Areas\Admin\Controllers\IpController.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Areas\Admin\Controllers\OrganizationsController.cs" />
     <Compile Include="AutoFac\MainModule.cs" />

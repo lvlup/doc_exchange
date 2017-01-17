@@ -1,23 +1,27 @@
-﻿<div>
-    <div id="Tabs" role="tabpanel">
+﻿<div style="height: 100%; min-height: 1px; position: relative">
+    <div id="SiteControlTabs" role="tabpanel">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
 
             <li class="active">
-                @Ajax.ActionLink("Активность сайта", "Index", "User", null, new AjaxOptions() { UpdateTargetId = "dictionaryTabContent" },
-                    new { @role = "tab" })
+                <a href="javascript:void(0)" role="tab" data-url="@Url.Action("Index", "ActiveSite")">Активность сайта</a>
             </li>
 
-            <li>
-                @Ajax.ActionLink("Заблокированные ip-адреса", "Index", "Organization", null, new AjaxOptions() { UpdateTargetId = "dictionaryTabContent" },
-                    new { @role = "tab" })
+            <li class="active">
+                <a href="javascript:void(0)" role="tab" data-url="@Url.Action("Index", "Ip")">Заблокированные ip-адреса</a>
             </li>
 
         </ul>
-
-        <div id="dictionaryTabContent" role="tabpanel" class="tab-pane active">
-            @Html.Action("Index", "User")
-        </div>
-
+    </div>
+    <div id="siteControlTabContent" role="tabpanel" class="tab-pane active" style="height: 100%; position: relative; min-height: 1px;">
+        @Html.Action("Index", "ActiveSite")
     </div>
 </div>
+
+<script>
+    $(function() {
+        $('#SiteControlTabs').on('click', '> ul[role=tablist] > li > a[data-url]', function (e) {
+            $('#siteControlTabContent').load($(this).data('url'));
+        });
+    });
+</script>

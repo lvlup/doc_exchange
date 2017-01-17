@@ -6,15 +6,12 @@ using System.Web.Mvc;
 
 namespace DocumentsExchange.WebUI.Areas.Admin.Controllers
 {
-    public class ActivitySiteController : Controller
+    public class ActiveSiteController : Controller
     {
-        // GET: Admin/ActivitySite
+        // GET: Admin/ActiveSite
         public ActionResult Index()
         {
             return View();
         }
-
-
-
     }
 }

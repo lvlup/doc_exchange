@@ -1,27 +1,31 @@
-﻿<div>
-    <div id="Tabs" role="tabpanel">
+﻿<div style="height: 100%; min-height: 1px; position: relative">
+    <div id="DictionariesTabs" role="tabpanel">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
 
             <li class="active">
-                @Ajax.ActionLink("Пользователи", "Index", "User",null, new AjaxOptions() { UpdateTargetId = "dictionaryTabContent" },
-                    new { @role = "tab" })
+                <a href="javascript:void(0)" role="tab" data-url="@Url.Action("Index", "User")">Пользователи</a>
             </li>
 
-            <li>
-                @Ajax.ActionLink("Организации", "Index", "Organization", null,new AjaxOptions() {UpdateTargetId = "dictionaryTabContent" },
-                    new {@role = "tab"})
+            <li class="active">
+                <a href="javascript:void(0)" role="tab" data-url="@Url.Action("Index", "Organization")">Организации</a>
             </li>
 
-            <li>
-                @Ajax.ActionLink("Типы документов", "Index", "FileCategory",null, new AjaxOptions() { UpdateTargetId = "dictionaryTabContent" },
-                    new { @role = "tab" })
+            <li class="active">
+                <a href="javascript:void(0)" role="tab" data-url="@Url.Action("Index", "FileCategory")">Типы документов"</a>
             </li>
+
         </ul>
-
-        <div id="dictionaryTabContent" role="tabpanel" class="tab-pane active">
-            @Html.Action("Index", "User")
-        </div>
-
+    </div>
+    <div id="dictionaryTabContent" role="tabpanel" class="tab-pane active" style="height: 100%; position: relative; min-height: 1px;">
+        @Html.Action("Index", "User")
     </div>
 </div>
+
+<script>
+    $(function() {
+        $('#DictionariesTabs').on('click', '> ul[role=tablist] > li > a[data-url]', function (e) {
+            $('#dictionaryTabContent').load($(this).data('url'));
+        });
+    });
+</script>
