@@ -11,8 +11,8 @@
     </div>
 
     <div>
-        @Html.TextBoxFor(m => m.UserName, new { @class = "col-md-1 control-label" })
-        @Html.TextBoxFor(m => m.FullName, new { @class = "col-md-1 control-label" })
+        @Html.DisplayFor(m => m.UserName, new { @class = "col-md-1 control-label" })
+        @Html.DisplayFor(m => m.FullName, new { @class = "col-md-1 control-label" })
     </div>
 
 
@@ -20,7 +20,7 @@
             <input type="button" id="userName" class="btn btn-default" value="Ivan Ivanov"/>
         </div>*@
     <div class="pull-right col-md-1">
-        <input type="button" id="logout" class="btn btn-default" value="выход" />
+        @Html.ActionLink("выход","Logout","Account")
     </div>
 </div>
 
