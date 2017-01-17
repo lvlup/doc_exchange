@@ -30,9 +30,9 @@
 
                     $.post(options.urls.fileValidationUrl, { fileNames: fileArray.map(function (f) { return f.name }) })
                         .done(function (data) {
-                            var invalidFiles = data.ValidationResult.filter(function (f) { return f.Valid === false; });
+                            var invalidFiles = data.validationResult.filter(function (f) { return f.valid === false; });
                             if (invalidFiles.length > 0) {
-                                alert("These files are invalid: " + invalidFiles.reduce(function(x, y) { return x + y.FileName + ' ' }, ""));
+                                alert("These files are invalid: " + invalidFiles.reduce(function(x, y) { return x + y.fileName + ' ' }, ""));
                                 $(this).val('');
                             } else {
                                 $(options.controls.fileNamePlaceholder).val(files[0].name);
@@ -72,9 +72,9 @@
                 }).fail(function (data) {
                     var parsed = data.responseText
                         ? JSON.parse(data.responseText)
-                        : { errors: [{ Key: "Error", Errors: "Something went wrong" }] };
+                        : { errors: [{ key: "Error", errors: "Something went wrong" }] };
 
-                    alert(parsed.errors.reduce(function (x, y) { return x + y.Key + ': ' + y.Errors + ';' }, ""));
+                    alert(parsed.errors.reduce(function (x, y) { return x + y.key + ': ' + y.Errors + ';' }, ""));
                 });
             });
         }

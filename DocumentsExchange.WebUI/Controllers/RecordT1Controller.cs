@@ -250,7 +250,7 @@ namespace DocumentsExchange.WebUI.Controllers
                 }
                 else
                 {
-                    return PartialView();
+                    return PartialView(record);
                 }
             }
             catch (RetryLimitExceededException)
