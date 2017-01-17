@@ -8,6 +8,7 @@ namespace DocumentsExchange.WebUI.AutoFac
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterControllers(typeof(MainModule).Assembly);
+            builder.RegisterFilterProvider();
         }
     }
 }

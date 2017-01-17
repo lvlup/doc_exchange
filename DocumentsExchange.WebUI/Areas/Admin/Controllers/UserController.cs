@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using DocumentsExchange.BusinessLayer.Services.Interfaces;
 using DocumentsExchange.DataLayer.Entity;
 using DocumentsExchange.WebUI.ViewModels;
 
-namespace DocumentsExchange.WebUI.Controllers
+namespace DocumentsExchange.WebUI.Areas.Admin.Controllers
 {
     public class UserController : Controller
     {

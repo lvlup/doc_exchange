@@ -50,7 +50,13 @@ namespace DocumentsExchange.DataAccessLayer
 
             modelBuilder.Entity<User>()
                 .HasMany<Organization>(u => u.Organizations)
-                .WithMany(o => o.Users);
+                .WithMany(o => o.Users)
+                .Map(cs =>
+                {
+                    cs.MapLeftKey("UserId");
+                    cs.MapRightKey("OrgId");
+                    cs.ToTable("UsersOrganizations");
+                });
 
             modelBuilder.Entity<File>()
                 .HasRequired(f => f.Category)

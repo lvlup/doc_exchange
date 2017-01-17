@@ -1,4 +1,56 @@
-﻿<div class="panel panel-default">
+﻿@using Microsoft.AspNet.Identity
+<div class="panel panel-default">
     <div class="panel-heading">Сообщения чата</div>
-    <div class="panel-body">Введите текст</div>
+    
+    <div id="messageContainer">
+
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-12">
+            <textarea id="message" class="form-control" placeholder="Введите текст" ng-model="message.content" ng-keypress="onKeyPress($event)">
+                
+            </textarea>
+            <button class="btn btn-primary" id="sendBtn">Send</button>
+        </div>
+    </div>
 </div>
+
+<script id="messageTemplate" type="text/x-jsrender">
+    Name: {{:name}}
+</script>
+
+<script>
+    $(function () {
+        var messages = [];
+
+        var renderMessage = function(message) {
+            var tmpl = $.templates("#messageTemplate");
+            var html = tmpl.render(message);
+            $('#messageContainer').append(html);
+        };
+
+        $('#sendBtn').click(function(e) {
+            var $message = $('#message');
+            if (!$message.val())
+                return;
+
+            var message = {
+                userId: '@(User.Identity.GetUserId<int>())',
+                organizationId: 1,
+                content: $message.val(),
+                timeStamp: new Date().getTime()
+            };
+
+            $message.val('');
+
+            messages.push(message);
+            renderMessage(message);
+
+            SignalR.Hub.sendMessage(message);
+        });
+        
+        SignalR.Hub.onMessageReceived(function(message) {
+
+        });
+    });
+</script>

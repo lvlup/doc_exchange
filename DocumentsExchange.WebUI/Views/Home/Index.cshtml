@@ -6,8 +6,8 @@
 
 <div class="row">
     <div class="pull-left col-md-10">
-        @Ajax.ActionLink("Панель администратора", "Index", "AdminPanel", null, new AjaxOptions() { UpdateTargetId = "mainViewId" },
-                    new { @class = "btn btn-default", @id = "adminPanelBtn" })
+        @Html.ActionLink("Панель администратора", "Index", "AdminPanel", new { Area = "Admin" },
+            new { @class = "btn btn-default" })
     </div>
 
     <div>

@@ -39,6 +39,26 @@ namespace DocumentsExchange.DataAccessLayer.Repository
             return null;
         }
 
+        public async Task<IEnumerable<User>> GetAll(int orgId, params int[] excludedUserIds)
+        {
+            using (var context = _contextFactory.Create())
+            {
+                try
+                {
+                    return await context.Set<User>()
+                        .Where(x => !excludedUserIds.Contains(x.Id))
+                        .Where(x => x.Organizations.Select(o => o.Id).Contains(orgId))
+                        .ToListAsync().ConfigureAwait(false);
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(e);
+                }
+            }
+
+            return null;
+        }
+
         public async Task<bool> Create(User user)
         {
             bool result = false;

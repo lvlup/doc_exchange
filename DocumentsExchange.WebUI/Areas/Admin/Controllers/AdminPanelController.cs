@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using DocumentsExchange.BusinessLayer.Identity;
 
-namespace DocumentsExchange.WebUI.Controllers
+namespace DocumentsExchange.WebUI.Areas.Admin.Controllers
 {
     [Authorize(Roles = Roles.Admin)]
     public class AdminPanelController : Controller

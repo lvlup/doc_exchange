@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using DocumentsExchange.BusinessLayer.Identity;
 using DocumentsExchange.DataLayer.Entity;
+using DocumentsExchange.WebUI.Filters;
 
 namespace DocumentsExchange.WebUI.Controllers
 {

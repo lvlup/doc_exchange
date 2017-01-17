@@ -11,16 +11,7 @@ namespace DocumentsExchange.BusinessLayer.AutoFac
        protected override void Load(ContainerBuilder builder)
        {
            builder.RegisterModule(new DataAccessLayer.AutoFac.MainModule());
-           builder.RegisterType<OrganizationRepository>().AsSelf();
-           builder.RegisterType<FileCategoryRepository>().AsSelf();
-           builder.RegisterType<FileRepository>().AsSelf();
-           builder.RegisterType<LogRepository>().AsSelf();
-           builder.RegisterType<MessageRepository>().AsSelf();
-           builder.RegisterType<RecordT1Repository>().AsSelf();
-           builder.RegisterType<RecordT2Repository>().AsSelf();
-           builder.RegisterType<UserRepository>().AsSelf();
-           builder.RegisterType<FilePathRepository>().AsSelf();
-
+           
            builder.RegisterType<GetCurrencyCourse>().As<IGetCurrencyCourse>();
            builder.RegisterType<UserProvider>().As<IUserProvider>();
            builder.RegisterType<FilePathProvider>().As<IFilePathProvider>();
@@ -37,6 +28,8 @@ namespace DocumentsExchange.BusinessLayer.AutoFac
            builder.RegisterAdapter<AppRoleManagerFactory, AppRoleManager>(x => x.Create());
 
            builder.RegisterType<FileValidator>().As<IFileValidator>();
+           builder.RegisterType<OrganizationRelevanceValidator>().As<IOrganizationRelevanceValidator>();
+           builder.RegisterType<MessagesProvider>().As<IMessagesProvider>();
        }
     }
 }

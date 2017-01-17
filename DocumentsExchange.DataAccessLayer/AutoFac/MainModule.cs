@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity.Infrastructure;
 using Autofac;
+using DocumentsExchange.DataAccessLayer.Repository;
 
 namespace DocumentsExchange.DataAccessLayer.AutoFac
 {
@@ -11,6 +12,18 @@ namespace DocumentsExchange.DataAccessLayer.AutoFac
                 .As<IDbContextFactory<DocumentsExchangeContext>>()
                 .AsSelf()
                 .InstancePerLifetimeScope();
+
+            builder.RegisterType<OrganizationRepository>().AsSelf();
+            builder.RegisterType<FileCategoryRepository>().AsSelf();
+            builder.RegisterType<FileRepository>().AsSelf();
+            builder.RegisterType<LogRepository>().AsSelf();
+            builder.RegisterType<MessageRepository>().AsSelf();
+            builder.RegisterType<RecordT1Repository>().AsSelf();
+            builder.RegisterType<RecordT2Repository>().AsSelf();
+            builder.RegisterType<UserRepository>().AsSelf();
+            builder.RegisterType<FilePathRepository>().AsSelf();
+
+            builder.RegisterType<MessageRepository>().AsSelf();
         }
     }
 }
