@@ -94,7 +94,7 @@ namespace DocumentsExchange.DataAccessLayer.Repository
                     var existing =
                         await categoriesSet
                             .Where(x => x.Id == fileCategory.Id)
-                            .FirstOrDefaultAsync();
+                            .FirstOrDefaultAsync().ConfigureAwait(false);
 
                     if (existing == null)
                         throw new Exception("");

@@ -15,7 +15,7 @@ namespace DocumentsExchange.DataLayer.Entity
         [DisplayName("id")]
         public string Name { get; set; }
 
-        [DisplayName("id")]
+        [DisplayName("Активность")]
         public bool IsActive { get; set; }
 
         [DisplayName("Дата создания")]

@@ -299,6 +299,8 @@
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Organization\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Organization\_Organization.cshtml" />
+    <Content Include="Areas\Admin\Views\FileCategory\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\FileCategory\_FileCategory.cshtml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\App\recordCreation.js" />
     <Content Include="Scripts\App\signalRService.js" />

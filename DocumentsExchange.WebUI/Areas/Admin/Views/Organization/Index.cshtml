@@ -34,8 +34,7 @@
                     </td>
 
                     <td>
-                        <a href="javascript:void(0)" role="tab" id="editOrgLink" data-url="@Url.Action("Edit", new {orgId = org.Id})">@org.Name</a>
-                        @*@Html.ActionLink(@org.Name, "Edit", new {orgId = org.Id}, new {@class = "lead"})*@
+                        <a href="javascript:void(0)" id="editOrgLink" data-url="@Url.Action("Edit", new {orgId = org.Id})">@org.Name</a>
                     </td>
 
                     <td>

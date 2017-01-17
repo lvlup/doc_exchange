@@ -3,40 +3,62 @@
 <div id="OrganizationTable" class="container-fluid">
     <table class="table table-bordered table-condensed">
 
-        @*<thead>
+        <thead>
             <tr>
-                @foreach (var name in OrganizationViewModel.PropertyNames)
-                {
-                    <th>@name</th>
-                }
+                id
             </tr>
-            </thead>*@
+
+            <tr>
+                Название
+            </tr>
+
+            <tr>
+                Активность
+            </tr>
+
+            <tr>
+                Дата создания
+            </tr>
+
+        </thead>
 
         <tbody>
-            @if (@Model != null)
+        @if (@Model != null)
+        {
+            foreach (var fc in Model)
             {
-                foreach (var org in Model)
-                {
-                    <tr>
+                <tr>
 
-                        <td>
-                            <span class="lead">@org.Id</span>
-                        </td>
+                    <td>
+                        <span class="lead">@fc.Id</span>
+                    </td>
 
-                        <td>
-                            <span class="lead">@org.Name</span>
-                        </td>
+                    <td>
+                        <a href="javascript:void(0)" id="editFileCategoryLink" data-url="@Url.Action("Edit", new {id = fc.Id})">@fc.Name</a>
+                    </td>
 
-                        <td>
-                            <span class="lead">@(org.IsActive ? "Да" : "Нет")</span>
-                        </td>
+                    <td>
+                        <span class="lead">@(fc.IsActive ? "Да" : "Нет")</span>
+                    </td>
 
-                        <td>
-                            <span class="lead">@org.CreatedDateTime.ToString("dd/MM/yyyy")</span>
-                        </td>
-                    </tr>
-                }
+                    <td>
+                        <span class="lead">@fc.CreatedDateTime.ToString("dd/MM/yyyy")</span>
+                    </td>
+                </tr>
             }
+        }
         </tbody>
     </table>
 </div>
+
+<div id="addingFileCategoryForm">
+    @Html.Action("Create")
+</div>
+
+<script>
+    $(function() {
+        $('#editFileCategoryLink').on('click', function (e) {
+            $('#addingFileCategoryForm').load($(this).data('url'));
+        });
+    });
+</script>
