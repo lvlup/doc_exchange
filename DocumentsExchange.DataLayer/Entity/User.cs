@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using DocumentsExchange.DataLayer.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -9,6 +9,12 @@ namespace DocumentsExchange.DataLayer.Entity
 {
     public class User : IdentityUser<int, AppUserLogin, AppUserRole, AppUserClaim>
     {
+        public User()
+        {
+            Organizations = new HashSet<Organization>();
+            Messages = new HashSet<Message>();
+        }
+
         [DisplayName("id")]
         public override int Id { get; set; }
 
@@ -28,10 +34,12 @@ namespace DocumentsExchange.DataLayer.Entity
         //[DisplayName("Фамилия")]
         public string LastName { get; set; }
 
-
         [DisplayName("Роль")]
         [NotMapped]
-        public string Role => Roles.First().ToString();
+        public string RoleList { get; set; }
+
+        [NotMapped]
+        public int[] OrganizationIds { get; set; }
 
         public virtual ICollection<Message> Messages { get; set; }
 
@@ -42,7 +50,7 @@ namespace DocumentsExchange.DataLayer.Entity
         //public virtual Organization Organization { get; set; }
         //public int OrganizationId { get; set; }
 
-        //[DisplayName("Дата активности")]
-        //public DateTime ActivityDateTime { get; set; }
+        [DisplayName("Дата активности")]
+        public DateTime ActivityDateTime { get; set; }
     }
 }

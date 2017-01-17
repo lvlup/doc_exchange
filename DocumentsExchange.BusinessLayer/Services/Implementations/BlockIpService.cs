@@ -21,7 +21,7 @@ namespace DocumentsExchange.BusinessLayer.Services.Implementations
         private const double CACHE_EXPIRATION = 30.0; // Seconds
 
         // Define member variables
-        private FileContents _fileContents;
+        private readonly FileContents _fileContents;
 
 
         public BlockIpService()

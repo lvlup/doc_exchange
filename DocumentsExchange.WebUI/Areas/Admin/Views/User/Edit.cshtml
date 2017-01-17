@@ -1,30 +1,39 @@
-﻿@model DocumentsExchange.DataLayer.Entity.User
+﻿@model DocumentsExchange.WebUI.ViewModels.EditUserViewModel
 
 <div class="container">
-    <h3>Добавить пользователя:</h3>
+    <h3>Редактировать пользователя:</h3>
 
-    @using (Html.BeginForm("Create", "User", null, FormMethod.Post, new { id = "updateUserForm" }))
+    @using (Html.BeginForm("Edit", "User", null, FormMethod.Post, new {id = "updateUserForm", @class = "form-horizontal"}))
     {
         @Html.AntiForgeryToken()
-        <div class="form-horizontal">
 
-            @Html.ValidationSummary(true)
-            @Html.Partial("_User", Model)
-
-        </div>
+        @Html.ValidationSummary(true)
+        @Html.Partial("_User", Model)
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default" id="updateUserBtn">Сохранить</button>
+                <button type="submit" class="btn btn-default pull-left" id="updateUserBtn">Сохранить</button>
+                @Html.ActionLink("Удалить", "Delete", new {id = Model.Id}, new {@class = "btn btn-danger pull-left", @style = "margin-left: 15px"})
             </div>
         </div>
-
-
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                @Html.ActionLink("Удалить", "Delete", new { id = Model.Id }, new { @class = "btn btn-danger" })
-            </div>
-        </div>
-
     }
 </div>
+
+<script>
+    $(function() {
+        $('#updateUserBtn').click(function (e) {
+            var $form = $(this).closest('form');
+            $.post($form.get(0).action, $form.serialize()).done(function (data) {
+                if (data.success === true) {
+                    $('#allUsersTable').load('@Url.Action("Users")');
+                }
+
+                console.log(data);
+            }).fail(function (data) {
+                console.log(data);
+            });
+
+            return false;
+        });
+    });
+</script>

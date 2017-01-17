@@ -6,55 +6,17 @@
 }
 
 <div class="container-fluid" id="allUsersTable">
-    <table class="table table-bordered table-condensed">
-        <thead>
-        <tr>
-            @foreach (var name in UserViewModel.PropertyNames)
-            {
-                <th>@name</th>
-            }
-        </tr>
-        </thead>
-        <tbody>
-        @{
-            var users = Model.Users;
-            if (users != null)
-            {
-                foreach (var user in users)
-                {
-                    <tr>
-                        <td>
-                            <span class="lead">@user.Id</span>
-                        </td>
-
-                        <td>
-                            @Html.ActionLink(@user.FullName, "Edit", new { userId = user.Id}, new {@class = "lead"})
-                        </td>
-
-                        <td>
-                            <span class="lead">@user.UserName</span>
-                        </td>
-
-                        <td>
-                            <span class="lead">@user.IsActive</span>
-                        </td>
-
-                        <td>
-                            <span class="lead">@user.Role</span>
-                        </td>
-
-                        @*<td>
-                                <span class="lead">@user.ActivityDate</span>
-                            </td>*@
-                    </tr>
-                }
-            }
-        }
-        </tbody>
-    </table>
+    @Html.Action("Users")
 </div>
 
-<div id="addUserBtn">
-    <h3>Добавить пользователя</h3>
+<div id="userContainer">
     @Html.Action("Create")
 </div>
+
+<script>
+    $(function() {
+        $('#allUsersTable').on('click', '[data-url]', function(e) {
+            $("#userContainer").load($(this).data('url'));
+        });
+    })
+</script>

@@ -308,7 +308,8 @@
     <Content Include="Areas\Admin\Views\FileCategory\_FileCategory.cshtml" />
     <Content Include="Areas\Admin\Views\Ip\Index.cshtml" />
     <Content Include="Areas\Admin\Views\ActiveSite\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\banned.cshtml" />
+    <Content Include="Areas\Admin\Views\User\Users.cshtml" />
+    <Content Include="Areas\Admin\Views\User\PasswordReset.cshtml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\App\chatService.js" />
     <Content Include="Scripts\App\recordCreation.js" />
@@ -371,6 +372,7 @@
     <Compile Include="Startup\Startup.cs" />
     <Compile Include="ViewModels\Auth\RoleModificationModel.cs" />
     <Compile Include="ViewModels\Auth\RoleEditModel.cs" />
+    <Compile Include="ViewModels\EditUserViewModel.cs" />
     <Compile Include="ViewModels\FileCategoriesViewModel.cs" />
     <Compile Include="ViewModels\FileViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
@@ -419,6 +421,8 @@
     <Content Include="Areas\Admin\Views\User\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\User\_User.cshtml" />
     <Content Include="Views\SiteStopped\Index.cshtml" />
+    <Content Include="Views\SiteStopped\Banned.cshtml" />
+    <Content Include="Views\SiteStopped\LoginDeactivated.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

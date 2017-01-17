@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using DocumentsExchange.BusinessLayer.Models.User;
 using DocumentsExchange.DataLayer.Entity;
 
 namespace DocumentsExchange.BusinessLayer.Services.Interfaces
@@ -13,9 +11,15 @@ namespace DocumentsExchange.BusinessLayer.Services.Interfaces
 
         Task<User> Get(int id);
 
-        Task<bool> Add(User user);
+        Task<UserEditInfo> GetForEdit(int id);
+
+        Task<IEnumerable<OrganizationInfo>> GetOrganizations();
+
+        Task<bool> Add(User user, string password);
 
         Task<bool> Update(User user);
+
+        Task<bool> ResetPassword(int userId, string password);
 
         Task<bool> Delete(int id);
     }

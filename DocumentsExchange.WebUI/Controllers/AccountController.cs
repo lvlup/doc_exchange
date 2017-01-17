@@ -49,11 +49,19 @@ namespace DocumentsExchange.WebUI.Controllers
             }
             else
             {
+                user.ActivityDateTime = DateTime.UtcNow;
+                _userManager.Update(user);
+
+                if (!user.IsActive)
+                {
+                    return RedirectToAction("LoginDeactivated", "SiteStopped");
+                }
+
                 ClaimsIdentity ident = await _userManager.CreateIdentityAsync(user,
                     DefaultAuthenticationTypes.ApplicationCookie);
 
                 ident.AddClaim(new Claim(ClaimTypes.GivenName, user.FullName));
-                    
+
                 var authManager = HttpContext.GetOwinContext().Authentication;
 
                 authManager.SignOut();
@@ -65,7 +73,7 @@ namespace DocumentsExchange.WebUI.Controllers
                 if (!string.IsNullOrEmpty(returnUrl))
                     return Redirect(returnUrl);
 
-                return RedirectToAction("Index", "Home", new {userId = user.Id});
+                return RedirectToAction("Index", "Home", new { userId = user.Id });
             }
 
             return View(login);

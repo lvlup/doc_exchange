@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System.Web;
+using Autofac;
 using Autofac.Integration.Mvc;
 
 namespace DocumentsExchange.WebUI.AutoFac

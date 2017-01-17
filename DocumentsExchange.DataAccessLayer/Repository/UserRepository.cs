@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Autofac.Extras.NLog;
 using DocumentsExchange.DataLayer.Entity;
+using DocumentsExchange.DataLayer.Identity;
 
 namespace DocumentsExchange.DataAccessLayer.Repository
 {
@@ -26,9 +28,15 @@ namespace DocumentsExchange.DataAccessLayer.Repository
             {
                 try
                 {
-                    return await context.Set<User>()
-                        .Include(u=>u.Roles)
+                    var rolesSet = context.Set<AppRole>();
+
+                    var usersWithRoles = await context.Set<User>()
+                        .Select(u => new { User = u, Roles = u.Roles.Join(rolesSet, r => r.RoleId, r => r.Id, (x, y) => y.Name)})
                         .ToListAsync().ConfigureAwait(false);
+
+                    usersWithRoles.ForEach(u => u.User.RoleList = string.Join(", ", u.Roles));
+
+                    return usersWithRoles.Select(x => x.User);
                 }
                 catch (Exception e)
                 {
@@ -71,10 +79,17 @@ namespace DocumentsExchange.DataAccessLayer.Repository
                         FirstName = user.FirstName,
                         IsActive = user.IsActive,
                         LastName = user.LastName,
-                        UserName = user.UserName,
-                        Messages = user.Messages
+                        UserName = user.UserName
                     };
 
+                    var organizations =
+                        await
+                            context.Set<Organization>()
+                                .Join(user.OrganizationIds, x => x.Id, x => x, (x, y) => x)
+                                .ToListAsync()
+                                .ConfigureAwait(false);
+
+                    organizations.ForEach(x => usr.Organizations.Add(x));
                     context.Set<User>().Add(usr);
                     context.ChangeTracker.DetectChanges();
                     result = await context.SaveChangesAsync().ConfigureAwait(false) > 0;
@@ -94,7 +109,40 @@ namespace DocumentsExchange.DataAccessLayer.Repository
             {
                 try
                 {
-                    return await context.Set<User>().FindAsync(id).ConfigureAwait(false);
+                    return await context.Set<User>()
+                        .FindAsync(id).ConfigureAwait(false);
+                }
+                catch (Exception e)
+                {
+                    _logger.Error("Error getting user {0}", id);
+                    _logger.Error(e);
+                }
+            }
+
+            return null;
+        }
+
+        public async Task<User> GetForEdit(int id)
+        {
+            using (var context = _contextFactory.Create())
+            {
+                try
+                {
+                    var rolesSet = context.Set<AppRole>();
+                    var user = await context.Set<User>()
+                        .Select(u => new
+                        {
+                            User = u,
+                            Roles = u.Roles.Join(rolesSet, r => r.RoleId, r => r.Id, (x, y) => y.Name),
+                            OrganizationIds = u.Organizations.Select(x => x.Id)
+                        })
+                        .FirstOrDefaultAsync(x => x.User.Id == id).ConfigureAwait(false);
+
+                    if (user == null) return null;
+
+                    user.User.RoleList = string.Join(", ", user.Roles);
+                    user.User.OrganizationIds = user.OrganizationIds.ToArray();
+                    return user.User;
                 }
                 catch (Exception e)
                 {
@@ -121,6 +169,15 @@ namespace DocumentsExchange.DataAccessLayer.Repository
 
                     if (existing == null)
                         throw new Exception("");
+
+                    var organizations =
+                        await
+                            context.Set<Organization>()
+                                .Join(user.OrganizationIds, x => x.Id, x => x, (x, y) => x)
+                                .ToListAsync()
+                                .ConfigureAwait(false);
+
+                    organizations.ForEach(x => user.Organizations.Add(x));
 
                     context.Entry(existing).State = EntityState.Detached;
                     usersSet.Attach(user);

@@ -1,0 +1,53 @@
+﻿@using DocumentsExchange.WebUI.ViewModels
+@model UserViewModel
+
+<div style="padding: 10px">
+    <button class="btn btn-primary" data-url="@Url.Action("Create")">Добавить пользователя</button>
+</div>
+
+<table class="table table-bordered table-condensed">
+    <thead>
+        <tr>
+            @foreach (var name in UserViewModel.PropertyNames)
+            {
+                <th>@name</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var users = Model.Users;
+            if (users != null)
+            {
+                foreach (var user in users)
+                {
+                    <tr>
+                        <td>
+                            <span class="lead">@user.Id</span>
+                        </td>
+
+                        <td>
+                            <a class="lead" href="javascript:void(0)" data-url="@Url.Action("Edit", new {userId = user.Id})">@user.FullName</a>
+                        </td>
+
+                        <td>
+                            <span class="lead">@user.UserName</span>
+                        </td>
+
+                        <td>
+                            <span class="lead">@user.IsActive</span>
+                        </td>
+
+                        <td>
+                            <span class="lead">@user.RoleList</span>
+                        </td>
+
+                        <td>
+                            <span class="lead">@user.ActivityDateTime</span>
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>

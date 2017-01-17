@@ -28,7 +28,8 @@ namespace DocumentsExchange.Hub.Hubs
             _messagesProvider = messagesProvider;
             _userIdProvider = userIdProvider;
         }
-        
+
+        [Authorize(Roles = Roles.Admin + "," + Roles.User + "," + Roles.Technician)]
         public async Task SendMessage(dynamic message)
         {
             string newId = Guid.NewGuid().ToString("n");

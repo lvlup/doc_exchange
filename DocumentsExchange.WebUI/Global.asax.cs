@@ -6,16 +6,12 @@ using System.Web.Routing;
 using Autofac.Extras.NLog;
 using Autofac.Integration.Mvc;
 using DocumentsExchange.BusinessLayer.Identity;
-using DocumentsExchange.BusinessLayer.Services.Implementations;
+using DocumentsExchange.BusinessLayer.Services.Interfaces;
 using DocumentsExchange.Common;
 using DocumentsExchange.DataLayer.Entity;
 using DocumentsExchange.DataLayer.Identity;
 using DocumentsExchange.WebUI.App_Start;
 using Microsoft.AspNet.Identity;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
-using WebGrease.Configuration;
 
 namespace DocumentsExchange.WebUI
 {
@@ -42,12 +38,39 @@ namespace DocumentsExchange.WebUI
 
         protected void Application_BeginRequest()
         {
-
-            BlockIpService biph = new BlockIpService();
+            IBlockIpService biph = DependencyResolver.Current.GetService<IBlockIpService>();
+            
             if (biph.IsIpBlocked(HttpContext.Current.Request.UserHostAddress))
             {
-                //Server.Transfer("~/banned.cshtml");
-                Response.Redirect("SiteControl/Index");
+                if (HttpContext.Current.Request.Path.Contains("/SiteStopped/Banned"))
+                    return;
+
+                Response.Redirect("SiteStopped/Banned");
+            }
+        }
+
+        protected void Application_AuthorizeRequest(Object sender, EventArgs e)
+        {
+            IAdminProvider adminProvider = DependencyResolver.Current.GetService<IAdminProvider>();
+            ApplicationUserManager userManager = DependencyResolver.Current.GetService<ApplicationUserManager>();
+
+            if (!adminProvider.GetWebSiteState().Result.IsActive && (!HttpContext.Current.User?.IsInRole(Roles.Admin) ?? true))
+            {
+                if (HttpContext.Current.Request.Path.Contains("/SiteStopped"))
+                    return;
+
+                Response.Redirect("SiteStopped/Index");
+                return;
+            }
+
+            var user = userManager.FindById(HttpContext.Current.User?.Identity.GetUserId<int>() ?? 0);
+            if (user != null && !user.IsActive)
+            {
+                if (HttpContext.Current.Request.Path.Contains("/SiteStopped"))
+                    return;
+
+                HttpContext.Current.GetOwinContext().Authentication.SignOut();
+                Response.Redirect("SiteStopped/LoginDeactivated");
             }
         }
 
@@ -83,8 +106,15 @@ namespace DocumentsExchange.WebUI
             var admin = userManager.FindByName("admin");
             if (admin == null)
             {
-                var result = userManager.Create(new User {UserName = "admin", FirstName = "Иван", LastName = "Иванов"},
-                    "admin123");
+                var result = userManager.Create(new User
+                {
+                    UserName = "admin",
+                    FirstName = "Иван",
+                    LastName = "Иванов",
+                    IsActive = true,
+                    ActivityDateTime = DateTime.UtcNow
+                }, "admin123");
+
                 if (!result.Succeeded)
                     throw new Exception("Initialization failed");
 

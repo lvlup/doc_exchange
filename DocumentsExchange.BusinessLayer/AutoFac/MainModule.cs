@@ -31,6 +31,8 @@ namespace DocumentsExchange.BusinessLayer.AutoFac
            builder.RegisterType<OrganizationRelevanceValidator>().As<IOrganizationRelevanceValidator>();
            builder.RegisterType<MessagesProvider>().As<IMessagesProvider>();
            builder.RegisterType<AdminProvider>().As<IAdminProvider>();
-        }
+
+           builder.RegisterType<BlockIpService>().As<IBlockIpService>();
+       }
     }
 }

@@ -1,4 +1,19 @@
-﻿@model DocumentsExchange.DataLayer.Entity.User
+﻿@model DocumentsExchange.WebUI.ViewModels.EditUserViewModel
+
+@{
+    var organizations = Model.OrganizationInfoes.Select(x =>
+        new SelectListItem()
+        {
+            Text = x.Name, Value = x.Id.ToString(), Selected = x.IsSelected
+        });
+
+    var roles = Model.Roles.Select(x => new SelectListItem()
+    {
+        Text = x, Value = x, Selected = x == Model.Role
+    });
+}
+
+@Html.HiddenFor(m => m.Id)
 
 <div class="form-group">
     @Html.LabelFor(p => p.IsActive, new { @class = "col-sm-2 control-label" })
@@ -33,9 +48,42 @@
     </div>*@
 
 <div class="form-group">
-    @Html.LabelFor(p => p.UserName, new { @class = "col-sm-2 control-label" })
+    @Html.LabelFor(p => p.UserName, new {@class = "col-sm-2 control-label"})
     <div class="col-sm-10">
-        @Html.TextBoxFor(p => p.UserName, new { @class = "form-control", tabindex = 1 })
-        @Html.ValidationMessageFor(model => model.UserName, null, new { @class = "text-danger" })
+        @Html.TextBoxFor(p => p.UserName, new {@class = "form-control", tabindex = 1})
+        @Html.ValidationMessageFor(model => model.UserName, null, new {@class = "text-danger"})
     </div>
 </div>
+
+<div class="form-group">
+    @Html.LabelFor(p => p.Role, new {@class = "col-sm-2 control-label"})
+    <div class="col-sm-10">
+        @Html.DropDownListFor(p => p.Role, roles, new {@class = "form-control", tabindex = 1})
+        @Html.ValidationMessageFor(model => model.Role, null, new {@class = "text-danger"})
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(p => p.Organizations, new { @class = "col-sm-2 control-label" })
+    <div class="col-sm-10">
+        @Html.ListBoxFor(p => p.Organizations, organizations, new { @class = "form-control", tabindex = 1 })
+        @Html.ValidationMessageFor(model => model.Organizations, null, new { @class = "text-danger" })
+    </div>
+</div>
+
+@if (Model.Id > 0)
+{
+    <div class="form-group">
+        <div class="col-sm-10 col-sm-offset-2">
+            <button type="button" class="btn btn-danger" id="resetPwdBtn">Сбросить пароль</button>
+        </div>
+    </div>
+}
+
+<script>
+    $(function() {
+        $('#resetPwdBtn').click(function() {
+            $('#userContainer').load('@Url.Action("PasswordReset", new { userId = Model.Id })');
+        });
+    });
+</script>

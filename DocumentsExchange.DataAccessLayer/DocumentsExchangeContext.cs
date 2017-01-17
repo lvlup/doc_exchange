@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using DocumentsExchange.DataAccessLayer.Config;
 using DocumentsExchange.DataLayer.Entity;
 using DocumentsExchange.DataLayer.Identity;
@@ -44,6 +45,8 @@ namespace DocumentsExchange.DataAccessLayer
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Properties<DateTime>().Configure(c => c.HasColumnType("datetime2"));
+
             modelBuilder.ComplexType<FilePath>();
             modelBuilder.ComplexType<FilePath>().Property(a => a.FileName).HasColumnName("File_Name");
             modelBuilder.ComplexType<FilePath>().Property(a => a.OriginalFileName).HasColumnName("Original_File_Name");

@@ -3,18 +3,19 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">Сообщения чата</div>
-    
+
     <div id="messageContainer" style="padding: 10px; max-height: 500px; min-height: 300px; overflow-y: scroll">
         <button class="btn btn-default" style="font-size: 10px; margin: 5px auto; display: block;" id="loadMore">Еще</button>
     </div>
-    <div class="col-md-12" style="background-color: #ddd;">
-        <div class="col-md-12" style="padding: 5px">
-            <textarea id="message" class="form-control" placeholder="Введите текст">
-                
-            </textarea>
-            <button class="btn btn-primary pull-right" style="font-size: 10px; margin-top: 5px" id="sendBtn">Send</button>
+    @if (!User.IsInRole(DocumentsExchange.BusinessLayer.Identity.Roles.Observer))
+    {
+        <div class="col-md-12" style="background-color: #ddd;">
+            <div class="col-md-12" style="padding: 5px">
+                <textarea id="message" class="form-control" placeholder="Введите текст"></textarea>
+                <button class="btn btn-primary pull-right" style="font-size: 10px; margin-top: 5px" id="sendBtn">Send</button>
+            </div>
         </div>
-    </div>
+    }
 </div>
 
 <script id="messageTemplate" type="text/x-jsrender">

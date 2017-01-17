@@ -49,6 +49,10 @@
       <Project>{87BDE647-1119-47B2-B32B-C88B3A0F3B8C}</Project>
       <Name>DocumentsExchange.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DocumentsExchange.DataLayer\DocumentsExchange.DataLayer.csproj">
+      <Project>{D8F30312-5E49-49B5-9347-2C6280D820EE}</Project>
+      <Name>DocumentsExchange.DataLayer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

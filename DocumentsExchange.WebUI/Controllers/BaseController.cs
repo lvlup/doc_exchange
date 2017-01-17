@@ -6,7 +6,7 @@ namespace DocumentsExchange.WebUI.Controllers
 {
     public abstract class BaseController : Controller
     {
-        public int UserId => HttpContext.User.Identity.GetUserId<int>();
+        public int UserId => HttpContext.User?.Identity?.GetUserId<int>() ?? 0;
 
         protected override JsonResult Json(object data, string contentType, System.Text.Encoding contentEncoding, JsonRequestBehavior behavior)
         {
