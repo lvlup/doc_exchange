@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -61,7 +60,7 @@ namespace DocumentsExchange.DataAccessLayer.Repository
                         .OrderByDescending(x => x.Message.TimeStamp)
                         .Skip((pageInfo.Page - 1)*pageInfo.PageSize)
                         .Take(pageInfo.PageSize)
-                        .ToListAsync();
+                        .ToListAsync().ConfigureAwait(false);
 
                     messages.ForEach(x => x.Message.UserName = x.UserName);
                     return new ItemsResult<Message>(messages.Select(x => x.Message), messages.FirstOrDefault()?.Total ?? 0);

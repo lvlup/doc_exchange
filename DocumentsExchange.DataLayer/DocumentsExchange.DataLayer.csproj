@@ -67,6 +67,7 @@
     <Compile Include="Entity\RecordT1.cs" />
     <Compile Include="Entity\RecordT2.cs" />
     <Compile Include="Entity\User.cs" />
+    <Compile Include="Entity\WebSiteState.cs" />
     <Compile Include="Identity\AppRole.cs" />
     <Compile Include="Identity\AppUserClaim.cs" />
     <Compile Include="Identity\AppUserLogin.cs" />

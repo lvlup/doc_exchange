@@ -74,6 +74,7 @@
     <Compile Include="Services\Implementations\FileProvider.cs" />
     <Compile Include="Services\Implementations\GetCurrencyCourse.cs" />
     <Compile Include="Services\Implementations\UserProvider.cs" />
+    <Compile Include="Services\Interfaces\IAdminProvider.cs" />
     <Compile Include="Services\Interfaces\IFileValidator.cs" />
     <Compile Include="Services\Interfaces\IGetCurrencyCourse.cs" />
     <Compile Include="Services\Implementations\OrganizationProvider.cs" />

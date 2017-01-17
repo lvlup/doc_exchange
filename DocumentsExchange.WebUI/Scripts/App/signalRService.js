@@ -32,7 +32,8 @@
         pingBack: new EventHandler(),
         onMessageReceived: new EventHandler(),
         messageSent: new EventHandler(),
-        userStateChanged: new EventHandler()
+        userStateChanged: new EventHandler(),
+        onSiteStopped: new EventHandler()
     };
 
     var currentState,
@@ -177,12 +178,25 @@
             return eventHandlers["onMessageReceived"];
         },
 
+        onSiteStopped: function () {
+            return eventHandlers["onSiteStopped"];
+        },
+
+        
         onMessageDelivered: function() {
             return eventHandlers["messageDelivered"];
         },
 
         onMessageSent: function() {
             return eventHandlers["messageSent"];
+        },
+
+        stopSite: function () {
+            queueOrCall(function () {
+                /// <summary>Update user state</summary>
+                /// <param name="user" type="Object"></param>
+                hub.invoke('StopSite');
+            });
         },
 
         sendMessage: function(message) {
@@ -214,4 +228,4 @@
         }
     };
 
-})((SignalR = {}));
+})(SignalR = window.SignalR || {});

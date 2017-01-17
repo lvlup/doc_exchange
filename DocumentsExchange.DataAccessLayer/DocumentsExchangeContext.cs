@@ -48,6 +48,9 @@ namespace DocumentsExchange.DataAccessLayer
             modelBuilder.ComplexType<FilePath>().Property(a => a.FileName).HasColumnName("File_Name");
             modelBuilder.ComplexType<FilePath>().Property(a => a.OriginalFileName).HasColumnName("Original_File_Name");
 
+            modelBuilder.Entity<WebSiteState>()
+                .HasKey(x => x.Id);
+
             modelBuilder.Entity<User>()
                 .HasMany<Organization>(u => u.Organizations)
                 .WithMany(o => o.Users)

@@ -311,6 +311,7 @@
     <Content Include="Scripts\App\chatService.js" />
     <Content Include="Scripts\App\recordCreation.js" />
     <Content Include="Scripts\App\signalRService.js" />
+    <Content Include="Scripts\App\siteActivityListener.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -353,6 +354,7 @@
     <Compile Include="Controllers\RecordT2Controller.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Areas\Admin\Controllers\SiteControlController.cs" />
+    <Compile Include="Controllers\SiteStoppedController.cs" />
     <Compile Include="Controllers\TableController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserController.cs" />
     <Compile Include="Exceptions\ValidationException.cs" />
@@ -414,6 +416,7 @@
     <Content Include="Areas\Admin\Views\SiteControl\Index.cshtml" />
     <Content Include="Areas\Admin\Views\User\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\User\_User.cshtml" />
+    <Content Include="Views\SiteStopped\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

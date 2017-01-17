@@ -23,6 +23,7 @@ namespace DocumentsExchange.DataAccessLayer.AutoFac
             builder.RegisterType<UserRepository>().AsSelf();
             builder.RegisterType<FilePathRepository>().AsSelf();
 
+            builder.RegisterType<AdminRepository>().AsSelf();
             builder.RegisterType<MessageRepository>().AsSelf();
         }
     }
