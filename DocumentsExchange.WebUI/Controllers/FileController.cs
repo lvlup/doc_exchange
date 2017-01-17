@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using DocumentsExchange.BusinessLayer.Identity;
 using DocumentsExchange.BusinessLayer.Services.Interfaces;
 using DocumentsExchange.DataLayer.Entity;
 using DocumentsExchange.WebUI.ViewModels;
@@ -13,6 +14,7 @@ using File = DocumentsExchange.DataLayer.Entity.File;
 
 namespace DocumentsExchange.WebUI.Controllers
 {
+    [Authorize]
     public class FileController : BaseController
     {
         private readonly IFileProvider _fileProvider;
@@ -34,6 +36,7 @@ namespace DocumentsExchange.WebUI.Controllers
             return PartialView(fileVm);
         }
 
+        [Authorize(Roles = Roles.Admin + "," + Roles.Technician)]
         public PartialViewResult Create(int orgId, int categoryId)
         {
             File file = new File() { CategoryId = categoryId,OranizationId = orgId};
@@ -48,6 +51,7 @@ namespace DocumentsExchange.WebUI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = Roles.Admin + "," + Roles.Technician)]
         public  ActionResult Create(File file)
         {
             try

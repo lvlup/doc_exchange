@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using DocumentsExchange.BusinessLayer.Identity;
 using DocumentsExchange.BusinessLayer.Services.Interfaces;
 using DocumentsExchange.DataLayer.Entity;
 using DocumentsExchange.WebUI.Exceptions;
@@ -12,15 +13,18 @@ using DocumentsExchange.WebUI.ViewModels;
 
 namespace DocumentsExchange.WebUI.Controllers
 {
+    [Authorize]
     public class RecordT2Controller : BaseController
     {
         private readonly IRecordT2Provider _recordT2Provider;
         private readonly IFileValidator _fileValidator;
+        private readonly ILogProvider _logProvider;
 
-        public RecordT2Controller(IRecordT2Provider recordT2Provider, IFileValidator fileValidator)
+        public RecordT2Controller(IRecordT2Provider recordT2Provider, IFileValidator fileValidator, ILogProvider logProvider)
         {
             _recordT2Provider = recordT2Provider;
             _fileValidator = fileValidator;
+            _logProvider = logProvider;
         }
 
         public PartialViewResult Index(int id)
@@ -28,6 +32,7 @@ namespace DocumentsExchange.WebUI.Controllers
             return PartialView(CreateRecordT2Vm(id));
         }
 
+        [Authorize(Roles = Roles.Admin + "," + Roles.Technician)]
         public PartialViewResult Create(int orgId)
         {
             var record = new RecordT2()
@@ -40,6 +45,7 @@ namespace DocumentsExchange.WebUI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = Roles.Admin + "," + Roles.Technician)]
         public ActionResult Create(RecordT2 record)
         {
             try
@@ -150,6 +156,7 @@ namespace DocumentsExchange.WebUI.Controllers
             }, JsonRequestBehavior.DenyGet);
         }
 
+        [Authorize(Roles = Roles.Admin + "," + Roles.Technician)]
         public async Task<PartialViewResult> Edit(int recordId)
         {
             return PartialView(await _recordT2Provider.Get(recordId));
@@ -169,6 +176,7 @@ namespace DocumentsExchange.WebUI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = Roles.Admin + "," + Roles.Technician)]
         public ActionResult Edit([Bind(Exclude = nameof(RecordT2.SenderUser))]RecordT2 record)
         {
             try
@@ -236,6 +244,14 @@ namespace DocumentsExchange.WebUI.Controllers
             }
 
             return PartialView("Index", CreateRecordT2Vm(record.OranizationId));
+        }
+
+        [Authorize(Roles = Roles.Admin)]
+        public ActionResult ShowLogs(int id)
+        {
+            var log = _logProvider.Get(id).Result;
+            if (log.Changes.Count == 0) return View("ShowNoLogs");
+            return View(log);
         }
 
     }

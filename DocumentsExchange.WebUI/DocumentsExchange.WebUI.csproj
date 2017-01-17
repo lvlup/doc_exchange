@@ -423,6 +423,8 @@
     <Content Include="Views\SiteStopped\Index.cshtml" />
     <Content Include="Views\SiteStopped\Banned.cshtml" />
     <Content Include="Views\SiteStopped\LoginDeactivated.cshtml" />
+    <Content Include="Views\Shared\ShowLogs.cshtml" />
+    <Content Include="Views\Shared\ShowNoLogs.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

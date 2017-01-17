@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Data.Entity.Infrastructure;
 using System.Web.Mvc;
+using DocumentsExchange.BusinessLayer.Identity;
 using DocumentsExchange.BusinessLayer.Services.Interfaces;
 using DocumentsExchange.DataLayer.Entity;
 
 namespace DocumentsExchange.WebUI.Areas.Admin.Controllers
 {
+    [Authorize(Roles = Roles.Admin)]
     public class FileCategoryController : Controller
     {
 

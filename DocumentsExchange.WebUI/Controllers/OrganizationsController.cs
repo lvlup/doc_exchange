@@ -6,6 +6,7 @@ using DocumentsExchange.DataLayer.Entity;
 
 namespace DocumentsExchange.WebUI.Controllers
 {
+    [Authorize]
     public class OrganizationsController : Controller
     {
         private readonly IOrganizationProvider _organizationProvider;

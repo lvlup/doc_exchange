@@ -2,11 +2,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using DocumentsExchange.BusinessLayer.Identity;
 using DocumentsExchange.BusinessLayer.Services.Interfaces;
 using DocumentsExchange.WebUI.ViewModels;
 
 namespace DocumentsExchange.WebUI.Controllers
 {
+    [Authorize]
     public class TableController : Controller
     {
         private readonly IOrganizationProvider _organizationProvider;
@@ -22,6 +24,7 @@ namespace DocumentsExchange.WebUI.Controllers
             return PartialView(org);
         }
 
+        [Authorize(Roles = Roles.Admin + "," + Roles.Technician)]
         public PartialViewResult CallAddRecord(int id)
         {
             var tableNamesVm = new TableNamesViewModel() {OrganizationId = id};

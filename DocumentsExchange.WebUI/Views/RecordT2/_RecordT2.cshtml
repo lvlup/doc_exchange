@@ -1,8 +1,9 @@
 ﻿@using DocumentsExchange.Common.Extensions
 @using DocumentsExchange.DataLayer.Entity
+@using DocumentsExchange.WebUI.Extensions
 @model DocumentsExchange.DataLayer.Entity.RecordT2
 
-@if (Model.Id > 0)
+@if (Model != null && Model.Id > 0)
 {
     @Html.HiddenFor(model => model.LogId)
 }
@@ -96,7 +97,7 @@
 <div class="form-group">
     <label class="col-sm-2 control-label">Отправитель:</label>
     <div class="col-sm-10">
-        @Html.TextBoxFor(p => p.SenderUser.FullName, new { @class = "form-control"})
+        @Html.TextBox("userFullNameId", HttpContext.Current.User.Identity.GetFullName(), new { @class = "form-control" })
         @Html.ValidationMessageFor(p => p.SenderUser.FullName, null, new { @class = "text-danger" })
     </div>
 </div>

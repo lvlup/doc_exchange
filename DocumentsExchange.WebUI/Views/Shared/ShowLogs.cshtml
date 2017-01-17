@@ -1,0 +1,68 @@
+﻿@using System.Web.Optimization
+@model DocumentsExchange.DataLayer.Entity.Log
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Логи</title>
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+@Scripts.Render("~/bundles/bootstrap")
+<div>
+    <table class="table table-bordered table-condensed" style="font-size: 10px">
+        <thead>
+        <tr>
+            <th>Автор изменения:</th>
+
+            <th>Имя поля:</th>
+
+            <th>Старое значение:</th>
+
+            <th>Текущее значение:</th>
+
+            <th>Дата изменения:</th>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            var changes = Model.Changes;
+            if (changes != null)
+            {
+                foreach (var ch in changes)
+                {
+                    <tr>
+                        <td>
+                            <span class="lead">@ch.User.FullName</span>
+                        </td>
+
+                        <td>
+                            <span class="lead">@ch.PropertyName</span>
+                        </td>
+
+                        <td>
+                            <span class="lead">@ch.OldValue</span>
+                        </td>
+
+                        <td>
+                            <span class="lead">@ch.CurrentValue</span>
+                        </td>
+
+                        <td>
+                            <span class="lead">@ch.TimeSpan.ToString("dd/MM/yyyy")</span>
+                        </td>
+                    </tr>
+                }
+            }
+        }
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

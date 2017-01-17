@@ -10,6 +10,7 @@ using DocumentsExchange.WebUI.ViewModels;
 
 namespace DocumentsExchange.WebUI.Controllers
 {
+    [Authorize]
     public class FileCategoriesController : Controller
     {
         private readonly IFileCategoryProvider _fileCategoryProvider;
