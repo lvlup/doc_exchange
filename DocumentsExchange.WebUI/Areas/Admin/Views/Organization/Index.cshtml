@@ -1,16 +1,26 @@
 ﻿@model IEnumerable<DocumentsExchange.DataLayer.Entity.Organization>
 
-<div id="OrganizationTable" class="container-fluid">
+<div id="allOrgsTable" class="container-fluid">
     <table class="table table-bordered table-condensed">
-        
-        @*<thead>
+
+        <thead>
         <tr>
-            @foreach (var name in OrganizationViewModel.PropertyNames)
-            {
-                <th>@name</th>
-            }
+            id
         </tr>
-        </thead>*@
+
+        <tr>
+            Название
+        </tr>
+
+        <tr>
+            Активность
+        </tr>
+
+        <tr>
+            Дата создания
+        </tr>
+
+        </thead>
 
         <tbody>
         @if (@Model != null)
@@ -24,7 +34,8 @@
                     </td>
 
                     <td>
-                        <span class="lead">@org.Name</span>
+                        <a href="javascript:void(0)" role="tab" id="editOrgLink" data-url="@Url.Action("Edit", new {orgId = org.Id})">@org.Name</a>
+                        @*@Html.ActionLink(@org.Name, "Edit", new {orgId = org.Id}, new {@class = "lead"})*@
                     </td>
 
                     <td>
@@ -40,3 +51,15 @@
         </tbody>
     </table>
 </div>
+
+<div id="addingOrgForm">
+    @Html.Action("Create")
+</div>
+
+<script>
+    $(function() {
+        $('#editOrgLink').on('click', function (e) {
+            $('#addingOrgForm').load($(this).data('url'));
+        });
+    });
+</script>

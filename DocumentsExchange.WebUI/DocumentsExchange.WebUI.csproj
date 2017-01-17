@@ -297,6 +297,8 @@
     <Content Include="Content\bootstrap-datetimepicker-build.less" />
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Admin\Views\Organization\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Organization\_Organization.cshtml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\App\recordCreation.js" />
     <Content Include="Scripts\App\signalRService.js" />
@@ -384,8 +386,8 @@
     <Content Include="Views\RecordT2\Create.cshtml" />
     <Content Include="Areas\Admin\Views\AdminPanel\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Dictionaries\Index.cshtml" />
-    <Content Include="Views\User\Index.cshtml" />
-    <Content Include="Views\User\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\User\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\User\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Organization\Create.cshtml" />
     <Content Include="Areas\Admin\Views\FileCategory\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Organization\Index.cshtml" />
@@ -396,8 +398,8 @@
     <Content Include="Views\RecordT2\_RecordT2.cshtml" />
     <Content Include="Views\RecordT2\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\SiteControl\Index.cshtml" />
-    <Content Include="Views\User\Edit.cshtml" />
-    <Content Include="Views\User\_User.cshtml" />
+    <Content Include="Areas\Admin\Views\User\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\User\_User.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

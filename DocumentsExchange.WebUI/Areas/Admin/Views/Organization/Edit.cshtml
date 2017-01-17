@@ -1,13 +1,13 @@
 ﻿@model DocumentsExchange.DataLayer.Entity.Organization
-    
+
 <div class="container">
     <h3>Добавить организацию:</h3>
 
-    @using (Html.BeginForm("Create", "Organization", null, FormMethod.Post, new { id = "AddOrgForm" }))
+    @using (Html.BeginForm("Edit", "Organization", null, FormMethod.Post, new { id = "EditOrgForm" }))
     {
         @Html.AntiForgeryToken()
         <div class="form-horizontal">
-            
+
             @Html.ValidationSummary(true)
             @Html.Partial("_Organization")
 
@@ -15,7 +15,7 @@
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default" id="addOrgBtn">Сохранить</button>
+                <button type="submit" class="btn btn-default" id="editOrgBtn">Сохранить</button>
             </div>
         </div>
 
