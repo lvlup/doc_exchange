@@ -25,6 +25,8 @@ namespace DocumentsExchange.DataLayer.Entity
         public virtual ICollection<RecordT2> RecordT2s { get; set; }
 
         public virtual ICollection<File> Files { get; set; }
+
+        public virtual ICollection<User> Users { get; set; }
     }
 
     

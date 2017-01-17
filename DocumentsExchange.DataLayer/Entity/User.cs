@@ -35,8 +35,8 @@ namespace DocumentsExchange.DataLayer.Entity
 
         public virtual ICollection<Message> Messages { get; set; }
 
-      
-        
+        public virtual ICollection<Organization> Organizations { get; set; }
+
         //todo role
 
         //public virtual Organization Organization { get; set; }
