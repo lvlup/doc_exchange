@@ -250,3 +250,4 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+/DocumentsExchange.WebUI/App_Data/PaymentOrders/617efd8f65a941f2b03155b420c8168b.jpg

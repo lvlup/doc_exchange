@@ -1,4 +1,6 @@
 ﻿@using DocumentsExchange.WebUI.ViewModels
+@using DocumentsExchange.BusinessLayer.Identity;
+@using Roles = DocumentsExchange.BusinessLayer.Identity.Roles
 @model DocumentsExchange.WebUI.ViewModels.RecordsT1ViewModel
     
 <div class="container-fluid" id="RecordsFromTable1">
@@ -61,13 +63,24 @@
                         <td>
                             <span class="lead">@r1.Total</span>
                         </td>
-                        <td>
-                            <a href="javascript:void(0)" target="_blank"><span class="lead" title="@r1.Log.ToString()">show</span></a>
-                        </td>
-                        <td>
-                            <a href="javascript:void(0)" data-url="@Url.Action("Edit", new { recordId = r1.Id })"><span class="lead">Edit</span></a>
-                        </td>
-                        
+
+                        @{
+                            if (User.IsInRole(Roles.Admin))
+                            {
+                                <td>
+                                    <a href="javascript:void(0)" target="_blank"><span class="lead" title="@r1.Log.ToString()">show</span></a>
+                                </td>
+                            }
+                        }
+
+                        @{
+                            if (User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Technician))
+                            {
+                                <td>
+                                    <a href="javascript:void(0)" data-url="@Url.Action("Edit", new { recordId = r1.Id })"><span class="lead">Edit</span></a>
+                                </td>
+                            }
+                        }
                     </tr>
                 }
             }

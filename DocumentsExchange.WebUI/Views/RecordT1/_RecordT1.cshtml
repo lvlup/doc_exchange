@@ -2,7 +2,7 @@
 @using DocumentsExchange.DataLayer.Entity
 @model DocumentsExchange.DataLayer.Entity.RecordT1
 
-@if (Model.Id > 0)
+@if ( Model != null && Model.Id > 0)
 {
     @Html.HiddenFor(model => model.LogId)   
 }
