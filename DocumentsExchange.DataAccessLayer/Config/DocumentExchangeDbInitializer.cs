@@ -16,6 +16,12 @@ namespace DocumentsExchange.DataAccessLayer.Config
                     context.Database.ExecuteSqlCommand("ALTER TABLE RecordT1 ADD CONSTRAINT uc_LogIdRecordT1 UNIQUE(LogId)");
                     context.Database.ExecuteSqlCommand("ALTER TABLE RecordT2 ADD CONSTRAINT uc_LogIdRecordT2 UNIQUE(LogId)");
 
+                    context.Set<WebSiteState>().AddOrUpdate(x => x.SiteName, new WebSiteState()
+                    {
+                        IsActive = true,
+                        SiteName = "WebSite"
+                    });
+
                     context.Set<Organization>().AddOrUpdate(x => x.Name, new Organization()
                     {
                         CreatedDateTime = DateTime.UtcNow,

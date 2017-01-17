@@ -30,6 +30,7 @@ namespace DocumentsExchange.BusinessLayer.AutoFac
            builder.RegisterType<FileValidator>().As<IFileValidator>();
            builder.RegisterType<OrganizationRelevanceValidator>().As<IOrganizationRelevanceValidator>();
            builder.RegisterType<MessagesProvider>().As<IMessagesProvider>();
-       }
+           builder.RegisterType<AdminProvider>().As<IAdminProvider>();
+        }
     }
 }

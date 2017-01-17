@@ -20,6 +20,13 @@
 <script src="~/Scripts/jquery.signalR-2.2.1.min.js"></script>
 <script src="~/Scripts/App/signalRService.js"></script>
 <script src="~/Scripts/App/chatService.js"></script>
+<script src="~/Scripts/App/siteActivityListener.js"></script>
+
+<script>
+    SiteActivityListener.start({
+        redirectUrl: "@Url.Action("Index", "SiteStopped", new {area = ""})"
+    });
+</script>
 
 <div class="container body-content">
     @RenderBody()

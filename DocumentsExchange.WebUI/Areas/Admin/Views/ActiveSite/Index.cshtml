@@ -1,1 +1,48 @@
-﻿
+﻿@model DocumentsExchange.DataLayer.Entity.WebSiteState
+
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("StopSite", "ActiveSite"))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.IsActive)
+
+
+    <button data-toggle-site type="submit" class="btn btn-primary" style="@if (!Model.IsActive)
+                                                         {
+                                                             <text>display: none</text>
+                                                         }">Остановить сайт</button>
+    <button data-toggle-site type="submit" class="btn btn-primary" style="@if (Model.IsActive)
+                                                         {
+                                                             <text>display: none</text>
+                                                         }">Запустить сайт</button>
+}
+
+<script>
+    $(function() {
+        var $state = $('[name$=IsActive]'),
+            $toggles = $("[data-toggle-site]");
+        var state = @Json.Encode(Model.IsActive);
+
+        state = !state;
+        $state.val(state);
+
+        $toggles.click(function (e) {
+            var $form = $(this).closest('form');
+
+            $.post($form.get(0).action, $form.serialize()).done(function (data) {
+                console.log(data);
+                state = !state;
+                $state.val(state);
+                $toggles.toggle();
+                SignalR.Hub.stopSite();
+            }).fail(function(e) {
+                console.log(e);
+            });
+
+            return false;
+        });
+    });
+</script>

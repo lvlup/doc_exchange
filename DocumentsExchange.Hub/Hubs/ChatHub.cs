@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using DocumentsExchange.BusinessLayer.Identity;
 using DocumentsExchange.BusinessLayer.Models;
 using DocumentsExchange.BusinessLayer.Services.Interfaces;
 using DocumentsExchange.Hub.Models;
 using DocumentsExchange.Hub.Services;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 
@@ -57,6 +57,12 @@ namespace DocumentsExchange.Hub.Hubs
             }
 
             throw new HubException("Message {0} wasn't sent", message);
+        }
+
+        [Authorize(Roles = Roles.Admin)]
+        public async Task StopSite()
+        {
+            await Clients.Others.onSiteStopped();
         }
 
         public async Task Ping()

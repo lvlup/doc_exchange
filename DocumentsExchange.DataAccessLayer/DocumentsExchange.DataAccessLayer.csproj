@@ -74,6 +74,7 @@
     <Compile Include="DocumentsExchangeContext.cs" />
     <Compile Include="DocumentsExchangeContextFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\AdminRepository.cs" />
     <Compile Include="Repository\FileCategoryRepository.cs" />
     <Compile Include="Repository\FilePathRepository.cs" />
     <Compile Include="Repository\FileRepository.cs" />
