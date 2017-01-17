@@ -123,6 +123,32 @@ namespace DocumentsExchange.DataAccessLayer.Repository
 
                     var now = DateTime.UtcNow;
 
+                    record.Deduction = record.Amount * record.Percent;
+                    record.Received = record.Amount - record.Deduction;
+
+                    if (existing.Deduction != record.Deduction)
+                    {
+                        changes.Add(new Change()
+                        {
+                            CurrentValue = record.Deduction.ToString(),
+                            OldValue = existing.Deduction.ToString(),
+                            PropertyName = "Вычет %",
+                            UserId = record.SenderUserId,
+                            TimeSpan = now
+                        });
+                    }
+
+                    if (existing.Received != record.Received)
+                    {
+                        changes.Add(new Change()
+                        {
+                            CurrentValue = record.Received.ToString(),
+                            OldValue = existing.Received.ToString(),
+                            PropertyName = "Получено",
+                            UserId = record.SenderUserId,
+                            TimeSpan = now
+                        });
+                    }
 
                     if (existing.NumberPaymentOrder != record.NumberPaymentOrder)
                     {

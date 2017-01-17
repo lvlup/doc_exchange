@@ -126,8 +126,47 @@ namespace DocumentsExchange.DataAccessLayer.Repository
                         throw new Exception("");
 
                     List<Change> changes = new List<Change>();
-
                     var now = DateTime.UtcNow;
+
+                    record.Sent = (record.Amount - record.Percent) / record.Course - record.Swift;
+                    record.AmountInCurrency = ((record.Sent + record.Swift) - record.Percent) * record.Course;
+                    record.Total = record.Amount - record.AmountInCurrency;
+
+                    if (existing.Sent != record.Sent)
+                    {
+                        changes.Add(new Change()
+                        {
+                            CurrentValue = record.Sent.ToString(),
+                            OldValue = existing.Sent.ToString(),
+                            PropertyName = "Отправлено",
+                            UserId = record.SenderUserId,
+                            TimeSpan = now
+                        });
+                    }
+
+                    if (existing.AmountInCurrency != record.AmountInCurrency)
+                    {
+                        changes.Add(new Change()
+                        {
+                            CurrentValue = record.AmountInCurrency.ToString(),
+                            OldValue = existing.AmountInCurrency.ToString(),
+                            PropertyName = "Сумма в указанной валюте",
+                            UserId = record.SenderUserId,
+                            TimeSpan = now
+                        });
+                    }
+
+                    if (existing.Total != record.Total)
+                    {
+                        changes.Add(new Change()
+                        {
+                            CurrentValue = record.Total.ToString(),
+                            OldValue = existing.Total.ToString(),
+                            PropertyName = "Итог",
+                            UserId = record.SenderUserId,
+                            TimeSpan = now
+                        });
+                    }
 
                     if (existing.NumberPaymentOrder != record.NumberPaymentOrder)
                     {

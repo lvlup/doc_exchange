@@ -87,6 +87,9 @@ namespace DocumentsExchange.WebUI.Controllers
                             filePath.OriginalFileName = fileName;
 
                             var now = DateTime.UtcNow;
+
+                            var deduction = record.Amount*record.Percent;
+
                             var r = new RecordT2()
                             {
                                 CreatedDateTime = now,
@@ -98,6 +101,9 @@ namespace DocumentsExchange.WebUI.Controllers
                                 SenderUserId = UserId,
                                 File = filePath,
                                 OranizationId = record.OranizationId,
+
+                                Deduction = deduction,
+                                Received = record.Amount - deduction,
 
                                 Log = new Log()
                                 {

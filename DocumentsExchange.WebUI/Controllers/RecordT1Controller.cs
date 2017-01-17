@@ -106,6 +106,8 @@ namespace DocumentsExchange.WebUI.Controllers
 
                             var now = DateTime.UtcNow;
 
+                            var sent = (record.Amount - record.Percent)/record.Course - record.Swift;
+                            var amountInCurrency = ((sent + record.Swift) - record.Percent)*record.Course;
                             var r = new RecordT1()
                             {
                                 CreatedDateTime = now,
@@ -119,6 +121,10 @@ namespace DocumentsExchange.WebUI.Controllers
                                 OranizationId = record.OranizationId,
                                 Course = record.Course,
                                 Swift = record.Swift,
+
+                                Sent = sent,
+                                AmountInCurrency = amountInCurrency,
+                                Total = record.Amount - amountInCurrency,
 
                                 Log = new Log()
                                 {
