@@ -19,12 +19,15 @@ namespace DocumentsExchange.WebUI.Controllers
         private readonly IRecordT1Provider _recordT1Provider;
         private readonly IFileValidator _fileValidator;
         private readonly IGetCurrencyCourse _getCurrencyCourse;
+        private readonly ILogProvider _logProvider;
 
-        public RecordT1Controller(IRecordT1Provider recordT1Provider, IFileValidator fileValidator, IGetCurrencyCourse getCurrencyCourse)
+        public RecordT1Controller(IRecordT1Provider recordT1Provider, IFileValidator fileValidator, 
+            IGetCurrencyCourse getCurrencyCourse, ILogProvider logProvider)
         {
             _recordT1Provider = recordT1Provider;
             _fileValidator = fileValidator;
             _getCurrencyCourse = getCurrencyCourse;
+            _logProvider = logProvider;
         }
 
 
@@ -256,6 +259,14 @@ namespace DocumentsExchange.WebUI.Controllers
             }
 
             return PartialView("Index", CreateRecordT1Vm(record.OranizationId));
+        }
+
+
+        [Authorize(Roles = Roles.Admin)]
+        public ActionResult ShowLogs(int id)
+        {
+           var log =  _logProvider.Get(id).Result;
+           return View(log);
         }
     }
 }

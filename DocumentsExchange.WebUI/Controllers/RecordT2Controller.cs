@@ -18,11 +18,13 @@ namespace DocumentsExchange.WebUI.Controllers
     {
         private readonly IRecordT2Provider _recordT2Provider;
         private readonly IFileValidator _fileValidator;
+        private readonly ILogProvider _logProvider;
 
-        public RecordT2Controller(IRecordT2Provider recordT2Provider, IFileValidator fileValidator)
+        public RecordT2Controller(IRecordT2Provider recordT2Provider, IFileValidator fileValidator, ILogProvider logProvider)
         {
             _recordT2Provider = recordT2Provider;
             _fileValidator = fileValidator;
+            _logProvider = logProvider;
         }
 
         public PartialViewResult Index(int id)
@@ -242,6 +244,14 @@ namespace DocumentsExchange.WebUI.Controllers
             }
 
             return PartialView("Index", CreateRecordT2Vm(record.OranizationId));
+        }
+
+        [Authorize(Roles = Roles.Admin)]
+        public ActionResult ShowLogs(int id)
+        {
+            var log = _logProvider.Get(id).Result;
+            if (log.Changes.Count == 0) return View("ShowNoLogs");
+            return View(log);
         }
 
     }

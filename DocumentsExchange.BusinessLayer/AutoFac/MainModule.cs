@@ -20,8 +20,9 @@ namespace DocumentsExchange.BusinessLayer.AutoFac
            builder.RegisterType<OrganizationProvider>().As<IOrganizationProvider>();
            builder.RegisterType<RecordT1Provider>().As<IRecordT1Provider>();
            builder.RegisterType<RecordT2Provider>().As<IRecordT2Provider>();
+            builder.RegisterType<LogProvider>().As<ILogProvider>();
 
-           builder.RegisterType<ApplicationUserManagerFactory>().AsSelf();
+            builder.RegisterType<ApplicationUserManagerFactory>().AsSelf();
            builder.RegisterType<AppRoleManagerFactory>().AsSelf();
 
            builder.RegisterAdapter<ApplicationUserManagerFactory, ApplicationUserManager>(x => x.Create());

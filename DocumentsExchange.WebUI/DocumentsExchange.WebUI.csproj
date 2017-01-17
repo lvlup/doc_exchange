@@ -419,6 +419,8 @@
     <Content Include="Areas\Admin\Views\User\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\User\_User.cshtml" />
     <Content Include="Views\SiteStopped\Index.cshtml" />
+    <Content Include="Views\Shared\ShowLogs.cshtml" />
+    <Content Include="Views\Shared\ShowNoLogs.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

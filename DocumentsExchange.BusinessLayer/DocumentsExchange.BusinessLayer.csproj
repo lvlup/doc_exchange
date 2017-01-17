@@ -76,6 +76,7 @@
     <Compile Include="Services\Implementations\FileProvider.cs" />
     <Compile Include="Services\Implementations\GetCurrencyCourse.cs" />
     <Compile Include="Services\Implementations\BlockIpService.cs" />
+    <Compile Include="Services\Implementations\LogProvider.cs" />
     <Compile Include="Services\Implementations\UserProvider.cs" />
     <Compile Include="Services\Interfaces\IAdminProvider.cs" />
     <Compile Include="Services\Interfaces\IFileValidator.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Services\Interfaces\IFileCategoryProvider.cs" />
     <Compile Include="Services\Interfaces\IFilePathProvider.cs" />
     <Compile Include="Services\Interfaces\IFileProvider.cs" />
+    <Compile Include="Services\Interfaces\ILogProvider.cs" />
     <Compile Include="Services\Interfaces\IMessagesProvider.cs" />
     <Compile Include="Services\Interfaces\IOrganizationProvider.cs" />
     <Compile Include="Services\Interfaces\IOrganizationRelevanceValidator.cs" />
