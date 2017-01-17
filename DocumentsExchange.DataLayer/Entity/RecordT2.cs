@@ -24,18 +24,25 @@ namespace DocumentsExchange.DataLayer.Entity
         public DateTime CreatedDateTime { get; set; }
 
         [DisplayName("п/п №")]
+        [Required(ErrorMessage = "Поле п/п № не может быть пустой")]
         public int NumberPaymentOrder { get; set; }
 
         [DisplayName("Наимен. отправителя")]
+        [MaxLength(20)]
+        [Required(ErrorMessage = "Введите наименование получателя")]
         public string OrganizationSender { get; set; }
 
         [DisplayName("Наимен. получателя")]
+        [MaxLength(20)]
+        [Required(ErrorMessage = "Введите наименование отправителя")]
         public string OrganizationReceiver { get; set; }
 
         [DisplayName("Сумма")]
+        [Required(ErrorMessage = "Поле сумма не может быть пустой")]
         public decimal Amount { get; set; }
 
         [DisplayName("%")]
+        [Required(ErrorMessage = "Поле % не может быть пустой")]
         public int Percent { get; set; }
 
         [DisplayName("Вычет %")]
