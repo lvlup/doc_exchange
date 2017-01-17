@@ -42,8 +42,12 @@
             });
 
             $(options.controls.addRecordBtn).click(function (e) {
-                var dataArray = $(this).closest("form").serializeArray();
-                var act = options.urls.uploadUrl;
+                var $form = $(this).closest("form"),
+                    dataArray = $form.serializeArray(),
+                    act = options.urls.uploadUrl;
+
+                $form.find('[data-val-field]').html('');
+
                 e.preventDefault();
 
                 var files = $(options.controls.uploadBtn)[0].files;
@@ -53,8 +57,11 @@
                         data.append("file" + x, files[x]);
                     }
                 } else {
-                    if (!$(options.controls.fileNamePlaceholder).val())
+                    if (!$(options.controls.fileNamePlaceholder).val()){}
+                    {
+                        $form.find('[name$=OriginalFileName] + [data-val-field]').html('Файл не выбран');
                         return;
+                    }
                 }
 
                 dataArray.forEach(function (item) {
@@ -74,7 +81,17 @@
                         ? JSON.parse(data.responseText)
                         : { errors: [{ key: "Error", errors: "Something went wrong" }] };
 
-                    alert(parsed.errors.reduce(function (x, y) { return x + y.key + ': ' + y.Errors + ';' }, ""));
+                    var unknown = [];
+                    parsed.errors.forEach(function (error) {
+                        var $element = $form.find('[name$=' + error.key + '] + [data-val-field]');
+                        if (!$element.length)
+                            unknown.push(error);
+                        else {
+                            $element.html(error.errors);
+                        }
+                    });
+
+                    $form.find('[data-val-summary]').html(unknown.reduce(function(x, y) { return x + y.key + ': ' + y.errors + '<br/>' }, ""));
                 });
             });
         }

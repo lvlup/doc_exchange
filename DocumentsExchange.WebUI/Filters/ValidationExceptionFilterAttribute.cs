@@ -2,6 +2,7 @@
 using System.Net;
 using System.Web.Mvc;
 using DocumentsExchange.WebUI.Exceptions;
+using DocumentsExchange.WebUI.Helpers;
 using NLog;
 
 namespace DocumentsExchange.WebUI.Filters
@@ -24,7 +25,7 @@ namespace DocumentsExchange.WebUI.Filters
                 ValidationException exception = (ValidationException)filterContext.Exception;
                 filterContext.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
-                filterContext.Result = new JsonResult
+                filterContext.Result = new JsonDotNetResult()
                 {
                     Data = new
                     {
@@ -35,7 +36,7 @@ namespace DocumentsExchange.WebUI.Filters
                         })
                     },
 
-                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
                 };
 
                 filterContext.HttpContext.Response.Clear();

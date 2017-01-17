@@ -50,90 +50,87 @@ namespace DocumentsExchange.WebUI.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    var existingRecord =
+                if (!ModelState.IsValid)
+                    throw new ValidationException(ModelState);
+
+                var existingRecord =
                         _recordT2Provider.Find(new SearchParams()
                         {
                             NumberPaymentOrder = record.NumberPaymentOrder,
                             OrganizationSender = record.OrganizationSender
                         }).Result;
 
-                    if (existingRecord != null && DateTime.UtcNow < existingRecord.CreatedDateTime.AddMonths(3))
-                    {
-                        ModelState.AddModelError("record", $"Record with specified data already exists");
-                        throw new ValidationException(ModelState);
-                    }
-
-                    if (Request.Files != null && Request.Files.Count > 0)
-                    {
-                        var upload = Request.Files[0];
-                        bool result;
-                        if (upload != null)
-                        {
-                            if (!_fileValidator.Validate(upload.FileName))
-                            {
-                                ModelState.AddModelError("file", $"Unsupported file {upload.FileName}");
-                                throw new ValidationException(ModelState);
-                            }
-
-                            var stream = upload.InputStream;
-                            // and optionally write the file to disk
-                            var fileName = Path.GetFileName(upload.FileName);
-                            var newFileName = $"{Guid.NewGuid().ToString("n")}{Path.GetExtension(fileName)}";
-                            var filePath = new FilePath();
-
-                            var path = Path.Combine(Server.MapPath("~/App_Data/PaymentOrders"), newFileName);
-                            using (var fileStream = System.IO.File.Create(path))
-                            {
-                                stream.CopyTo(fileStream);
-                            }
-
-                            filePath.FileName = newFileName;
-                            filePath.OriginalFileName = fileName;
-
-                            var now = DateTime.UtcNow;
-
-                            var deduction = record.Amount*record.Percent;
-
-                            var r = new RecordT2()
-                            {
-                                CreatedDateTime = now,
-                                NumberPaymentOrder = record.NumberPaymentOrder,
-                                OrganizationSender = record.OrganizationSender,
-                                OrganizationReceiver = record.OrganizationReceiver,
-                                Amount = record.Amount,
-                                Percent = record.Percent,
-                                SenderUserId = UserId,
-                                File = filePath,
-                                OranizationId = record.OranizationId,
-
-                                Deduction = deduction,
-                                Received = record.Amount - deduction,
-
-                                Log = new Log()
-                                {
-                                    UserId = UserId,
-                                    CreatedDateTime = now
-                                }
-                            };
-                             result = _recordT2Provider.Add(r).Result;
-                        }
-                    }
-                }
-                else
+                if (existingRecord != null && DateTime.UtcNow < existingRecord.CreatedDateTime.AddMonths(3))
                 {
-                    return PartialView();
+                    ModelState.AddModelError("record", $"Record with specified data already exists");
+                    throw new ValidationException(ModelState);
                 }
-            }
 
+                if (Request.Files != null && Request.Files.Count > 0)
+                {
+                    var upload = Request.Files[0];
+                    bool result;
+                    if (upload != null)
+                    {
+                        if (!_fileValidator.Validate(upload.FileName))
+                        {
+                            ModelState.AddModelError("file", $"Unsupported file {upload.FileName}");
+                            throw new ValidationException(ModelState);
+                        }
+
+                        var stream = upload.InputStream;
+                        // and optionally write the file to disk
+                        var fileName = Path.GetFileName(upload.FileName);
+                        var newFileName = $"{Guid.NewGuid().ToString("n")}{Path.GetExtension(fileName)}";
+                        var filePath = new FilePath();
+
+                        var path = Path.Combine(Server.MapPath("~/App_Data/PaymentOrders"), newFileName);
+                        using (var fileStream = System.IO.File.Create(path))
+                        {
+                            stream.CopyTo(fileStream);
+                        }
+
+                        filePath.FileName = newFileName;
+                        filePath.OriginalFileName = fileName;
+
+                        var now = DateTime.UtcNow;
+
+                        var deduction = record.Amount * record.Percent;
+
+                        var r = new RecordT2()
+                        {
+                            CreatedDateTime = now,
+                            NumberPaymentOrder = record.NumberPaymentOrder,
+                            OrganizationSender = record.OrganizationSender,
+                            OrganizationReceiver = record.OrganizationReceiver,
+                            Amount = record.Amount,
+                            Percent = record.Percent,
+                            SenderUserId = UserId,
+                            File = filePath,
+                            OranizationId = record.OranizationId,
+
+                            Deduction = deduction,
+                            Received = record.Amount - deduction,
+
+                            Log = new Log()
+                            {
+                                UserId = UserId,
+                                CreatedDateTime = now
+                            }
+                        };
+
+                        return Json(new {Success = _recordT2Provider.Add(r).Result });
+                    }
+                }
+
+                ModelState.AddModelError("file", $"No files provided");
+                throw new ValidationException(ModelState);
+            }
             catch (RetryLimitExceededException)
             {
                 ModelState.AddModelError("", "Невозможно сохранить изменения. Попробуйте позже.");
-                return PartialView();
+                return Json(new { Success = false });
             }
-
-            return PartialView("Index", CreateRecordT2Vm(record.OranizationId));
         }
 
         public FileResult DownloadPaymentOrder(string fileName, string originalFileName)
@@ -181,69 +178,66 @@ namespace DocumentsExchange.WebUI.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid)
+                    throw new ValidationException(ModelState);
+
+                var existingRecord =
+                    _recordT2Provider.Find(new SearchParams()
+                    {
+                        NumberPaymentOrder = record.NumberPaymentOrder,
+                        OrganizationSender = record.OrganizationSender
+                    }).Result;
+
+                if (existingRecord != null && existingRecord.Id != record.Id && DateTime.UtcNow < existingRecord.CreatedDateTime.AddMonths(3))
                 {
-                    var existingRecord =
-                        _recordT2Provider.Find(new SearchParams()
-                        {
-                            NumberPaymentOrder = record.NumberPaymentOrder,
-                            OrganizationSender = record.OrganizationSender
-                        }).Result;
+                    ModelState.AddModelError("record", $"Record with specified data already exists");
+                    throw new ValidationException(ModelState);
+                }
 
-                    if (existingRecord != null && existingRecord.Id != record.Id && DateTime.UtcNow < existingRecord.CreatedDateTime.AddMonths(3))
+                if (Request.Files != null && Request.Files.Count > 0)
+                {
+                    var upload = Request.Files[0];
+
+                    if (upload != null)
                     {
-                        ModelState.AddModelError("record", $"Record with specified data already exists");
-                        throw new ValidationException(ModelState);
-                    }
-
-                    if (Request.Files != null && Request.Files.Count > 0)
-                    {
-                        var upload = Request.Files[0];
-
-                        if (upload != null)
+                        if (!_fileValidator.Validate(upload.FileName))
                         {
-                            if (!_fileValidator.Validate(upload.FileName))
-                            {
-                                ModelState.AddModelError("file", $"Unsupported file {upload.FileName}");
-                                throw new ValidationException(ModelState);
-                            }
-
-                            var stream = upload.InputStream;
-
-                            // and optionally write the file to disk
-                            var fileName = Path.GetFileName(upload.FileName);
-                            var newFileName = $"{Guid.NewGuid().ToString("n")}{Path.GetExtension(fileName)}";
-
-                            // ReSharper disable once AssignNullToNotNullAttribute
-                            var path = Path.Combine(Server.MapPath("~/App_Data/PaymentOrders"), newFileName);
-
-                            using (var fileStream = System.IO.File.Create(path))
-                            {
-                                stream.CopyTo(fileStream);
-                            }
-
-                            record.File.OriginalFileName = fileName;
-                            record.File.FileName = fileName;
+                            ModelState.AddModelError("file", $"Unsupported file {upload.FileName}");
+                            throw new ValidationException(ModelState);
                         }
-                    }
 
-                    if (!_recordT2Provider.Update(record).Result)
-                    {
-                        ModelState.AddModelError("model", "Something went wrong");
-                        throw new ValidationException(ModelState);
+                        var stream = upload.InputStream;
+
+                        // and optionally write the file to disk
+                        var fileName = Path.GetFileName(upload.FileName);
+                        var newFileName = $"{Guid.NewGuid().ToString("n")}{Path.GetExtension(fileName)}";
+
+                        // ReSharper disable once AssignNullToNotNullAttribute
+                        var path = Path.Combine(Server.MapPath("~/App_Data/PaymentOrders"), newFileName);
+
+                        using (var fileStream = System.IO.File.Create(path))
+                        {
+                            stream.CopyTo(fileStream);
+                        }
+
+                        record.File.OriginalFileName = fileName;
+                        record.File.FileName = fileName;
                     }
                 }
-                else
+
+                if (!_recordT2Provider.Update(record).Result)
                 {
-                    return PartialView();
+                    ModelState.AddModelError("model", "Something went wrong");
+                    throw new ValidationException(ModelState);
                 }
+
+                return Json(new { Success = true });
             }
             catch (RetryLimitExceededException)
             {
                 ModelState.AddModelError("", "Невозможно сохранить изменения. Попробуйте позже.");
+                return Json(new {Success = false});
             }
-
-            return PartialView("Index", CreateRecordT2Vm(record.OranizationId));
         }
 
         [Authorize(Roles = Roles.Admin)]

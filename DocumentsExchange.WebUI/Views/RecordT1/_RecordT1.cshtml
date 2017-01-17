@@ -12,6 +12,10 @@
 @Html.HiddenFor(model => model.OranizationId)
 @Html.HiddenFor(model => model.SenderUserId)
 
+<div data-val-summary>
+
+</div>
+
 <div class="form-group">
     <label class="col-sm-2 control-label">Дата отправки:</label>
     <div class="col-sm-10">
@@ -21,7 +25,7 @@
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-calendar"></span>
             </span>
-            @Html.ValidationMessageFor(p => p.CreatedDateTime, null, new { @class = "text-danger" })
+            @Html.ValidationMessageFor(p => p.CreatedDateTime, null, new { @class = "text-danger", @data_val_field ="true" })
         </div>
     </div>
 </div>
@@ -30,7 +34,7 @@
     <label class="col-sm-2 control-label">Наименование отправителя:</label>
     <div class="col-sm-10">
         @Html.TextBoxFor(p => p.OrganizationSender, new { @class = "form-control" })
-        @Html.ValidationMessageFor(p => p.OrganizationSender, null, new { @class = "text-danger" })
+        @Html.ValidationMessageFor(p => p.OrganizationSender, null, new { @class = "text-danger", @data_val_field = "true" })
     </div>
 </div>
 
@@ -38,7 +42,7 @@
     <label class="col-sm-2 control-label">Отправитель:</label>
     <div class="col-sm-10">
         @Html.TextBox("fuserFullNameId", HttpContext.Current.User.Identity.GetFullName(), new { @class = "form-control" })
-        @Html.ValidationMessageFor(p => p.SenderUser.FullName, null, new { @class = "text-danger" })
+        @Html.ValidationMessageFor(p => p.SenderUser.FullName, null, new { @class = "text-danger", @data_val_field = "true" })
     </div>
 </div>
 
@@ -46,6 +50,7 @@
     <label class="col-sm-2 control-label">Файл:</label>
     <div class="col-sm-8">
         @Html.TextBoxFor(p => p.File.OriginalFileName, new { @class = "form-control", @readonly = "readonly" })
+        @Html.ValidationMessageFor(p => p.File.OriginalFileName, null, new { @class = "text-danger", @data_val_field = "true" })
     </div>
     <div class="col-sm-2" style="padding: 5px">
         <input type="file" name="upload" id="uploadFileBtn" style="width: 125px;" />
@@ -56,7 +61,7 @@
     <label class="col-sm-2 control-label">П/П №</label>
     <div class="col-sm-10">
         @Html.TextBoxFor(p => p.NumberPaymentOrder, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.NumberPaymentOrder, null, new { @class = "text-danger" })
+        @Html.ValidationMessageFor(model => model.NumberPaymentOrder, null, new { @class = "text-danger", @data_val_field = "true" })
     </div>
 </div>
 
@@ -64,7 +69,7 @@
     <label class="col-sm-2 control-label">Наименование получателя:</label>
     <div class="col-sm-10">
         @Html.TextBoxFor(p => p.OrganizationReceiver, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.OrganizationReceiver, null, new { @class = "text-danger" })
+        @Html.ValidationMessageFor(model => model.OrganizationReceiver, null, new { @class = "text-danger", @data_val_field = "true" })
     </div>
 </div>
 
@@ -72,7 +77,7 @@
     <label class="col-sm-2 control-label">Сумма:</label>
     <div class="col-sm-10">
         @Html.TextBoxFor(p => p.Amount, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.Amount, null, new { @class = "text-danger" })
+        @Html.ValidationMessageFor(model => model.Amount, null, new { @class = "text-danger", @data_val_field = "true" })
     </div>
 </div>
 
@@ -89,7 +94,7 @@
                         Selected = Model.Currency == x
                     }), "Value", "Text"),
                     null, new { @class = "form-control", tabindex = 8, @id = "currencyDropDown", data_url = Url.Action("GetCurrency") })
-        @Html.ValidationMessageFor(model => model.Currency, null, new { @class = "text-danger" })
+        @Html.ValidationMessageFor(model => model.Currency, null, new { @class = "text-danger", @data_val_field = "true" })
     </div>
 </div>
 
@@ -97,7 +102,7 @@
     <label class="col-sm-2 control-label">Курс:</label>
     <div class="col-sm-10">
         @Html.TextBoxFor(p => p.Course, new { @class = "form-control", tabindex = 9, @id = "currentCourse" })
-        @Html.ValidationMessageFor(model => model.Course, null, new { @class = "text-danger" })
+        @Html.ValidationMessageFor(model => model.Course, null, new { @class = "text-danger", @data_val_field = "true" })
     </div>
 </div>
 
@@ -113,7 +118,7 @@
     <label class="col-sm-2 control-label">Процент:</label>
     <div class="col-sm-10">
         @Html.TextBoxFor(p => p.Percent, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.Percent, null, new { @class = "text-danger" })
+        @Html.ValidationMessageFor(model => model.Percent, null, new { @class = "text-danger", @data_val_field = "true" })
     </div>
 </div>
 
@@ -121,6 +126,6 @@
     <label class="col-sm-2 control-label">Swift:</label>
     <div class="col-sm-10">
         @Html.TextBoxFor(p => p.Swift, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.Swift, null, new { @class = "text-danger" })
+        @Html.ValidationMessageFor(model => model.Swift, null, new { @class = "text-danger", @data_val_field = "true" })
     </div>
 </div>
