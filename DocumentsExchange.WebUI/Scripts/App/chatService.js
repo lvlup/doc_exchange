@@ -6,10 +6,16 @@
     };
 
     $.extend(Creator.prototype, {
-        _renderMessage: function(message) {
+        _renderMessage: function(message, insert) {
             var tmpl = $.templates(this.options.templates.messageTemplate);
             var html = tmpl.render(message);
-            $(this.options.controls.messageContainer).append(html);
+
+            if (insert) {
+                var $container = $(this.options.controls.messageContainer);
+                $($container.children().get(0)).after(html);
+            }
+            else
+                $(this.options.controls.messageContainer).append(html);
         },
 
         _prepareMessage: function(message) {
@@ -33,21 +39,22 @@
 
         _addMessage: function (rawMessage, insertFirst) {
             var prepared = this._prepareMessage(rawMessage);
+
             if (insertFirst)
                 this.messages.unshift(prepared);
             else {
                 this.messages.push(prepared);
             }
             
-            this._renderMessage(prepared);
+            this._renderMessage(prepared, insertFirst);
         },
 
-        _fetch: function(options) {
+        _fetch: function (options) {
             return $.get(options.url, options.data).then(function (data) {
-                while (data.items.length) {
-                    this._addMessage(data.items.pop(), true);
-                }
-
+                data.items.forEach(function (m) {
+                    this._addMessage(m, true);
+                }.bind(this));
+                
                 return this.messages.length < data.total;
             }.bind(this)).fail(function(e) {
                 console.log(e);
