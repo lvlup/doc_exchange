@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity;
 
 namespace DocumentsExchange.WebUI.Controllers
 {
+    [Authorize]
     public class RolesController : Controller
     {
         private readonly ApplicationUserManager _userManager;

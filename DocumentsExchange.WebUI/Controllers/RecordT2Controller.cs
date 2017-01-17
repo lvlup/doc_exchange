@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using DocumentsExchange.BusinessLayer.Identity;
 using DocumentsExchange.BusinessLayer.Services.Interfaces;
 using DocumentsExchange.DataLayer.Entity;
 using DocumentsExchange.WebUI.Exceptions;
@@ -12,6 +13,7 @@ using DocumentsExchange.WebUI.ViewModels;
 
 namespace DocumentsExchange.WebUI.Controllers
 {
+    [Authorize]
     public class RecordT2Controller : BaseController
     {
         private readonly IRecordT2Provider _recordT2Provider;
@@ -28,6 +30,7 @@ namespace DocumentsExchange.WebUI.Controllers
             return PartialView(CreateRecordT2Vm(id));
         }
 
+        [Authorize(Roles = Roles.Admin + "," + Roles.Technician)]
         public PartialViewResult Create(int orgId)
         {
             var record = new RecordT2()
@@ -40,6 +43,7 @@ namespace DocumentsExchange.WebUI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = Roles.Admin + "," + Roles.Technician)]
         public ActionResult Create(RecordT2 record)
         {
             try
@@ -150,6 +154,7 @@ namespace DocumentsExchange.WebUI.Controllers
             }, JsonRequestBehavior.DenyGet);
         }
 
+        [Authorize(Roles = Roles.Admin + "," + Roles.Technician)]
         public async Task<PartialViewResult> Edit(int recordId)
         {
             return PartialView(await _recordT2Provider.Get(recordId));
@@ -169,6 +174,7 @@ namespace DocumentsExchange.WebUI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = Roles.Admin + "," + Roles.Technician)]
         public ActionResult Edit([Bind(Exclude = nameof(RecordT2.SenderUser))]RecordT2 record)
         {
             try

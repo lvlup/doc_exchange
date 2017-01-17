@@ -7,6 +7,7 @@ using DocumentsExchange.WebUI.ViewModels;
 
 namespace DocumentsExchange.WebUI.Controllers
 {
+    [Authorize]
     public class TableController : Controller
     {
         private readonly IOrganizationProvider _organizationProvider;

@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Web.Mvc;
+using DocumentsExchange.BusinessLayer.Identity;
 using DocumentsExchange.BusinessLayer.Services.Interfaces;
 using DocumentsExchange.DataLayer.Entity;
 using DocumentsExchange.WebUI.ViewModels;
 
 namespace DocumentsExchange.WebUI.Areas.Admin.Controllers
 {
+    [Authorize(Roles = Roles.Admin)]
     public class UserController : Controller
     {
         private readonly IUserProvider _userProvider;
