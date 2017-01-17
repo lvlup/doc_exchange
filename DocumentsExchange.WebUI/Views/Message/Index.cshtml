@@ -1,56 +1,52 @@
-﻿@using Microsoft.AspNet.Identity
+﻿@using DocumentsExchange.WebUI.Extensions
+@using Microsoft.AspNet.Identity
+
 <div class="panel panel-default">
     <div class="panel-heading">Сообщения чата</div>
     
-    <div id="messageContainer">
-
+    <div id="messageContainer" style="padding: 10px; max-height: 500px; min-height: 300px; overflow-y: scroll">
+        <button class="btn btn-default" style="font-size: 10px; margin: 5px auto; display: block;" id="loadMore">Еще</button>
     </div>
-    <div class="col-md-12">
-        <div class="col-md-12">
-            <textarea id="message" class="form-control" placeholder="Введите текст" ng-model="message.content" ng-keypress="onKeyPress($event)">
+    <div class="col-md-12" style="background-color: #ddd;">
+        <div class="col-md-12" style="padding: 5px">
+            <textarea id="message" class="form-control" placeholder="Введите текст">
                 
             </textarea>
-            <button class="btn btn-primary" id="sendBtn">Send</button>
+            <button class="btn btn-primary pull-right" style="font-size: 10px; margin-top: 5px" id="sendBtn">Send</button>
         </div>
     </div>
 </div>
 
 <script id="messageTemplate" type="text/x-jsrender">
-    Name: {{:name}}
+    <div style="margin: 5px">
+        {{:time}} {{:userName}} написал: {{:html}}
+    </div>
 </script>
 
 <script>
     $(function () {
-        var messages = [];
+        var chat = new Chat.instance({
+            data: {
+                userId: '@(HttpContext.Current.User.Identity.GetUserId<int>())',
+                userName: '@(HttpContext.Current.User.Identity.GetFullName())'
+            },
 
-        var renderMessage = function(message) {
-            var tmpl = $.templates("#messageTemplate");
-            var html = tmpl.render(message);
-            $('#messageContainer').append(html);
-        };
+            templates: {
+                messageTemplate: '#messageTemplate'
+            },
 
-        $('#sendBtn').click(function(e) {
-            var $message = $('#message');
-            if (!$message.val())
-                return;
+            controls: {
+                messageContainer: '#messageContainer',
+                sendBtn: '#sendBtn',
+                messagePlaceholder: '#message',
+                loadMoreBtn: '#loadMore'
+            },
 
-            var message = {
-                userId: '@(User.Identity.GetUserId<int>())',
-                organizationId: 1,
-                content: $message.val(),
-                timeStamp: new Date().getTime()
-            };
-
-            $message.val('');
-
-            messages.push(message);
-            renderMessage(message);
-
-            SignalR.Hub.sendMessage(message);
+            urls: {
+                getMessagesUrl: "@Url.Action("GetMessages", "Messages", new { orgId = ViewBag.OrgId })"
+            }
         });
-        
-        SignalR.Hub.onMessageReceived(function(message) {
 
-        });
+        chat.start();
     });
 </script>

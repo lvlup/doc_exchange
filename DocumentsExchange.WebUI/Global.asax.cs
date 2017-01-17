@@ -10,6 +10,10 @@ using DocumentsExchange.DataLayer.Entity;
 using DocumentsExchange.DataLayer.Identity;
 using DocumentsExchange.WebUI.App_Start;
 using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
+using WebGrease.Configuration;
 
 namespace DocumentsExchange.WebUI
 {
@@ -20,6 +24,7 @@ namespace DocumentsExchange.WebUI
             AutoFacCore.Init(
                 new BusinessLayer.AutoFac.MainModule(),
                 new AutoFac.MainModule(),
+                new Hub.AutoFac.MainModule(),
                  new NLogModule()
                 );
 
@@ -72,6 +77,19 @@ namespace DocumentsExchange.WebUI
                 admin = userManager.FindByName("admin");
                 
                 if (!userManager.AddToRole(admin.Id, Roles.Admin).Succeeded)
+                    throw new Exception("Initialization failed");
+            }
+
+            var pedik = userManager.FindByName("pedik");
+            if (pedik == null)
+            {
+                var result = userManager.Create(new User { UserName = "pedik", FirstName = "pedik", LastName = "pedik" }, "pedik123");
+                if (!result.Succeeded)
+                    throw new Exception("Initialization failed");
+
+                pedik = userManager.FindByName("pedik");
+
+                if (!userManager.AddToRole(pedik.Id, Roles.User).Succeeded)
                     throw new Exception("Initialization failed");
             }
         }

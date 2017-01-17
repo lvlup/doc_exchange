@@ -11,7 +11,7 @@ namespace DocumentsExchange.BusinessLayer.AutoFac
        protected override void Load(ContainerBuilder builder)
        {
            builder.RegisterModule(new DataAccessLayer.AutoFac.MainModule());
-           
+
            builder.RegisterType<GetCurrencyCourse>().As<IGetCurrencyCourse>();
            builder.RegisterType<UserProvider>().As<IUserProvider>();
            builder.RegisterType<FilePathProvider>().As<IFilePathProvider>();

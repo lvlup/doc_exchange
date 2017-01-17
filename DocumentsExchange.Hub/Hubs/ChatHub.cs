@@ -5,12 +5,13 @@ using DocumentsExchange.BusinessLayer.Models;
 using DocumentsExchange.BusinessLayer.Services.Interfaces;
 using DocumentsExchange.Hub.Models;
 using DocumentsExchange.Hub.Services;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 
 namespace DocumentsExchange.Hub.Hubs
 {
-    [Authorize(Roles = "user")]
+    [Authorize]
     [HubName("chathub")]
     public class ChatHub : Microsoft.AspNet.SignalR.Hub
     {
@@ -37,7 +38,7 @@ namespace DocumentsExchange.Hub.Hubs
                 Id = newId,
                 UserId = message.userId,
                 OrganizationId = message.organizationId,
-                TimeSpan = message.timeStamp
+                TimeStamp = message.timeStamp
             };
 
             if (await _messagesProvider.AddMessage(newMessage))

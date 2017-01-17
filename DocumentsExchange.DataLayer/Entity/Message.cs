@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DocumentsExchange.DataLayer.Entity
 {
@@ -17,5 +18,8 @@ namespace DocumentsExchange.DataLayer.Entity
         public int SenderId { get; set; }
 
         public virtual User Sender { get; set; }
+
+        [NotMapped]
+        public string UserName { get; set; }
     }
 }

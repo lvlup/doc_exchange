@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentsExchange.Common", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentsExchange.Hub", "DocumentsExchange.Hub\DocumentsExchange.Hub.csproj", "{4587D8A2-AFEC-4F15-B406-5322E9E46ECB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentsExchange.Models", "DocumentsExchange.Models\DocumentsExchange.Models.csproj", "{C399FD88-FA96-492E-B4A2-D78BE0E7B400}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{4587D8A2-AFEC-4F15-B406-5322E9E46ECB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4587D8A2-AFEC-4F15-B406-5322E9E46ECB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4587D8A2-AFEC-4F15-B406-5322E9E46ECB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C399FD88-FA96-492E-B4A2-D78BE0E7B400}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C399FD88-FA96-492E-B4A2-D78BE0E7B400}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C399FD88-FA96-492E-B4A2-D78BE0E7B400}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C399FD88-FA96-492E-B4A2-D78BE0E7B400}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

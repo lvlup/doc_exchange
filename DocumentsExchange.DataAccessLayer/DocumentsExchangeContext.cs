@@ -98,6 +98,11 @@ namespace DocumentsExchange.DataAccessLayer
                 .HasRequired<User>(m => m.Sender)
                 .WithMany(u => u.Messages).HasForeignKey(m => m.SenderId);
 
+            modelBuilder.Entity<Message>()
+                .HasRequired(x => x.Organization)
+                .WithMany()
+                .HasForeignKey(x => x.OrganizationId);
+
             modelBuilder.Entity<Log>()
                 .HasRequired(x => x.User)
                 .WithMany()

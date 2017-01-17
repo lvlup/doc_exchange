@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Linq;
 using System.Threading.Tasks;
 using Autofac.Extras.NLog;
+using DocumentsExchange.DataAccessLayer.Models;
 using DocumentsExchange.DataLayer.Entity;
+using DocumentsExchange.Models;
 
 namespace DocumentsExchange.DataAccessLayer.Repository
 {
@@ -35,6 +40,39 @@ namespace DocumentsExchange.DataAccessLayer.Repository
             }
 
             return result;
+        }
+
+        public async Task<ItemsResult<Message>> Get(int orgId, PageInfo pageInfo)
+        {
+            using (var context = _contextFactory.Create())
+            {
+                try
+                {
+                    var query = context.Set<Message>()
+                        .Where(x => x.OrganizationId == orgId);
+
+                    var messages = await query
+                        .Select(x => new
+                        {
+                            Message = x,
+                            UserName = x.Sender.FirstName + " " + x.Sender.LastName,
+                            Total = query.Count()
+                        })
+                        .OrderBy(x => x.Message.TimeStamp)
+                        .Skip((pageInfo.Page - 1)*pageInfo.PageSize)
+                        .Take(pageInfo.PageSize)
+                        .ToListAsync();
+
+                    messages.ForEach(x => x.Message.UserName = x.UserName);
+                    return new ItemsResult<Message>(messages.Select(x => x.Message), messages.FirstOrDefault()?.Total ?? 0);
+                }
+                catch (Exception e)
+                {
+                    _logger.Error("Error adding user to db: {0}", e);
+                }
+            }
+
+            return null;
         }
     }
 }

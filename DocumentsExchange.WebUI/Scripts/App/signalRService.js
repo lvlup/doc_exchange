@@ -40,7 +40,7 @@
         tryingToReconnect = false;
 
     // setup
-    var connection = $.hubConnection('/hub/signalr', { useDefaultPath: false });
+    var connection = $.hubConnection('/signalr', { useDefaultPath: false });
     var hub = connection.createHubProxy('chathub');
 
     //$.connection.transports.longPolling.supportsKeepAlive = function () {
@@ -168,6 +168,10 @@
 
     SignalR.Hub = {
         start: start,
+
+        onPingBack: function() {
+            return eventHandlers["pingBack"];
+        },
 
         onMessageReceived: function() {
             return eventHandlers["onMessageReceived"];

@@ -3,14 +3,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using DocumentsExchange.BusinessLayer.Models;
 using DocumentsExchange.Common.Extensions;
+using DocumentsExchange.DataAccessLayer.Models;
 using DocumentsExchange.DataAccessLayer.Repository;
 using DocumentsExchange.DataLayer.Entity;
+using DocumentsExchange.Models;
 
 namespace DocumentsExchange.BusinessLayer.Services.Interfaces
 {
     public interface IMessagesProvider
     {
         Task<bool> AddMessage(HubMessage message);
+
+        Task<ItemsResult<Message>> GetMessages(int orgId, PageInfo paging);
 
         Task<IEnumerable<int>> GetRelatedUsers(int userId, int orgId);
     }
@@ -34,11 +38,16 @@ namespace DocumentsExchange.BusinessLayer.Services.Interfaces
                 Id = message.Id,
                 OrganizationId = message.OrganizationId,
                 SenderId = message.UserId,
-                TimeStamp = message.TimeSpan.Convert()
+                TimeStamp = message.TimeStamp.Convert()
             };
 
 
             return await _messageRepository.Create(dbMessage);
+        }
+
+        public async Task<ItemsResult<Message>> GetMessages(int orgId, PageInfo paging)
+        {
+            return await _messageRepository.Get(orgId, paging);
         }
 
         public async Task<IEnumerable<int>> GetRelatedUsers(int userId, int orgId)
