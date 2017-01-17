@@ -9,7 +9,7 @@
             {
                 <tr >
                     <td >
-                        <a href="javascript:void(0)" data-url="@Url.Action("Get", new { id = org.Id })">@org.Name</a>
+                        <a href="javascript:void(0)" data-url="@Url.Action("Get", new { id = org.Id })" data-org-id="@org.Id">@org.Name</a>
                     </td>
                 </tr>
             }
@@ -22,6 +22,7 @@
     $(function () {
         $('#OrganizationTable').on('click', '> table > tbody > tr > td > a[data-url]', function (e) {
             $('#TabCotrollerView').load($(this).data('url'));
+            $('#ChatView').load('@Url.Action("Index", "Message")' + '?orgId=' + $(this).data("org-id"));
         });
     });
 </script>

@@ -22,7 +22,10 @@ namespace DocumentsExchange.WebUI.Startup
                 LoginPath = new PathString("/Account/Login"),
             });
 
-            var resolver = new AutofacDependencyResolver(AutoFacCore.Core.BeginLifetimeScope());
+            var scope = AutoFacCore.Core.BeginLifetimeScope();
+            var resolver = new AutofacDependencyResolver(scope);
+
+            app.UseAutofacMiddleware(scope);
 
             app.Map("/signalr", map =>
             {
@@ -37,6 +40,12 @@ namespace DocumentsExchange.WebUI.Startup
                 //    EnableJavaScriptProxies = true,
                 //    Resolver = resolver
                 //};
+
+                map.UseCookieAuthentication(new CookieAuthenticationOptions()
+                {
+                    AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                    LoginPath = new PathString("/Account/Login"),
+                });
 
                 var pipeline = resolver.Resolve<IHubPipeline>();
                 pipeline.AddModule(resolver.Resolve<LoggingModule>());

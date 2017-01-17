@@ -93,6 +93,10 @@
       <Project>{d8f30312-5e49-49b5-9347-2c6280d820ee}</Project>
       <Name>DocumentsExchange.DataLayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DocumentsExchange.Models\DocumentsExchange.Models.csproj">
+      <Project>{C399FD88-FA96-492E-B4A2-D78BE0E7B400}</Project>
+      <Name>DocumentsExchange.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

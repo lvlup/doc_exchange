@@ -44,7 +44,10 @@ namespace DocumentsExchange.WebUI.Controllers
                 ClaimsIdentity ident = await _userManager.CreateIdentityAsync(user,
                     DefaultAuthenticationTypes.ApplicationCookie);
 
+                ident.AddClaim(new Claim(ClaimTypes.GivenName, user.FullName));
+                    
                 var authManager = HttpContext.GetOwinContext().Authentication;
+
                 authManager.SignOut();
                 authManager.SignIn(new AuthenticationProperties
                 {

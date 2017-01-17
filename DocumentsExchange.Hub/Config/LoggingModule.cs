@@ -75,6 +75,16 @@ namespace DocumentsExchange.Hub.Config
             base.OnIncomingError(exceptionContext, invokerContext);
         }
 
+        protected override bool OnBeforeOutgoing(IHubOutgoingInvokerContext context)
+        {
+            return base.OnBeforeOutgoing(context);
+        }
+
+        protected override void OnAfterOutgoing(IHubOutgoingInvokerContext context)
+        {
+            base.OnAfterOutgoing(context);
+        }
+
         private void LogInfo(IHub hub, [CallerMemberName] string methodName = "")
         {
             _logger.Trace("{3}:: User:{0}; Authenticated:{1}; AuthType:{2}",

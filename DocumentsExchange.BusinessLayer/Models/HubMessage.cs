@@ -14,7 +14,7 @@ namespace DocumentsExchange.BusinessLayer.Models
 
         public string Content { get; set; }
 
-        public long TimeSpan { get; set; }
+        public long TimeStamp { get; set; }
 
         public string Id { get; set; }
     }
