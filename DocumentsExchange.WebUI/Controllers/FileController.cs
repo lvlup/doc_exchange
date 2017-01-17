@@ -13,7 +13,7 @@ using File = DocumentsExchange.DataLayer.Entity.File;
 
 namespace DocumentsExchange.WebUI.Controllers
 {
-    public class FileController : Controller
+    public class FileController : BaseController
     {
         private readonly IFileProvider _fileProvider;
         private readonly IFileCategoryProvider _fileCategoryProvider;
@@ -62,12 +62,12 @@ namespace DocumentsExchange.WebUI.Controllers
                             var doc = new File
                             {
                                 FileName = file.FileName,
-                                AddedDateTime = DateTime.Now,
+                                AddedDateTime = DateTime.UtcNow,
                                 FileType = Path.GetExtension(upload.FileName)?.Replace(".", string.Empty).ToLower(),
                                 OranizationId = file.OranizationId,
                                 CategoryId = file.CategoryId,
                                 ContentType = upload.ContentType,
-                                User = new User() { FirstName = "test" }
+                                UserId = UserId
                             };
                             using (var reader = new System.IO.BinaryReader(upload.InputStream))
                             {
