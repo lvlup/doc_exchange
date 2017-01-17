@@ -378,6 +378,7 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\RecordT2\_RecordT2.cshtml" />
     <Content Include="Views\RecordT2\Edit.cshtml" />
+    <Content Include="Views\SiteControl\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -388,7 +389,6 @@
   <ItemGroup>
     <Folder Include="App_Data\PaymentOrders\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\SiteControl\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DocumentsExchange.BusinessLayer\DocumentsExchange.BusinessLayer.csproj">

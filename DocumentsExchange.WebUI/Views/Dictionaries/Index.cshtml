@@ -4,23 +4,23 @@
         <ul class="nav nav-tabs" role="tablist">
 
             <li class="active">
-                @Ajax.ActionLink("Пользователи", "Index", "User", new AjaxOptions() { UpdateTargetId = "dictionaryTabContent" },
+                @Ajax.ActionLink("Пользователи", "Index", "User",null, new AjaxOptions() { UpdateTargetId = "dictionaryTabContent" },
                     new { @role = "tab" })
             </li>
 
             <li>
-                @Ajax.ActionLink("Организации", "Index", "Organization", new AjaxOptions() {UpdateTargetId = "dictionaryTabContent" },
+                @Ajax.ActionLink("Организации", "Index", "Organization", null,new AjaxOptions() {UpdateTargetId = "dictionaryTabContent" },
                     new {@role = "tab"})
             </li>
 
             <li>
-                @Ajax.ActionLink("Типы документов", "Index", "FileCategory", new AjaxOptions() { UpdateTargetId = "dictionaryTabContent" },
+                @Ajax.ActionLink("Типы документов", "Index", "FileCategory",null, new AjaxOptions() { UpdateTargetId = "dictionaryTabContent" },
                     new { @role = "tab" })
             </li>
         </ul>
 
         <div id="dictionaryTabContent" role="tabpanel" class="tab-pane active">
-            @Html.Action("Index", "Dictionaries")
+            @Html.Action("Index", "User")
         </div>
 
     </div>

@@ -4,28 +4,27 @@
     ViewBag.Title = "Перспектива";
 }
 
-<div class="container" style="width: 100%" id="mainViewId">
-    <div class="row">
-        <div class="pull-left col-md-10">
-            @Ajax.ActionLink("Панель администратора", "Index", "AdminPanel", new AjaxOptions() {UpdateTargetId = "mainViewId"},
-                new {@class = "btn btn-default", @id = "adminPanelBtn"})
-        </div>
+<div class="row">
+    <div class="pull-left col-md-10">
+        @Ajax.ActionLink("Панель администратора", "Index", "AdminPanel", null, new AjaxOptions() { UpdateTargetId = "mainViewId" },
+                    new { @class = "btn btn-default", @id = "adminPanelBtn" })
+    </div>
 
-        <div>
-            @Html.TextBoxFor(m => m.UserName, new { @class = "col-md-1 control-label" })
-            @Html.TextBoxFor( m =>  m.FullName, new { @class = "col-md-1 control-label" })
-        </div>
-
-       
-        @*<div class="col-md-1">
-            <input type="button" id="userName" class="btn btn-default" value="Ivan Ivanov"/>
-        </div>*@
-        <div class="pull-right col-md-1">
-            <input type="button" id="logout" class="btn btn-default" value="выход"/>
-        </div>
+    <div>
+        @Html.TextBoxFor(m => m.UserName, new { @class = "col-md-1 control-label" })
+        @Html.TextBoxFor(m => m.FullName, new { @class = "col-md-1 control-label" })
     </div>
 
 
+    @*<div class="col-md-1">
+            <input type="button" id="userName" class="btn btn-default" value="Ivan Ivanov"/>
+        </div>*@
+    <div class="pull-right col-md-1">
+        <input type="button" id="logout" class="btn btn-default" value="выход" />
+    </div>
+</div>
+
+<div class="container" style="width: 100%" id="mainViewId">
 
     <div class="row" style="margin-top: 25px">
 

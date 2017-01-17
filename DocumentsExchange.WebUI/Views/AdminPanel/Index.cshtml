@@ -1,22 +1,27 @@
-﻿<div>
+﻿<div style="height: 100%; min-height: 1px; position: relative">
     <div id="Tabs" role="tabpanel">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
 
             <li class="active">
-                @Ajax.ActionLink("Справочники", "Index", "Dictionaries", new AjaxOptions() {UpdateTargetId = "adminTabContent"},
-                    new {@role = "tab"})
+                <a href="javascript:void(0)" role="tab" data-url="@Url.Action("Index", "Dictionaries")">Справочники</a>
             </li>
 
             <li>
-                @Ajax.ActionLink("Управление сайтом", "Index", "SiteControl", new AjaxOptions() {UpdateTargetId = "adminTabContent"},
-                    new {@role = "tab"})
+                <a href="javascript:void(0)" role="tab" data-url="@Url.Action("Index", "SiteControl")">Управление сайтом</a>
             </li>
+
         </ul>
-
-        <div id="adminTabContent" role="tabpanel" class="tab-pane active">
-            @Html.Action("Index", "Dictionaries")
-        </div>
-
+    </div>
+    <div id="adminTabContent" role="tabpanel" class="tab-pane active" style="height: 100%; position: relative; min-height: 1px;">
+        @Html.Action("Index", "Dictionaries")
     </div>
 </div>
+
+<script>
+    $(function() {
+        $('#Tabs').on('click', '> ul[role=tablist] > li > a[data-url]', function(e) {
+            $('#adminTabContent').load($(this).data('url'));
+        });
+    });
+</script>
