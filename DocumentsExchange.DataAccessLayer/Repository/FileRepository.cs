@@ -51,19 +51,7 @@ namespace DocumentsExchange.DataAccessLayer.Repository
             {
                 try
                 {
-                    File f = new File()
-                    {
-                        FileName = file.FileName,
-                        AddedDateTime = file.AddedDateTime,
-                        CategoryId = file.CategoryId,
-                        OranizationId = file.OranizationId,
-                        Content = file.Content,
-                        ContentType = file.ContentType,
-                        FileType = file.FileType,
-                        User = file.User
-                    };
-
-                    context.Set<File>().Add(f);
+                    context.Set<File>().Add(file);
                     context.ChangeTracker.DetectChanges();
                     result = await context.SaveChangesAsync().ConfigureAwait(false) > 0;
                 }
