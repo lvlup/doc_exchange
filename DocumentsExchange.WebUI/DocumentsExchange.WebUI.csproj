@@ -301,6 +301,7 @@
     <Content Include="Areas\Admin\Views\Organization\_Organization.cshtml" />
     <Content Include="Areas\Admin\Views\FileCategory\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\FileCategory\_FileCategory.cshtml" />
+    <Content Include="Areas\Admin\Views\ActivitySite\Index.cshtml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\App\recordCreation.js" />
     <Content Include="Scripts\App\signalRService.js" />
@@ -326,6 +327,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\ActivitySiteController.cs" />
     <Compile Include="Areas\Admin\Controllers\OrganizationsController.cs" />
     <Compile Include="AutoFac\MainModule.cs" />
     <Compile Include="Controllers\AccountController.cs" />

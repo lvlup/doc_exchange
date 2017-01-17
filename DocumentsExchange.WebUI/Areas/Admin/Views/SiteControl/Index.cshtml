@@ -1,3 +1,23 @@
-﻿
+﻿<div>
+    <div id="Tabs" role="tabpanel">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
 
-<h3>site control</h3>
+            <li class="active">
+                @Ajax.ActionLink("Активность сайта", "Index", "User", null, new AjaxOptions() { UpdateTargetId = "dictionaryTabContent" },
+                    new { @role = "tab" })
+            </li>
+
+            <li>
+                @Ajax.ActionLink("Заблокированные ip-адреса", "Index", "Organization", null, new AjaxOptions() { UpdateTargetId = "dictionaryTabContent" },
+                    new { @role = "tab" })
+            </li>
+
+        </ul>
+
+        <div id="dictionaryTabContent" role="tabpanel" class="tab-pane active">
+            @Html.Action("Index", "User")
+        </div>
+
+    </div>
+</div>
