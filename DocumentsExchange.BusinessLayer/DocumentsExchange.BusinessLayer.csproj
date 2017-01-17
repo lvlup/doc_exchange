@@ -53,6 +53,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -73,6 +75,7 @@
     <Compile Include="Services\Implementations\FilePathProvider.cs" />
     <Compile Include="Services\Implementations\FileProvider.cs" />
     <Compile Include="Services\Implementations\GetCurrencyCourse.cs" />
+    <Compile Include="Services\Implementations\BlockIpService.cs" />
     <Compile Include="Services\Implementations\UserProvider.cs" />
     <Compile Include="Services\Interfaces\IFileValidator.cs" />
     <Compile Include="Services\Interfaces\IGetCurrencyCourse.cs" />
@@ -85,6 +88,7 @@
     <Compile Include="Services\Interfaces\IMessagesProvider.cs" />
     <Compile Include="Services\Interfaces\IOrganizationProvider.cs" />
     <Compile Include="Services\Interfaces\IOrganizationRelevanceValidator.cs" />
+    <Compile Include="Services\Interfaces\IBlockIpService.cs" />
     <Compile Include="Services\Interfaces\IRecordT1Provider.cs" />
     <Compile Include="Services\Interfaces\IRecordT2Provider.cs" />
     <Compile Include="Services\Interfaces\IUserProvider.cs" />

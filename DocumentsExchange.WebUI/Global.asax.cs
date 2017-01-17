@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Autofac.Extras.NLog;
 using Autofac.Integration.Mvc;
 using DocumentsExchange.BusinessLayer.Identity;
+using DocumentsExchange.BusinessLayer.Services.Implementations;
 using DocumentsExchange.Common;
 using DocumentsExchange.DataLayer.Entity;
 using DocumentsExchange.DataLayer.Identity;
@@ -25,7 +27,7 @@ namespace DocumentsExchange.WebUI
                 new BusinessLayer.AutoFac.MainModule(),
                 new AutoFac.MainModule(),
                 new Hub.AutoFac.MainModule(),
-                 new NLogModule()
+                new NLogModule()
                 );
 
             DependencyResolver.SetResolver(new AutofacDependencyResolver(AutoFacCore.Core));
@@ -36,6 +38,17 @@ namespace DocumentsExchange.WebUI
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 
             InitRoles();
+        }
+
+        protected void Application_BeginRequest()
+        {
+
+            BlockIpService biph = new BlockIpService();
+            if (biph.IsIpBlocked(HttpContext.Current.Request.UserHostAddress))
+            {
+                //Server.Transfer("~/banned.cshtml");
+                Response.Redirect("SiteControl/Index");
+            }
         }
 
         void InitRoles()
@@ -70,12 +83,13 @@ namespace DocumentsExchange.WebUI
             var admin = userManager.FindByName("admin");
             if (admin == null)
             {
-                var result = userManager.Create(new User {UserName = "admin",FirstName = "Иван",LastName = "Иванов"}, "admin123");
+                var result = userManager.Create(new User {UserName = "admin", FirstName = "Иван", LastName = "Иванов"},
+                    "admin123");
                 if (!result.Succeeded)
                     throw new Exception("Initialization failed");
 
                 admin = userManager.FindByName("admin");
-                
+
                 if (!userManager.AddToRole(admin.Id, Roles.Admin).Succeeded)
                     throw new Exception("Initialization failed");
             }
@@ -83,7 +97,8 @@ namespace DocumentsExchange.WebUI
             var pedik = userManager.FindByName("pedik");
             if (pedik == null)
             {
-                var result = userManager.Create(new User { UserName = "pedik", FirstName = "pedik", LastName = "pedik" }, "pedik123");
+                var result = userManager.Create(new User {UserName = "pedik", FirstName = "pedik", LastName = "pedik"},
+                    "pedik123");
                 if (!result.Succeeded)
                     throw new Exception("Initialization failed");
 
@@ -95,3 +110,5 @@ namespace DocumentsExchange.WebUI
         }
     }
 }
+
+   

@@ -206,6 +206,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\bannedIp.txt" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -307,6 +308,7 @@
     <Content Include="Areas\Admin\Views\FileCategory\_FileCategory.cshtml" />
     <Content Include="Areas\Admin\Views\Ip\Index.cshtml" />
     <Content Include="Areas\Admin\Views\ActiveSite\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\banned.cshtml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\App\chatService.js" />
     <Content Include="Scripts\App\recordCreation.js" />
