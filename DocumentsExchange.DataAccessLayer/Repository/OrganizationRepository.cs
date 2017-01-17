@@ -120,7 +120,7 @@ namespace DocumentsExchange.DataAccessLayer.Repository
                     var existingOrg =
                         await context.Set<Organization>()
                             .Where(x => x.Id == organizationId)
-                            .FirstOrDefaultAsync();
+                            .FirstOrDefaultAsync().ConfigureAwait(false);
 
                     if (existingOrg == null)
                         throw new Exception("");

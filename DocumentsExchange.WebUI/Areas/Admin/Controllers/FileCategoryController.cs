@@ -81,5 +81,11 @@ namespace DocumentsExchange.WebUI.Areas.Admin.Controllers
 
             return RedirectToAction("Index", "AdminPanel");
         }
+
+        public ActionResult Delete(int id)
+        {
+            var res = _fileCategoryProvider.Delete(id).Result;
+            return RedirectToAction("Index", "AdminPanel");
+        }
     }
 }
