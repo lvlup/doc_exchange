@@ -1,1 +1,30 @@
-﻿
+﻿@model DocumentsExchange.DataLayer.Entity.User
+
+<div class="container">
+    <h3>Добавить пользователя:</h3>
+
+    @using (Html.BeginForm("Create", "User", null, FormMethod.Post, new { id = "updateUserForm" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+
+            @Html.ValidationSummary(true)
+            @Html.Partial("_User", Model)
+
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default" id="updateUserBtn">Сохранить</button>
+            </div>
+        </div>
+
+
+        @*<div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button  class="btn btn-default" id="deleteUserBtn">Удалить</button>
+                </div>
+            </div>*@
+
+    }
+</div>

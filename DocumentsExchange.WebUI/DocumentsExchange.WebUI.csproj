@@ -380,6 +380,7 @@
     <Content Include="Views\RecordT2\Edit.cshtml" />
     <Content Include="Views\SiteControl\Index.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\User\_User.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
