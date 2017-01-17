@@ -58,7 +58,7 @@ namespace DocumentsExchange.DataAccessLayer.Repository
                             UserName = x.Sender.FirstName + " " + x.Sender.LastName,
                             Total = query.Count()
                         })
-                        .OrderBy(x => x.Message.TimeStamp)
+                        .OrderByDescending(x => x.Message.TimeStamp)
                         .Skip((pageInfo.Page - 1)*pageInfo.PageSize)
                         .Take(pageInfo.PageSize)
                         .ToListAsync();
