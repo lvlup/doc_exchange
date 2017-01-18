@@ -11,11 +11,11 @@
                 <a href="javascript:void(0)" role="tab" data-url="@Url.Action("Index", "User")">Пользователи</a>
             </li>
 
-            <li class="active">
+            <li>
                 <a href="javascript:void(0)" role="tab" data-url="@Url.Action("Index", "Organization")">Организации</a>
             </li>
 
-            <li class="active">
+            <li>
                 <a href="javascript:void(0)" role="tab" data-url="@Url.Action("Index", "FileCategory")">Типы документов</a>
             </li>
 
@@ -27,9 +27,16 @@
 </div>
 
 <script>
-    $(function() {
+    $(function () {
+        var contentLoader = new Helpers.ContentLoader({
+            content: $('#dictionaryTabContent')
+        });
+
         $('#DictionariesTabs').on('click', '> ul[role=tablist] > li > a[data-url]', function (e) {
-            $('#dictionaryTabContent').load($(this).data('url'));
+            var $link = $(this).closest('li').addClass('active').siblings().removeClass('active').end().end();
+            contentLoader.load({
+                url: $link.data('url')
+            });
         });
     });
 </script>

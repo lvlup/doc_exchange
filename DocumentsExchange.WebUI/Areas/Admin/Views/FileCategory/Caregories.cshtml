@@ -1,54 +1,53 @@
 ﻿@model IEnumerable<DocumentsExchange.DataLayer.Entity.FileCategory>
-
 <div style="padding: 10px">
     <button class="btn btn-primary" data-url="@Url.Action("Create")">Добавить тип документа</button>
 </div>
 
-<table class="table table-bordered table-condensed">
-
-    <thead>
+<div>
+    <table class="table table-bordered table-condensed" style="margin-bottom: 0px" id="allFileCategoriesHeading">
+        <thead>
         <tr>
-            id
+            <th>id</th>
+            <th>Название</th>
+            <th>Активность</th>
+            <th>Дата создания</th>
         </tr>
+        </thead>
+    </table>
+    <div class="table-responsive" style="max-height: 300px; min-height: 150px">
+        <table class="table table-bordered table-condensed" id="allFileCategories">
+            <tbody id="allFileCategoriesTableBody">
+                @if (@Model != null)
+                {
+                    foreach (var fc in Model)
+                    {
+                        <tr>
+                            <td>
+                                <span class="lead">@fc.Id</span>
+                            </td>
+                            <td>
+                                <a href="javascript:void(0)" data-url="@Url.Action("Edit", new {id = fc.Id})">@fc.Name</a>
+                            </td>
+                            <td>
+                                <span class="lead">@(fc.IsActive ? "Да" : "Нет")</span>
+                            </td>
+                            <td>
+                                <span class="lead">@fc.CreatedDateTime.ToString("dd/MM/yyyy")</span>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 
-        <tr>
-            Название
-        </tr>
-
-        <tr>
-            Активность
-        </tr>
-
-        <tr>
-            Дата создания
-        </tr>
-
-    </thead>
-
-    <tbody id="allFileCategoriesTableBody">
-        @if (@Model != null)
-        {
-            foreach (var fc in Model)
-            {
-                <tr>
-
-                    <td>
-                        <span class="lead">@fc.Id</span>
-                    </td>
-
-                    <td>
-                        <a href="javascript:void(0)" data-url="@Url.Action("Edit", new {id = fc.Id})">@fc.Name</a>
-                    </td>
-
-                    <td>
-                        <span class="lead">@(fc.IsActive ? "Да" : "Нет")</span>
-                    </td>
-
-                    <td>
-                        <span class="lead">@fc.CreatedDateTime.ToString("dd/MM/yyyy")</span>
-                    </td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
+       
+<script>
+    $(function() {
+        Helpers.tableResize({
+            heading: $('#allFileCategoriesHeading'),
+            table: $('#allFileCategories')
+        });
+    })
+</script>

@@ -11,7 +11,7 @@
                 <a href="javascript:void(0)" role="tab" data-url="@Url.Action("Index", "ActiveSite")">Активность сайта</a>
             </li>
 
-            <li class="active">
+            <li>
                 <a href="javascript:void(0)" role="tab" data-url="@Url.Action("Index", "Ip")">Заблокированные ip-адреса</a>
             </li>
 
@@ -23,9 +23,16 @@
 </div>
 
 <script>
-    $(function() {
+    $(function () {
+        var contentLoader = new Helpers.ContentLoader({
+            content: $('#siteControlTabContent')
+        });
+
         $('#SiteControlTabs').on('click', '> ul[role=tablist] > li > a[data-url]', function (e) {
-            $('#siteControlTabContent').load($(this).data('url'));
+            var $link = $(this).closest('li').addClass('active').siblings().removeClass('active').end().end();
+            contentLoader.load({
+                url: $link.data('url')
+            });
         });
     });
 </script>

@@ -30,6 +30,31 @@
         return $promise;
     };
 
+    Helpers.tableResize = function(options) {
+        var $heading = options.heading,// $('#usersTableHead'),
+            $table = options.table,// $('#usersTable'),
+            $bodyCells = $table.find('tbody tr:first').children(),
+            colWidth;
+
+        var resize = function () {
+            // Get the tbody columns width array
+            colWidth = $bodyCells.map(function () {
+                return $(this).width();
+            }).get();
+
+            // Set the width of thead columns
+            $heading.find('thead tr').children().each(function (i, v) {
+                if (i === colWidth.length - 1)
+                    return;
+
+                $(v).width(colWidth[i]);
+            });
+        };
+
+        // Adjust the width of thead cells when window resizes
+        $(window).resize(resize).resize();
+    };
+
     var ContentLoader = function(options) {
         this.init(options);
     };
