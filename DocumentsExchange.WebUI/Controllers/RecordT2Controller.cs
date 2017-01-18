@@ -29,8 +29,14 @@ namespace DocumentsExchange.WebUI.Controllers
 
         public PartialViewResult Index(int id)
         {
+            return PartialView(new RecordsT2ViewModel() { OrgId = id });
+        }
+
+        public PartialViewResult RecordsT2(int id)
+        {
             return PartialView(CreateRecordT2Vm(id));
         }
+
 
         [Authorize(Roles = Roles.Admin + "," + Roles.Technician)]
         public PartialViewResult Create(int orgId)

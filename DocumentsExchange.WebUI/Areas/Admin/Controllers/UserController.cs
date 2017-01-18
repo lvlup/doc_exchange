@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using DocumentsExchange.BusinessLayer.Identity;
@@ -12,7 +13,7 @@ using DocumentsExchange.WebUI.ViewModels;
 namespace DocumentsExchange.WebUI.Areas.Admin.Controllers
 {
     [Authorize(Roles = Roles.Admin)]
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private readonly IUserProvider _userProvider;
 
@@ -75,7 +76,7 @@ namespace DocumentsExchange.WebUI.Areas.Admin.Controllers
 
                 return Json(new { Success = true });
             }
-            catch (Exception)
+            catch (RetryLimitExceededException)
             {
                 ModelState.AddModelError("", "Невозможно сохранить изменения. Попробуйте позже.");
             }
@@ -129,7 +130,7 @@ namespace DocumentsExchange.WebUI.Areas.Admin.Controllers
 
                 return Json(new { Success = true });
             }
-            catch (Exception)
+            catch (RetryLimitExceededException)
             {
                 ModelState.AddModelError("", "Невозможно сохранить изменения. Попробуйте позже.");
             }
@@ -159,7 +160,7 @@ namespace DocumentsExchange.WebUI.Areas.Admin.Controllers
 
                 return Json(new { Success = true });
             }
-            catch (Exception)
+            catch (RetryLimitExceededException)
             {
                 ModelState.AddModelError("", "Невозможно сохранить изменения. Попробуйте позже.");
             }

@@ -9,6 +9,8 @@ namespace DocumentsExchange.WebUI.ViewModels
 {
     public class RecordsT2ViewModel
     {
+        public int OrgId { get; set; }
+
         public ICollection<RecordT2> Records { get; set; }
 
         public static ICollection<string> PropertyNames { get; set; }

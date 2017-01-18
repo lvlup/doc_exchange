@@ -3,77 +3,7 @@
 @model DocumentsExchange.WebUI.ViewModels.RecordsT2ViewModel
 
 <div class="container-fluid" id="RecordsFromTable2">
-    <table class="table table-bordered table-condensed" style="font-size: 10px">
-        <thead>
-        <tr>
-            @foreach (var name in RecordsT2ViewModel.PropertyNames)
-            {
-                <th>@name</th>
-            }
-        </tr>
-        </thead>
-        <tbody>
-        @{
-            var records = Model.Records;
-            if (records != null)
-            {
-                foreach (var r2 in records)
-                {
-                    <tr>
-                        <td>
-                            <span class="lead">@r2.CreatedDateTime.ToString("dd/MM/yyyy")</span>
-                        </td>
-                        <td>
-                            <a target="_blank" href="@Url.Action("DownloadPaymentOrder", new {fileName = r2.File.FileName, originalFileName = r2.File.OriginalFileName})"><span class="lead">@r2.NumberPaymentOrder</span></a>
-                        </td>
-                        <td>
-                            <span class="lead">@r2.OrganizationSender</span>
-                        </td>
-                        <td>
-                            <span class="lead">@r2.OrganizationReceiver</span>
-                        </td>
-                        <td>
-                            <span class="lead">@r2.Amount</span>
-                        </td>
-                        <td>
-                            <span class="lead">@r2.Percent</span>
-                        </td>
-                        <td>
-                            <span class="lead">@r2.Deduction</span>
-                        </td>
-                        <td>
-                            <span class="lead">@r2.Received</span>
-                        </td>
-                        <td>
-                            <span class="lead">@r2.SenderFullName</span>
-                        </td>
-
-   
-                        @{
-                            if (User.IsInRole(Roles.Admin))
-                            {
-                                <td>
-                                    <a href="javascript:void(0)" target="_blank" data-link="@Url.Action("ShowLogs", new {id = r2.LogId})">
-                                        <span class="lead" title="@r2.Log.ToString()">show</span>
-                                    </a>
-                                </td>
-                            }
-                        }
-
-                        @{
-                            if (User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Technician))
-                            {
-                                <td>
-                                    <a href="javascript:void(0)" data-url="@Url.Action("Edit", new {recordId = r2.Id})"><span class="lead">Edit</span></a>
-                                </td>
-                            }
-                        }
-                    </tr>
-                }
-            }
-        }
-        </tbody>
-    </table>
+    @Html.Action("RecordsT2", new { id = Model.OrgId })
 </div>
 
 <script>

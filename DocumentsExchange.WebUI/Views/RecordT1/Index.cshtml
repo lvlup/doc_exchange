@@ -4,96 +4,13 @@
 @model DocumentsExchange.WebUI.ViewModels.RecordsT1ViewModel
     
 <div class="container-fluid" id="RecordsFromTable1">
-    <table class="table table-bordered table-condensed" style="font-size: 10px">
-        <thead>
-            <tr>
-                @foreach (var name in RecordsT1ViewModel.PropertyNames)
-                {
-                     <th>@name</th>
-                }
-            </tr>
-        </thead>
-        <tbody>
-        @{
-            var records = Model.Records;
-            if (records != null)
-            {
-                foreach (var r1 in records)
-                {
-                    <tr>
-                        <td>
-                            <span class="lead">@r1.CreatedDateTime</span>
-                        </td>
-                        <td>
-                            <a target="_blank" href="@Url.Action("DownloadPaymentOrder", new { fileName = r1.File.FileName, originalFileName = r1.File.OriginalFileName })"><span class="lead">@r1.NumberPaymentOrder</span></a>
-                        </td>
-                        <td>
-                            <span class="lead">@r1.OrganizationSender</span>
-                        </td>
-                        <td>
-                            <span class="lead">@r1.OrganizationReceiver</span>
-                        </td>
-                        <td>
-                            <span class="lead">@r1.Amount</span>
-                        </td>
-                        <td>
-                            <span class="lead">@r1.Percent</span>
-                        </td>
-                        <td>
-                            <span class="lead">@r1.Course</span>
-                        </td>
-                        <td>
-                            <span class="lead">@r1.AmountInCurrency</span>
-                        </td>
-                        <td>
-                            <span class="lead">@r1.Swift</span>
-                        </td>
-                        <td>
-                            <span class="lead">@r1.Sent</span>
-                        </td>
-                        <td>
-                            <span class="lead">@r1.Currency</span>
-                        </td>
-                        <td>
-                            <span class="lead">@r1.SenderFullName</span>
-                        </td>
-                        <td>
-                            <span class="lead">@r1.AmountInCurrency</span>
-                        </td>
-                        <td>
-                            <span class="lead">@r1.Total</span>
-                        </td>
-
-                        @{
-                            if (User.IsInRole(Roles.Admin))
-                            {
-                                <td>
-                                    <a href="javascript:void(0)" target="_blank" data-link="@Url.Action("ShowLogs", new {id = r1.LogId})">
-                                        <span class="lead" title="@r1.Log.ToString()">show</span>
-                                    </a>
-                                </td>
-                            }
-                        }
-
-                        @{
-                            if (User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Technician))
-                            {
-                                <td>
-                                    <a href="javascript:void(0)" data-url="@Url.Action("Edit", new { recordId = r1.Id })"><span class="lead">Edit</span></a>
-                                </td>
-                            }
-                        }
-                    </tr>
-                }
-            }
-        }
-        </tbody>
-    </table>
+    @Html.Action("RecordsT1", new { id = Model.OrgId })
 </div>
+
 <script>
     $(function() {
         //#tabContent
-        $('#RecordsFromTable1').on('click', '> table > tbody > tr > td > a[data-url]', function(e) {
+        $('#RecordsFromTable1').on('click', '> table > tbody > tr > td > a[data-url]', function (e) {
             $('#tabContent').load($(this).data('url'));
         });
 

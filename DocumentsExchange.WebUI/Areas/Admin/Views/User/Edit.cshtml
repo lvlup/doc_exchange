@@ -23,13 +23,21 @@
     $(function() {
         $('#updateUserBtn').click(function (e) {
             var $form = $(this).closest('form');
-            $.post($form.get(0).action, $form.serialize()).done(function (data) {
+
+            $form.find('[data-val-field],[data-val-summary]').html('');
+
+            Helpers.submitForm({
+                form: $form,
+                ajaxOptions: {
+                    data: $form.serialize(),
+                    url: $form.get(0).action
+                }
+            }).then(function (data) {
+                debugger;
                 if (data.success === true) {
                     $('#allUsersTable').load('@Url.Action("Users")');
                 }
 
-                console.log(data);
-            }).fail(function (data) {
                 console.log(data);
             });
 

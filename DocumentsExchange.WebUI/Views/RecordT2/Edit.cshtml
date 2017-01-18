@@ -41,7 +41,8 @@
 
             urls: {
                 fileValidationUrl: '@Url.Action("ValidateFiles")',
-                uploadUrl: '@Url.Action("Edit", "RecordT2")'
+                uploadUrl: '@Url.Action("Edit", "RecordT2")',
+                tableDataUrl: '@Url.Action("Index", new { id = Model.OranizationId })'
             }
         });
     });

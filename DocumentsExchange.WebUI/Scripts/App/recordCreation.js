@@ -1,4 +1,4 @@
-﻿(function ($, RecordCreator) {
+﻿(function ($, RecordCreator, Helpers) {
     'use strict';
     
     var Creator = function(options) {
@@ -46,7 +46,7 @@
                     dataArray = $form.serializeArray(),
                     act = options.urls.uploadUrl;
 
-                $form.find('[data-val-field]').html('');
+                $form.find('[data-val-field],[data-val-summary]').html('');
 
                 e.preventDefault();
 
@@ -57,7 +57,7 @@
                         data.append("file" + x, files[x]);
                     }
                 } else {
-                    if (!$(options.controls.fileNamePlaceholder).val()){}
+                    if (!$(options.controls.fileNamePlaceholder).val())
                     {
                         $form.find('[name$=OriginalFileName] + [data-val-field]').html('Файл не выбран');
                         return;
@@ -68,34 +68,21 @@
                     data.append(item.name, item.value);
                 });
 
-                $.ajax({
-                    type: "POST",
-                    url: act,
-                    contentType: false,
-                    processData: false,
-                    data: data
-                }).done(function (data) {
-                    $(options.controls.dataPlaceholder).html(data);
-                }).fail(function (data) {
-                    var parsed = data.responseText
-                        ? JSON.parse(data.responseText)
-                        : { errors: [{ key: "Error", errors: "Something went wrong" }] };
-
-                    var unknown = [];
-                    parsed.errors.forEach(function (error) {
-                        var $element = $form.find('[name$=' + error.key + '] + [data-val-field]');
-                        if (!$element.length)
-                            unknown.push(error);
-                        else {
-                            $element.html(error.errors);
-                        }
-                    });
-
-                    $form.find('[data-val-summary]').html(unknown.reduce(function(x, y) { return x + y.key + ': ' + y.errors + '<br/>' }, ""));
+                Helpers.submitForm({
+                    form: $form,
+                    ajaxOptions: {
+                        data: data,
+                        contentType: false,
+                        processData: false,
+                        url: act
+                    }
+                }).then(function (data) {
+                    if (data.success === true)
+                        $(options.controls.dataPlaceholder).load(options.urls.tableDataUrl);
                 });
             });
         }
     });
 
     RecordCreator.manager = Creator;
-})(jQuery, (RecordCreator = {}));
+})(jQuery, RecordCreator = {}, Helpers);

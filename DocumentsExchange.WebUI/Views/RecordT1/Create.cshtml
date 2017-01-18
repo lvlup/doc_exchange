@@ -36,12 +36,14 @@
                 uploadBtn: '#uploadFileBtn',
                 addRecordBtn: "#addRecord1Btn",
                 dataPlaceholder: "#tabContent",
-                fileNamePlaceholder: 'input[name$=OriginalFileName]'
+                fileNamePlaceholder: 'input[name$=OriginalFileName]',
+                tablePlaceholder: '#RecordsFromTable1'
             },
 
             urls: {
                 fileValidationUrl: '@Url.Action("ValidateFiles")',
-                uploadUrl: '@Url.Action("Create","RecordT1")'
+                uploadUrl: '@Url.Action("Create","RecordT1")',
+                tableDataUrl: '@Url.Action("RecordsT1", new { id = Model.OranizationId })'
             }
         });
     });

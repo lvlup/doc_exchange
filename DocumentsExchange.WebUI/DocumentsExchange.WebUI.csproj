@@ -312,6 +312,7 @@
     <Content Include="Areas\Admin\Views\User\PasswordReset.cshtml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\App\chatService.js" />
+    <Content Include="Scripts\App\helpers.js" />
     <Content Include="Scripts\App\recordCreation.js" />
     <Content Include="Scripts\App\signalRService.js" />
     <Content Include="Scripts\App\siteActivityListener.js" />
@@ -425,6 +426,8 @@
     <Content Include="Views\SiteStopped\LoginDeactivated.cshtml" />
     <Content Include="Views\Shared\ShowLogs.cshtml" />
     <Content Include="Views\Shared\ShowNoLogs.cshtml" />
+    <Content Include="Views\RecordT1\RecordsT1.cshtml" />
+    <Content Include="Views\RecordT2\RecordsT2.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

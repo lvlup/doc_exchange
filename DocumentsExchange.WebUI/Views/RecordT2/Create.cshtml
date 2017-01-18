@@ -34,7 +34,8 @@
 
             urls: {
                 fileValidationUrl: '@Url.Action("ValidateFiles")',
-                uploadUrl: '@Url.Action("Create", "RecordT2")'
+                uploadUrl: '@Url.Action("Create", "RecordT2")',
+                tableDataUrl: '@Url.Action("Index", new { id = Model.OranizationId })'
             }
         });
     });

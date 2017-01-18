@@ -33,6 +33,12 @@ namespace DocumentsExchange.WebUI.Controllers
 
         public PartialViewResult Index(int id)
         {
+            return PartialView(new RecordsT1ViewModel() { OrgId = id });
+        }
+
+
+        public PartialViewResult RecordsT1(int id)
+        {
             return PartialView(CreateRecordT1Vm(id));
         }
 

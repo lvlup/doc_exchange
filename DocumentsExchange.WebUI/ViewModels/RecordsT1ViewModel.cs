@@ -11,6 +11,8 @@ namespace DocumentsExchange.WebUI.ViewModels
     {
         public ICollection<RecordT1> Records { get; set; }
 
+        public int OrgId { get; set; }
+
         public static  ICollection<string> PropertyNames { get; set; } 
 
         static RecordsT1ViewModel()

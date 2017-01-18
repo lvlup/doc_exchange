@@ -15,11 +15,15 @@
 
 @Html.HiddenFor(m => m.Id)
 
+<div data-val-summary>
+
+</div>
+
 <div class="form-group">
     @Html.LabelFor(p => p.IsActive, new { @class = "col-sm-2 control-label" })
     <div class="col-sm-10">
         @Html.CheckBoxFor(p => p.IsActive, new { @class = "form-control", tabindex = 1 })
-        @Html.ValidationMessageFor(model => model.IsActive, null, new { @class = "text-danger" })
+        @Html.ValidationMessageFor(model => model.IsActive, null, new { @class = "text-danger", @data_val_field = "true" })
     </div>
 </div>
 
@@ -27,7 +31,7 @@
     @Html.LabelFor(p => p.LastName, new { @class = "col-sm-2 control-label" })
     <div class="col-sm-10">
         @Html.TextBoxFor(p => p.LastName, new { @class = "form-control", tabindex = 1 })
-        @Html.ValidationMessageFor(model => model.LastName, null, new { @class = "text-danger" })
+        @Html.ValidationMessageFor(model => model.LastName, null, new { @class = "text-danger", @data_val_field = "true" })
     </div>
 </div>
 
@@ -35,7 +39,7 @@
     @Html.LabelFor(p => p.FirstName, new { @class = "col-sm-2 control-label" })
     <div class="col-sm-10">
         @Html.TextBoxFor(p => p.FirstName, new { @class = "form-control", tabindex = 1 })
-        @Html.ValidationMessageFor(model => model.FirstName, null, new { @class = "text-danger" })
+        @Html.ValidationMessageFor(model => model.FirstName, null, new { @class = "text-danger", @data_val_field = "true" })
     </div>
 </div>
 
@@ -51,7 +55,7 @@
     @Html.LabelFor(p => p.UserName, new {@class = "col-sm-2 control-label"})
     <div class="col-sm-10">
         @Html.TextBoxFor(p => p.UserName, new {@class = "form-control", tabindex = 1})
-        @Html.ValidationMessageFor(model => model.UserName, null, new {@class = "text-danger"})
+        @Html.ValidationMessageFor(model => model.UserName, null, new {@class = "text-danger", @data_val_field = "true" })
     </div>
 </div>
 
@@ -59,7 +63,7 @@
     @Html.LabelFor(p => p.Role, new {@class = "col-sm-2 control-label"})
     <div class="col-sm-10">
         @Html.DropDownListFor(p => p.Role, roles, new {@class = "form-control", tabindex = 1})
-        @Html.ValidationMessageFor(model => model.Role, null, new {@class = "text-danger"})
+        @Html.ValidationMessageFor(model => model.Role, null, new {@class = "text-danger", @data_val_field = "true" })
     </div>
 </div>
 
@@ -67,7 +71,7 @@
     @Html.LabelFor(p => p.Organizations, new { @class = "col-sm-2 control-label" })
     <div class="col-sm-10">
         @Html.ListBoxFor(p => p.Organizations, organizations, new { @class = "form-control", tabindex = 1 })
-        @Html.ValidationMessageFor(model => model.Organizations, null, new { @class = "text-danger" })
+        @Html.ValidationMessageFor(model => model.Organizations, null, new { @class = "text-danger", @data_val_field = "true" })
     </div>
 </div>
 
