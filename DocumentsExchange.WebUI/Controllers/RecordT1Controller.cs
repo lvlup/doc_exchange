@@ -270,6 +270,7 @@ namespace DocumentsExchange.WebUI.Controllers
         public ActionResult ShowLogs(int id)
         {
            var log =  _logProvider.Get(id).Result;
+           if (log.Changes.Count == 0) return View("ShowNoLogs");
            return View(log);
         }
     }
