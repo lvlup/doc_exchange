@@ -30,6 +30,34 @@ namespace DocumentsExchange.BusinessLayer.Services.Implementations
         }
 
 
+        public bool UpdateFileWithipList(string text)
+        {
+            try
+            {
+                var path = HostingEnvironment.MapPath(FilePath);
+                // ReSharper disable once AssignNullToNotNullAttribute
+                File.WriteAllText(path,text);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public string GetFileContents()
+        {
+            var path = HostingEnvironment.MapPath(FilePath);
+
+            if (File.Exists(path))
+            {
+                // ReSharper disable once AssignNullToNotNullAttribute
+                return File.ReadAllText(path);
+            }
+
+            return string.Empty;
+        }
+
         public bool IsIpBlocked(string ip)
         {
             IPAddress ipAddress;

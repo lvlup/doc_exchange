@@ -33,7 +33,7 @@
                     url: $form.get(0).action
                 }
             }).then(function (data) {
-                debugger;
+    
                 if (data.success === true) {
                     $('#allUsersTable').load('@Url.Action("Users")');
                 }

@@ -36,7 +36,7 @@
                     url: $form.get(0).action
                 }
             }).then(function (data) {
-                debugger;
+
                 if (data.success === true) {
                     $('#allFileCategoriesTable').load('@Url.Action("Caregories")');
                 }

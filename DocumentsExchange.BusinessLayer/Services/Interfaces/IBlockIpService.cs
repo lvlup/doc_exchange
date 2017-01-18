@@ -8,6 +8,10 @@ namespace DocumentsExchange.BusinessLayer.Services.Interfaces
 {
     public interface IBlockIpService
     {
+        bool UpdateFileWithipList(string text);
+
+        string GetFileContents();
+
         bool IsIpBlocked(string ip);
     }
 }

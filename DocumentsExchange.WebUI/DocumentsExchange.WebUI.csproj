@@ -343,6 +343,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\ActiveSiteController.cs" />
     <Compile Include="Areas\Admin\Controllers\IpController.cs" />
+    <Compile Include="Areas\Admin\ViewModels\IpViewModel.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="AutoFac\MainModule.cs" />
     <Compile Include="Controllers\AccountController.cs" />
