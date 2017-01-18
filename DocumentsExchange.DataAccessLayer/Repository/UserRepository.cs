@@ -89,7 +89,8 @@ namespace DocumentsExchange.DataAccessLayer.Repository
                                 .ToListAsync()
                                 .ConfigureAwait(false);
 
-                    organizations.ForEach(x => usr.Organizations.Add(x));
+                    organizations.ForEach(x => { usr.Organizations.Add(x); x.Users.Add(usr); });
+
                     context.Set<User>().Add(usr);
                     context.ChangeTracker.DetectChanges();
                     result = await context.SaveChangesAsync().ConfigureAwait(false) > 0;
@@ -174,6 +175,7 @@ namespace DocumentsExchange.DataAccessLayer.Repository
                     var usersSet = context.Set<User>();
                     var existing =
                          await usersSet
+                             .Include(u=>u.Organizations.Select(o=>o.Users))
                              .Where(x => x.Id == user.Id)
                              .FirstOrDefaultAsync();
 
@@ -183,15 +185,33 @@ namespace DocumentsExchange.DataAccessLayer.Repository
                     var organizations =
                         await
                             context.Set<Organization>()
+                                .Include(o=>o.Users)
                                 .Join(user.OrganizationIds, x => x.Id, x => x, (x, y) => x)
                                 .ToListAsync()
                                 .ConfigureAwait(false);
 
-                    organizations.ForEach(x => user.Organizations.Add(x));
+                    existing.UserName = user.UserName;
+                    existing.FirstName = user.FirstName;
+                    existing.LastName = user.LastName;
+                    existing.IsActive = user.IsActive;
 
-                    context.Entry(existing).State = EntityState.Detached;
-                    usersSet.Attach(user);
-                    context.Entry(user).State = EntityState.Modified;
+                    var removedOrgs = existing.Organizations.Except(organizations);
+                    var addedOrgs = organizations.Except(existing.Organizations);
+
+                    foreach (var rOrg in removedOrgs.ToList())
+                    {
+                        existing.Organizations.Remove(rOrg);
+                        rOrg.Users.Remove(existing);
+                    }
+
+                    foreach (var aOrg in addedOrgs.ToList())
+                    {
+                        existing.Organizations.Add(aOrg);
+                        aOrg.Users.Add(existing);
+
+                    }
+
+                    context.Entry(existing).State = EntityState.Modified;
 
                     context.ChangeTracker.DetectChanges();
                     result = await context.SaveChangesAsync().ConfigureAwait(false) > 0;

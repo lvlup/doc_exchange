@@ -96,7 +96,7 @@
                 var message = {
                     userId: this.options.data.userId,
                     userName: this.options.data.userName,
-                    organizationId: 1,
+                    organizationId: this.options.data.orgId,
                     content: $message.val(),
                     timeStamp: new Date().getTime()
                 };

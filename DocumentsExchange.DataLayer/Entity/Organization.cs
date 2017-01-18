@@ -10,7 +10,15 @@ namespace DocumentsExchange.DataLayer.Entity
 {
    public class Organization
     {
-        public int Id { get; set; }
+       public Organization()
+       {
+           RecordT1s = new HashSet<RecordT1>();
+           RecordT2s = new HashSet<RecordT2>();
+           Users = new HashSet<User>();
+           Files = new HashSet<File>();
+       }
+
+       public int Id { get; set; }
 
         [DisplayName("Название")]
         [MaxLength(20)]

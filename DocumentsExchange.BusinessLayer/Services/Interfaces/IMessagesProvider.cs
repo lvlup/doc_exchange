@@ -52,12 +52,8 @@ namespace DocumentsExchange.BusinessLayer.Services.Interfaces
 
         public async Task<IEnumerable<int>> GetRelatedUsers(int userId, int orgId)
         {
-            var users = await _userRepository.GetAll();
-            return users.Select(x => x.Id).Except(new [] { userId });
-
-            // todo
-            //var users = await _userRepository.GetAll(orgId, userId);
-            //return users.Select(x => x.Id);
+            var users = await _userRepository.GetAll(orgId, userId);
+            return users.Select(x => x.Id);
         }
     }
 }

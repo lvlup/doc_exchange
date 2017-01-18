@@ -26,7 +26,7 @@ namespace DocumentsExchange.DataAccessLayer.Config
                     {
                         CreatedDateTime = DateTime.UtcNow,
                         IsActive = true,
-                        Name = "test org"
+                        Name = "Группа 1"
                     });
 
                     context.Set<FileCategory>().AddOrUpdate(x => x.Name, new FileCategory()

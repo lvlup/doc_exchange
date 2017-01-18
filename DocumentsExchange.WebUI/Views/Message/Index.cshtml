@@ -29,7 +29,8 @@
         var chat = new Chat.instance({
             data: {
                 userId: '@(HttpContext.Current.User.Identity.GetUserId<int>())',
-                userName: '@(HttpContext.Current.User.Identity.GetFullName())'
+                userName: '@(HttpContext.Current.User.Identity.GetFullName())',
+                orgId: '@ViewBag.OrgId'
             },
 
             templates: {

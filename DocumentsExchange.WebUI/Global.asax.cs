@@ -80,6 +80,7 @@ namespace DocumentsExchange.WebUI
             var roleManager = DependencyResolver.Current.GetService<AppRoleManager>();
             var userManager = DependencyResolver.Current.GetService<ApplicationUserManager>();
             var orgProvider = DependencyResolver.Current.GetService<IOrganizationProvider>();
+            var userProvider = DependencyResolver.Current.GetService<IUserProvider>();
 
             if (!roleManager.RoleExists(Roles.Admin))
             {
@@ -105,40 +106,31 @@ namespace DocumentsExchange.WebUI
                     throw new Exception("Initialization failed");
             }
 
-            var admin = userManager.FindByName("admin");
+            var admin = userManager.FindByName("Admin");
             if (admin == null)
             {
-                var result = userManager.Create(new User
+                var user = new User()
                 {
-                    UserName = "admin",
+                    UserName = "Admin",
                     FirstName = "Иван",
                     LastName = "Иванов",
                     IsActive = true,
-                    Organizations =  orgProvider.GetAll().Result.ToList(),
-                    ActivityDateTime = DateTime.UtcNow
-                }, "admin123");
+                    OrganizationIds =  orgProvider.GetAll().Result.Select(o=> o.Id).ToArray(),
+                    ActivityDateTime = DateTime.UtcNow,
+                    RoleList = Roles.Admin
+                };
 
-                if (!result.Succeeded)
+                var result =  userProvider.Add(user, "fel239iX!!Q").Result;
+
+                //var result = userManager.Create(user, "fel239iX!!Q");
+
+                if (!result)
                     throw new Exception("Initialization failed");
 
-                admin = userManager.FindByName("admin");
+                //admin = userManager.FindByName("Admin");
 
-                if (!userManager.AddToRole(admin.Id, Roles.Admin).Succeeded)
-                    throw new Exception("Initialization failed");
-            }
-
-            var pedik = userManager.FindByName("pedik");
-            if (pedik == null)
-            {
-                var result = userManager.Create(new User {UserName = "pedik", FirstName = "pedik", LastName = "pedik"},
-                    "pedik123");
-                if (!result.Succeeded)
-                    throw new Exception("Initialization failed");
-
-                pedik = userManager.FindByName("pedik");
-
-                if (!userManager.AddToRole(pedik.Id, Roles.User).Succeeded)
-                    throw new Exception("Initialization failed");
+                //if (!userManager.AddToRole(admin.Id, Roles.Admin).Succeeded)
+                //    throw new Exception("Initialization failed");
             }
         }
     }
