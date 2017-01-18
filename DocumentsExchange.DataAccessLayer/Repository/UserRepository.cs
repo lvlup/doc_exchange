@@ -109,8 +109,18 @@ namespace DocumentsExchange.DataAccessLayer.Repository
             {
                 try
                 {
-                    return await context.Set<User>()
-                        .FindAsync(id).ConfigureAwait(false);
+                    var user =  await context.Set<User>()
+                        .Select(u => new
+                        {
+                            User = u,
+                            OrganizationIds = u.Organizations.Select(x => x.Id)
+                        })
+                        .FirstOrDefaultAsync(x => x.User.Id == id).ConfigureAwait(false);
+
+                    if (user == null) return null;
+
+                    user.User.OrganizationIds = user.OrganizationIds.ToArray();
+                    return user.User;
                 }
                 catch (Exception e)
                 {

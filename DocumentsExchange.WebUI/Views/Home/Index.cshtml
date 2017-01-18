@@ -31,19 +31,28 @@
 <div class="container" style="width: 100%" id="mainViewId">
 
     <div class="row" style="margin-top: 25px">
-
-        <div class="col-md-1" id="OrganizationsTableMain" style="padding-left: 0px; padding-right: 0px;">
-            <div class="panel-heading"><span style="visibility: hidden">heading</span></div>
-            @Html.Action("Index", "Organizations")
-        </div>
+        @if (Model.OrganizationIds.Length > 1)
+        {
+            <div class="col-md-1" id="OrganizationsTableMain" style="padding-left: 0px; padding-right: 0px;">
+                <div class="panel-heading"><span style="visibility: hidden">heading</span></div>
+                @Html.Action("Index", "Organizations")
+            </div>
+        }
 
         <div class="col-md-8" id="TabCotrollerView" style="min-height: 500px; height: 1px; padding-left: 0px; padding-right: 0px">
+            @if (Model.OrganizationIds.Length == 1)
+            {
+                @Html.Action("Index", "Table", new { id = Model.OrganizationIds[0] })
+            }
         </div>
 
         <div id="ChatView" class="col-md-3" style="padding-left: 0px; min-height: 500px; height: 100%">
+            @if (Model.OrganizationIds.Length == 1)
+            {
+                @Html.Action("Index", "Message", new { orgId = Model.OrganizationIds[0] })
+            }
         </div>
     </div>
-
 </div>
 
 

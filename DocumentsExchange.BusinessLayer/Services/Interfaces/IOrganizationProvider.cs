@@ -8,6 +8,8 @@ namespace DocumentsExchange.BusinessLayer.Services.Interfaces
     {
         Task<IEnumerable<Organization>> GetAll();
 
+        Task<IEnumerable<Organization>> GetUseOrganizations(int userId);
+
         Task<Organization> Get(int id);
 
         Task<bool> Add(Organization org);

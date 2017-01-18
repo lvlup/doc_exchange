@@ -7,7 +7,7 @@ using DocumentsExchange.DataLayer.Entity;
 namespace DocumentsExchange.WebUI.Controllers
 {
     [Authorize]
-    public class OrganizationsController : Controller
+    public class OrganizationsController : BaseController
     {
         private readonly IOrganizationProvider _organizationProvider;
 
@@ -22,7 +22,7 @@ namespace DocumentsExchange.WebUI.Controllers
 
             //var r1 = _organizationProvider.Add(org).Result;
 
-            var model =  _organizationProvider.GetAll().Result;
+            var model =  _organizationProvider.GetUseOrganizations(UserId).Result;
             return PartialView(model);
         }
 

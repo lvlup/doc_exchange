@@ -20,6 +20,11 @@ namespace DocumentsExchange.BusinessLayer.Services.Implementations
             return await _organizationRepository.GetOrganizations().ConfigureAwait(false);
         }
 
+        public async Task<IEnumerable<Organization>> GetUseOrganizations(int userId)
+        {
+            return await _organizationRepository.GetUserOrganizations(userId).ConfigureAwait(false);
+        }
+
         public async Task<Organization> Get(int orgId)
         {
             return await _organizationRepository.Get(orgId).ConfigureAwait(false);

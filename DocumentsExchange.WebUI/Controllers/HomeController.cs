@@ -1,23 +1,25 @@
 ﻿using System.Web.Mvc;
 using DocumentsExchange.BusinessLayer.Identity;
+using DocumentsExchange.BusinessLayer.Services.Interfaces;
 using DocumentsExchange.DataLayer.Entity;
 using DocumentsExchange.WebUI.Filters;
+using Microsoft.AspNet.Identity;
 
 namespace DocumentsExchange.WebUI.Controllers
 {
     [Authorize]
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        private readonly ApplicationUserManager _userManager;
+        private readonly IUserProvider _userProvider;
 
-        public HomeController(ApplicationUserManager userManager)
+        public HomeController(IUserProvider userProvider)
         {
-            _userManager = userManager;
+            _userProvider = userProvider;
         }
 
         public ActionResult Index()
         {
-            User user = _userManager.FindByNameAsync(User.Identity.Name).Result;
+            User user = _userProvider.Get(UserId).Result;
             return View(user);
         }
     }
