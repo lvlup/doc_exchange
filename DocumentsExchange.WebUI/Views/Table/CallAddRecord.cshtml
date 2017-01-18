@@ -1,15 +1,21 @@
 ﻿@using DocumentsExchange.DataLayer.Entity
 @model DocumentsExchange.WebUI.ViewModels.TableNamesViewModel
 
+<div style="padding: 25px; padding-bottom: 0px" class="col-md-3">
+    @Html.DropDownList("TableNameDropDown", Model.TableList, new { @class = "form-control"})
+</div>
 
-@Html.DropDownList("TableNameDropDown", Model.TableList)
 
-<div id="AddRecordForm">
+<div id="AddRecordForm" class="col-md-12" style="height: 100%; position: relative">
 </div>
 
 
 <script>
     $(function () {
+        var contentLoader = new Helpers.ContentLoader({
+            content: $('#AddRecordForm')
+        });
+
         $('#TableNameDropDown').change(function () {
             /* Get the selected value of dropdownlist */
             var selectedId = $(this).val();
@@ -17,22 +23,14 @@
             if (selectedId === "Table1") {
                 /* Request the partial view with .get request. */
                 var createRecordT1Act = '@Url.Action("Create", "RecordT1",new { orgId = Model.OrganizationId})';
-                $.get(createRecordT1Act, function (data) {
-
-                    /* data is the pure html returned from action method, load it to your page */
-                    $('#AddRecordForm').html(data);
-                    /* little fade in effect */
-                    $('#AddRecordForm').fadeIn('fast');
+                contentLoader.load({
+                    url: createRecordT1Act
                 });
             } else {
                 /* Request the partial view with .get request. */
                 var createRecordT2Act = '@Url.Action("Create", "RecordT2", new { orgId = Model.OrganizationId })';
-                $.get(createRecordT2Act, function (data) {
-
-                    /* data is the pure html returned from action method, load it to your page */
-                    $('#AddRecordForm').html(data);
-                    /* little fade in effect */
-                    $('#AddRecordForm').fadeIn('fast');
+                contentLoader.load({
+                    url: createRecordT2Act
                 });
             }
         }).change();

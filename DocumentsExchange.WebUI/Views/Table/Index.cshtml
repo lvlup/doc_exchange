@@ -6,13 +6,13 @@
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
             <li class="active">
-                <a href="javascript:void(0)" role="tab" data-url="@Url.Action("Index", "RecordT1", new {id = @Model.Id})">T1</a>
+                <a style="cursor: pointer" href="javascript:void(0)" role="tab" data-url="@Url.Action("Index", "RecordT1", new {id = @Model.Id})">T1</a>
             </li>
             <li>
-                <a href="javascript:void(0)" role="tab" data-url="@Url.Action("Index", "RecordT2", new {id = @Model.Id})">T2</a>
+                <a style="cursor: pointer" href="javascript:void(0)" role="tab" data-url="@Url.Action("Index", "RecordT2", new {id = @Model.Id})">T2</a>
             </li>
             <li>
-                <a href="javascript:void(0)" role="tab" data-url="@Url.Action("Index", "FileCategories", new {id = @Model.Id})">Ф</a>
+                <a style="cursor: pointer" href="javascript:void(0)" role="tab" data-url="@Url.Action("Index", "FileCategories", new {id = @Model.Id})">Ф</a>
             </li>
             @{
                 if (User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Technician))
@@ -33,9 +33,17 @@
 </div>
 
 <script>
-    $(function() {
-        $('#Tabs').on('click', '> ul[role=tablist] > li > a[data-url]', function(e) {
-            $('#tabContent').load($(this).data('url'));
+    $(function () {
+        var tableContentLoader = new Helpers.ContentLoader({
+            content: $('#tabContent')
+        });
+
+        $('#Tabs').on('click', '> ul[role=tablist] > li > a[data-url]', function (e) {
+            var $link = $(this).closest('li').addClass('active').siblings().removeClass('active').end().end();
+
+            tableContentLoader.load({
+                url: $link.data('url')
+            });
         });
     });
 </script>

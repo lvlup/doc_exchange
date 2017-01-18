@@ -29,4 +29,34 @@
 
         return $promise;
     };
+
+    var ContentLoader = function(options) {
+        this.init(options);
+    };
+
+    $.extend(ContentLoader.prototype, {
+        Constructor: ContentLoader,
+        init: function (options) {
+            this.xhr = null;
+            this.contentPlaceholder = options.content;
+        },
+
+        load: function (options) {
+            if (this._url === options.url)
+                return;
+
+            this._url = options.url;
+
+            if (this.xhr && this.xhr.readyState != 4) {
+                this.xhr.abort();
+            }
+            
+            this.contentPlaceholder.empty().addClass('progress');
+            this.xhr = $.get(options.url).done(function (html) {
+                this.contentPlaceholder.removeClass('progress').html(html);
+            }.bind(this));
+        }
+    });
+
+    Helpers.ContentLoader = ContentLoader;
 })(jQuery, Helpers = {});

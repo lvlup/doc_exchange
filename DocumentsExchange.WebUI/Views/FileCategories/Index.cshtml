@@ -1,18 +1,40 @@
 ﻿@using DocumentsExchange.WebUI.ViewModels
 @model DocumentsExchange.WebUI.ViewModels.FileCategoriesViewModel
 
-<div style="float: left; width: 25%; height: 100%; position: relative; border-right: 1px solid black">
+<div style="float: left; width: 25%; height: 100%; position: relative; border-right: 1px solid black" id="FileCategories">
     @foreach (var category in @Model.FileCategories.Where(o => o.IsActive))
     {
-        <div>
-            @Ajax.ActionLink(@category.Name, "Get", "FileCategories",
-                new {id = category.Id, orgId = Model.OrganizationId},
-                new AjaxOptions {UpdateTargetId = "FilesTableView"})
+        <div style="padding: 5px">
+            <a href="javascript:void(0)"
+               class="glyphicon glyphicon-folder-close"
+               data-url="@Html.Raw(Url.Action("Get", new {id = category.Id, orgId = Model.OrganizationId}))">@category.Name</a>
         </div>
     }
 </div>
-<div id="FilesTableView" style="float: left; width: 75%; height: 100%; position: relative;">
+<div id="FilesTableView" style="float: left; width: 75%; height: 100%; position: relative; padding: 25px">
 
 </div>
 
+<script>
+    $(function () {
+        var contentLoader = new Helpers.ContentLoader({
+            content: $('#FilesTableView')
+        });
 
+        $('#FileCategories').on('click', '> div > a[data-url]', function(e) {
+            var $link = $(this)
+                .removeClass('glyphicon-folder-close')
+                .addClass('glyphicon-folder-open')
+                .parent()
+                .siblings()
+                .find('glyphicon')
+                .removeClass('glyphicon-folder-open')
+                .addClass('glyphicon-folder-close')
+                .end().end().end();
+
+            contentLoader.load({
+                url: $link.data('url')
+            });
+        });
+    });
+</script>

@@ -10,6 +10,13 @@
             {
                 <th>@name</th>
             }
+
+            @{
+                if (User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Technician))
+                {
+                    <th></th>
+                }
+            }
         </tr>
     </thead>
     <tbody>

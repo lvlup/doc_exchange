@@ -3,3 +3,14 @@ body {
     padding-top: 10px;
     padding-bottom: 20px;
 }
+
+.progress {
+    background-image: url(Images/progress.gif);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.glyphicon:before {
+    margin-right: 5px;
+    color: black !important;
+}

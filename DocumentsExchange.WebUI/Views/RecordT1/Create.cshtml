@@ -2,7 +2,7 @@
 @using DocumentsExchange.Common.Extensions;  
 @model DocumentsExchange.DataLayer.Entity.RecordT1
 
-@using (Html.BeginForm("Create", "RecordT1", null, FormMethod.Post, new { enctype = "multipart/form-data", id = "AddRecord1Form" }))
+@using (Html.BeginForm("Create", "RecordT1", null, FormMethod.Post, new { enctype = "multipart/form-data", id = "AddRecord1Form", @style = "margin: 25px" }))
 {
     @Html.AntiForgeryToken()
     <div class="form-horizontal">

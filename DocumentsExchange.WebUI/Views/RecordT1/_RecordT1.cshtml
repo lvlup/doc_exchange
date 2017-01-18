@@ -48,7 +48,7 @@
 
 <div class="form-group">
     <label class="col-sm-2 control-label">Файл:</label>
-    <div class="col-sm-8">
+    <div class="col-sm-7">
         @Html.TextBoxFor(p => p.File.OriginalFileName, new { @class = "form-control", @readonly = "readonly" })
         @Html.ValidationMessageFor(p => p.File.OriginalFileName, null, new { @class = "text-danger", @data_val_field = "true" })
     </div>

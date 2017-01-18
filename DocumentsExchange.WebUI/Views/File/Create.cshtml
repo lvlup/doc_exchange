@@ -1,31 +1,31 @@
 ﻿@model DocumentsExchange.DataLayer.Entity.File
 
 
+<div style="padding: 15px">
     <h3>Добавление файла:</h3>
-
-    @using (Html.BeginForm("Create","File", null, FormMethod.Post, new { enctype = "multipart/form-data", id= "AddFileForm", @class = "form-horizontal" }))
+    @using (Html.BeginForm("Create", "File", null, FormMethod.Post, new { enctype = "multipart/form-data", id = "AddFileForm", @class = "form-horizontal" }))
     {
         @Html.AntiForgeryToken()
 
-            @Html.ValidationSummary(true)
-            @Html.Partial("_File")
+        @Html.ValidationSummary(true)
+        @Html.Partial("_File")
 
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-default" id="addFileBtn">Добавить файл</button>
-                </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default" id="addFileBtn">Добавить файл</button>
             </div>
+        </div>
     }
+</div>
 
 <script>
     $(function () {
-
-
         new RecordCreator.manager({
             controls: {
                 uploadBtn: '#uploadFileBtn',
                 addRecordBtn: "#addFileBtn",
-                dataPlaceholder: "#FilesTableView"
+                dataPlaceholder: "#FilesTableView",
+                fileNamePlaceholder: '[name$=FileName]'
             },
 
             urls: {
@@ -34,48 +34,6 @@
                 tableDataUrl: '@Html.Raw(Url.Action("Index", new { orgId = Model.OranizationId, categoryId = Model.CategoryId }))'
             }
         });
-
-
-
-        @*$("#addFileBtn").click(function (e) {
-            var dataArray = $(this).closest("form").serializeArray();
-            var act = '@Url.Action("Create","File")';
-            e.preventDefault();
-
-
-            var files = $('#uploadFile')[0].files;
-            if (files.length > 0)
-            {
-                    var data = new FormData();
-                    for (var x = 0; x < files.length; x++) {
-                        data.append("file" + x, files[x]);
-                    }
-
-                    //for (var i = 0; i< dataArray.length; i++) {
-                    //    data.append(dataArray[i].name, dataArray[i].value);
-                    //}
-                    dataArray.forEach(function (item) {
-                    data.append(item.name, item.value);
-                });
-                //    $.post(act, data).done(function (data) {
-                //        $("#FilesTable").html(data);
-                //});
-
-                    $.ajax({
-                        type: "POST",
-                        url: act,
-                        contentType: false,
-                        processData: false,
-                        data: data,
-                        success: function (data) {
-                            $("#FilesTable").html(data);
-                        },
-                        error: function (xhr, status, p3) {
-                            alert(xhr.responseText);
-                        }
-                    });
-            }
-        });*@
     })
 </script>
 
