@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Threading.Tasks;
 using DocumentsExchange.BusinessLayer.Identity;
 using DocumentsExchange.BusinessLayer.Models.User;
 using DocumentsExchange.BusinessLayer.Services.Interfaces;
-using DocumentsExchange.DataAccessLayer;
 using DocumentsExchange.DataAccessLayer.Repository;
 using DocumentsExchange.DataLayer.Entity;
 using Microsoft.AspNet.Identity;
@@ -17,19 +15,16 @@ namespace DocumentsExchange.BusinessLayer.Services.Implementations
     {
         private readonly UserRepository _userRepository;
         private readonly OrganizationRepository _organizationRepository;
-        private readonly ApplicationUserManagerFactory _userManagerFactory;
-        private readonly IDbContextFactory<DocumentsExchangeContext> _contextFactory;
+        private readonly ApplicationUserManager _userManager;
 
         public UserProvider(
             UserRepository userRepository, 
             OrganizationRepository organizationRepository, 
-            ApplicationUserManagerFactory userManagerFactory,
-            IDbContextFactory<DocumentsExchangeContext> contextFactory)
+            ApplicationUserManager userManager)
         {
             _userRepository = userRepository;
             _organizationRepository = organizationRepository;
-            _userManagerFactory = userManagerFactory;
-            _contextFactory = contextFactory;
+            _userManager = userManager;
         }
 
         public async Task<IEnumerable<User>> GetAll()
@@ -76,35 +71,7 @@ namespace DocumentsExchange.BusinessLayer.Services.Implementations
         {
             if (await _userRepository.Create(user).ConfigureAwait(false))
             {
-                using (var context = _contextFactory.Create())
-                using (var userManager = _userManagerFactory.Create(context))
-                using (var dbContextTransaction = context.Database.BeginTransaction())
-                {
-                    try
-                    {
-                        var fromDb = await userManager.FindByNameAsync(user.UserName).ConfigureAwait(false);
-                        var result = await userManager.AddPasswordAsync(fromDb.Id, password).ConfigureAwait(false);
-
-                        if (!result.Succeeded)
-                            throw new Exception(string.Join(",", result.Errors));
-
-                        result = await userManager.AddToRolesAsync(fromDb.Id,
-                                    user.RoleList.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
-                                        .Select(x => x.Trim())
-                                        .ToArray()).ConfigureAwait(false);
-
-                        if (!result.Succeeded)
-                            throw new Exception(string.Join(",", result.Errors));
-
-                        
-                        dbContextTransaction.Commit();
-                        return true;
-                    }
-                    catch (Exception)
-                    {
-                        dbContextTransaction.Rollback();
-                    }
-                }
+                return await _userManager.AddUser(user, password);
             }
 
             return false;
@@ -114,34 +81,7 @@ namespace DocumentsExchange.BusinessLayer.Services.Implementations
         {
             if (await _userRepository.Update(user).ConfigureAwait(false))
             {
-                using (var context = _contextFactory.Create())
-                using (var userManager = _userManagerFactory.Create(context))
-                using (var dbContextTransaction = context.Database.BeginTransaction())
-                {
-                    try
-                    {
-                        var roles = await userManager.GetRolesAsync(user.Id).ConfigureAwait(false);
-                        string[] newRoles =
-                            user.RoleList.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
-                                .Select(x => x.Trim())
-                                .ToArray();
-
-                        var result = await userManager.RemoveFromRolesAsync(user.Id, roles.Except(newRoles).ToArray()).ConfigureAwait(false);
-                        if (!result.Succeeded)
-                            throw new Exception(string.Join(",", result.Errors));
-
-                        result = await userManager.AddToRolesAsync(user.Id, newRoles.Except(roles).ToArray()).ConfigureAwait(false);
-                        if (!result.Succeeded)
-                            throw new Exception(string.Join(",", result.Errors));
-                        
-                        dbContextTransaction.Commit();
-                        return true;
-                    }
-                    catch (Exception)
-                    {
-                        dbContextTransaction.Rollback();
-                    }
-                }
+                return await _userManager.UpdateUserRoles(user.Id, user.RoleList);
             }
 
             return false;
@@ -150,19 +90,15 @@ namespace DocumentsExchange.BusinessLayer.Services.Implementations
         public async Task<bool> ResetPassword(int userId, string password)
         {
             bool result = false;
-            using (var manager = _userManagerFactory.Create())
+            try
             {
-                try
-                {
-                    string resetToken = await manager.GeneratePasswordResetTokenAsync(userId).ConfigureAwait(false);
-                    IdentityResult passwordChangeResult = await manager.ResetPasswordAsync(userId, resetToken, password).ConfigureAwait(false);
-                    result = passwordChangeResult.Succeeded;
-                }
-                catch (Exception e)
-                {
-                    
-                }
-                
+                string resetToken = await _userManager.GeneratePasswordResetTokenAsync(userId).ConfigureAwait(false);
+                IdentityResult passwordChangeResult = await _userManager.ResetPasswordAsync(userId, resetToken, password).ConfigureAwait(false);
+                result = passwordChangeResult.Succeeded;
+            }
+            catch (Exception e)
+            {
+
             }
 
             return result;
