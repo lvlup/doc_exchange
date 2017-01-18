@@ -1,18 +1,25 @@
-﻿@model DocumentsExchange.DataLayer.Entity.User
+﻿@using Roles = DocumentsExchange.BusinessLayer.Identity.Roles
+@model DocumentsExchange.DataLayer.Entity.User
 
 @{
     ViewBag.Title = "Перспектива";
 }
 
-<div class="row">
-    <div class="pull-left col-md-10">
-        @Html.ActionLink("Панель администратора", "Index", "AdminPanel", new { Area = "Admin" },
-            new { @class = "btn btn-default" })
-    </div>
 
+<div class="row">
+    @{
+        if (User.IsInRole(Roles.Admin))
+        {
+            <div class="pull-left col-md-10">
+                @Html.ActionLink("Панель администратора", "Index", "AdminPanel", new { Area = "Admin" },
+            new { @class = "btn btn-default" })
+            </div>
+        }
+    }
+   
     <div>
-        @Html.DisplayFor(m => m.UserName, new { @class = "col-md-1 control-label" })
-        @Html.DisplayFor(m => m.FullName, new { @class = "col-md-1 control-label" })
+        @Html.DisplayFor(m => m.UserName, new {@class = "control-label"})
+        @Html.DisplayFor(m => m.FullName, new {@class = "control-label"})
     </div>
 
 
@@ -20,7 +27,7 @@
             <input type="button" id="userName" class="btn btn-default" value="Ivan Ivanov"/>
         </div>*@
     <div class="pull-right col-md-1">
-        @Html.ActionLink("выход","Logout","Account")
+        @Html.ActionLink("выход", "Logout", "Account")
     </div>
 </div>
 
