@@ -21,53 +21,53 @@
             {
                 <tr>
                     <td>
-                        <span class="lead">@r1.CreatedDateTime</span>
+                        <span class="">@r1.CreatedDateTime</span>
                     </td>
                     <td>
-                        <a target="_blank" href="@Url.Action("DownloadPaymentOrder", new {fileName = r1.File.FileName, originalFileName = r1.File.OriginalFileName})"><span class="lead">@r1.NumberPaymentOrder</span></a>
+                        <a target="_blank" href="@Url.Action("DownloadPaymentOrder", new {fileName = r1.File.FileName, originalFileName = r1.File.OriginalFileName})"><span class="">@r1.NumberPaymentOrder</span></a>
                     </td>
                     <td>
-                        <span class="lead">@r1.OrganizationSender</span>
+                        <span class="">@r1.OrganizationSender</span>
                     </td>
                     <td>
-                        <span class="lead">@r1.OrganizationReceiver</span>
+                        <span class="">@r1.OrganizationReceiver</span>
                     </td>
                     <td>
-                        <span class="lead">@r1.Amount</span>
+                        <span class="">@r1.Amount</span>
                     </td>
                     <td>
-                        <span class="lead">@r1.Percent</span>
+                        <span class="">@r1.Percent</span>
                     </td>
                     <td>
-                        <span class="lead">@r1.Course</span>
+                        <span class="">@r1.Course</span>
                     </td>
                     <td>
-                        <span class="lead">@r1.AmountInCurrency</span>
+                        <span class="">@r1.AmountInCurrency</span>
                     </td>
                     <td>
-                        <span class="lead">@r1.Swift</span>
+                        <span class="">@r1.Swift</span>
                     </td>
                     <td>
-                        <span class="lead">@r1.Sent</span>
+                        <span class="">@r1.Sent</span>
                     </td>
                     <td>
-                        <span class="lead">@r1.Currency</span>
+                        <span class="">@r1.Currency</span>
                     </td>
                     <td>
-                        <span class="lead">@r1.SenderFullName</span>
+                        <span class="">@r1.SenderFullName</span>
                     </td>
                     <td>
-                        <span class="lead">@r1.AmountInCurrency</span>
+                        <span class="">@r1.AmountInCurrency</span>
                     </td>
                     <td>
-                        <span class="lead">@r1.Total</span>
+                        <span class="">@r1.Total</span>
                     </td>
                     @{
                         if (User.IsInRole(Roles.Admin))
                         {
                             <td>
                                 <a href="javascript:void(0)" target="_blank" data-link="@Url.Action("ShowLogs", new {id = r1.LogId})">
-                                    <span class="lead" title="@r1.Log.ToString()">show</span>
+                                    <span class="" title="@r1.Log.ToString()">show</span>
                                 </a>
                             </td>
                         }
@@ -76,7 +76,7 @@
                         if (User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Technician))
                         {
                             <td>
-                                <a href="javascript:void(0)" data-url="@Url.Action("Edit", new {recordId = r1.Id})"><span class="lead">Edit</span></a>
+                                <a href="javascript:void(0)" data-url="@Url.Action("Edit", new {recordId = r1.Id})"><span class="">Edit</span></a>
                             </td>
                         }
                     }

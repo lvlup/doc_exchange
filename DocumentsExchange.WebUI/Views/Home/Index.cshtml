@@ -10,24 +10,21 @@
     @{
         if (User.IsInRole(Roles.Admin))
         {
-            <div class="pull-left col-md-10">
+            <div class="col-md-2">
                 @Html.ActionLink("Панель администратора", "Index", "AdminPanel", new { Area = "Admin" },
             new { @class = "btn btn-default" })
             </div>
         }
     }
-   
-    <div>
-        @Html.DisplayFor(m => m.UserName, new {@class = "control-label"})
-        @Html.DisplayFor(m => m.FullName, new {@class = "control-label"})
-    </div>
 
-
-    @*<div class="col-md-1">
-            <input type="button" id="userName" class="btn btn-default" value="Ivan Ivanov"/>
-        </div>*@
-    <div class="pull-right col-md-1">
-        @Html.ActionLink("выход", "Logout", "Account")
+    <div class="col-md-offset-7 col-md-3" style="padding: 7px">
+        <div class="pull-left">
+            @Html.DisplayFor(m => m.UserName, new { @class = "control-label" })
+            @Html.DisplayFor(m => m.FullName, new { @class = "control-label" })
+        </div>
+        <div class="pull-left col-md-1">
+            @Html.ActionLink("выход", "Logout", "Account")
+        </div>
     </div>
 </div>
 
@@ -35,11 +32,11 @@
 
     <div class="row" style="margin-top: 25px">
 
-        <div class="col-md-1" id="OrganizationsTableMain">
-            <span class="pull-left">@Html.Action("Index", "Organizations")</span>
+        <div class="col-md-2" id="OrganizationsTableMain" style="padding-left: 0px; padding-right: 0px">
+            @Html.Action("Index", "Organizations")
         </div>
 
-        <div class="col-md-8" id="TabCotrollerView" style="min-height: 500px; height: 1px">
+        <div class="col-md-8" id="TabCotrollerView" style="min-height: 500px; height: 1px; padding-left: 0px">
         </div>
 
         <div id="ChatView" class="col-md-3">
