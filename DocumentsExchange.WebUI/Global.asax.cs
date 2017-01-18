@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -78,6 +79,7 @@ namespace DocumentsExchange.WebUI
         {
             var roleManager = DependencyResolver.Current.GetService<AppRoleManager>();
             var userManager = DependencyResolver.Current.GetService<ApplicationUserManager>();
+            var orgProvider = DependencyResolver.Current.GetService<IOrganizationProvider>();
 
             if (!roleManager.RoleExists(Roles.Admin))
             {
@@ -112,6 +114,7 @@ namespace DocumentsExchange.WebUI
                     FirstName = "Иван",
                     LastName = "Иванов",
                     IsActive = true,
+                    Organizations =  orgProvider.GetAll().Result.ToList(),
                     ActivityDateTime = DateTime.UtcNow
                 }, "admin123");
 
