@@ -429,6 +429,7 @@
     <Content Include="Views\Shared\ShowNoLogs.cshtml" />
     <Content Include="Views\RecordT1\RecordsT1.cshtml" />
     <Content Include="Views\RecordT2\RecordsT2.cshtml" />
+    <Content Include="Views\File\_File.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using DocumentsExchange.BusinessLayer.Identity;
 using DocumentsExchange.BusinessLayer.Services.Interfaces;
 using DocumentsExchange.DataLayer.Entity;
+using DocumentsExchange.WebUI.Exceptions;
 using DocumentsExchange.WebUI.ViewModels;
 using File = DocumentsExchange.DataLayer.Entity.File;
 
@@ -19,11 +20,13 @@ namespace DocumentsExchange.WebUI.Controllers
     {
         private readonly IFileProvider _fileProvider;
         private readonly IFileCategoryProvider _fileCategoryProvider;
+        private readonly IFileValidator _fileValidator;
 
-        public FileController(IFileProvider fileProvider, IFileCategoryProvider fileCategoryProvider)
+        public FileController(IFileProvider fileProvider, IFileCategoryProvider fileCategoryProvider, IFileValidator fileValidator)
         {
             _fileProvider = fileProvider;
             _fileCategoryProvider = fileCategoryProvider;
+            _fileValidator = fileValidator;
         }
 
 
@@ -56,10 +59,12 @@ namespace DocumentsExchange.WebUI.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
-                {
+                if (!ModelState.IsValid)
+                    throw new ValidationException(ModelState);
+
                     if (Request.Files != null && Request.Files.Count > 0)
                     {
+                        bool result = false;
                         var upload = Request.Files[0];
                         if (upload != null)
                         {
@@ -77,24 +82,45 @@ namespace DocumentsExchange.WebUI.Controllers
                             {
                                 doc.Content = reader.ReadBytes(upload.ContentLength);
                             }
-                            var result = _fileProvider.Add(doc).Result;
+                            result = _fileProvider.Add(doc).Result;
                         }
-                    }
+                    return Json(new { Success = result });
                 }
-            }
 
+                ModelState.AddModelError("file", $"No files provided");
+                throw new ValidationException(ModelState);
+            }
             catch (RetryLimitExceededException)
             {
                 ModelState.AddModelError("", "Невозможно сохранить изменения. Попробуйте позже.");
+                return Json(new { Success = false });
             }
 
-            return PartialView("FilesTable", CreateFileVm(file.OranizationId, file.CategoryId));
+            //catch (RetryLimitExceededException)
+            //{
+            //    ModelState.AddModelError("", "Невозможно сохранить изменения. Попробуйте позже.");
+            //}
+
+            //return PartialView("FilesTable", CreateFileVm(file.OranizationId, file.CategoryId));
         }
 
         public FileResult DownloadFile(int id)
         {
             var file = _fileProvider.Get(id).Result;
             return File(file.Content, System.Net.Mime.MediaTypeNames.Application.Octet, file.FileName + "." + file.FileType);
+        }
+
+        [HttpPost]
+        public JsonResult ValidateFiles(string[] fileNames)
+        {
+            return Json(new
+            {
+                ValidationResult = fileNames.Select(x => new
+                {
+                    FileName = x,
+                    Valid = _fileValidator.Validate(x)
+                }).ToArray()
+            }, JsonRequestBehavior.DenyGet);
         }
 
 
