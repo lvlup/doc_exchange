@@ -3,10 +3,10 @@
 <div class="">
     <h3>Добавление файла:</h3>
 
-    @using (Html.BeginForm("Create","File", null, FormMethod.Post, new { enctype = "multipart/form-data", id= "AddFileForm" }))
+    @using (Html.BeginForm("Create","File", null, FormMethod.Post, new { enctype = "multipart/form-data", id= "AddFileForm", @class = "form-horizontal" }))
     {
         @Html.AntiForgeryToken()
-        <div class="form-horizontal">
+
             @Html.ValidationSummary(true)
             <div class="form-group">
                 <label class="col-sm-2 control-label">Название:</label>
@@ -14,7 +14,7 @@
                     @Html.TextBoxFor(p => p.FileName, new {@class = "form-control", tabindex = 1})
                     @Html.ValidationMessageFor(model => model.FileName, null, new {@class = "text-danger"})
                 </div>
-            </div>
+ 
 
             @Html.HiddenFor(model => model.OranizationId)
             @Html.HiddenFor(model => model.CategoryId)

@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Data.Entity.Infrastructure;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using DocumentsExchange.BusinessLayer.Identity;
 using DocumentsExchange.BusinessLayer.Services.Interfaces;
 using DocumentsExchange.DataLayer.Entity;
+using DocumentsExchange.WebUI.Controllers;
+using DocumentsExchange.WebUI.Exceptions;
 
 namespace DocumentsExchange.WebUI.Areas.Admin.Controllers
 {
     [Authorize(Roles = Roles.Admin)]
-    public class FileCategoryController : Controller
+    public class FileCategoryController : BaseController
     {
 
         private readonly IFileCategoryProvider _fileCategoryProvider;
@@ -24,6 +27,13 @@ namespace DocumentsExchange.WebUI.Areas.Admin.Controllers
             return View(categories);
         }
 
+        public ActionResult Caregories()
+        {
+            var categories = _fileCategoryProvider.GetAll().Result;
+
+            return PartialView(categories);
+        }
+
         public PartialViewResult Create()
         {
             var fileCategory = new FileCategory() {CreatedDateTime = DateTime.UtcNow};
@@ -33,25 +43,27 @@ namespace DocumentsExchange.WebUI.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(FileCategory fileCategory)
+        public async Task<ActionResult> Create(FileCategory fileCategory)
         {
             try
             {
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid)
                 {
-                    var result = _fileCategoryProvider.Add(fileCategory).Result;
+                    throw new ValidationException(ModelState);
                 }
-                else
-                {
-                    return PartialView();
-                }
+
+                var result = await _fileCategoryProvider.Add(fileCategory);
+                if (!result)
+                    throw new Exception("Невозможно сохранить изменения");
+
+                return Json(new { Success = true });
             }
             catch (RetryLimitExceededException)
             {
                 ModelState.AddModelError("", "Невозможно сохранить изменения. Попробуйте позже.");
             }
 
-            return RedirectToAction("Index", "AdminPanel");
+            return Json(new { Success = false });
         }
 
 
@@ -63,25 +75,29 @@ namespace DocumentsExchange.WebUI.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(FileCategory fileCategory)
+        public async Task<ActionResult> Edit(FileCategory fileCategory)
         {
             try
             {
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid)
                 {
-                    var result = _fileCategoryProvider.Update(fileCategory).Result;
+                    throw new ValidationException(ModelState);
                 }
-                else
-                {
-                    return PartialView();
-                }
+
+                var result = await _fileCategoryProvider.Update(fileCategory);
+
+                if (!result)
+                    throw new Exception("Невозможно сохранить изменения");
+
+                return Json(new { Success = true });
+
             }
             catch (RetryLimitExceededException)
             {
                 ModelState.AddModelError("", "Невозможно сохранить изменения. Попробуйте позже.");
             }
 
-            return RedirectToAction("Index", "AdminPanel");
+            return Json(new { Success = false });
         }
 
         public ActionResult Delete(int id)

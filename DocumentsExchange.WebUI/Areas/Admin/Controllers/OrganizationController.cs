@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Data.Entity.Infrastructure;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using DocumentsExchange.BusinessLayer.Identity;
 using DocumentsExchange.BusinessLayer.Services.Interfaces;
 using DocumentsExchange.DataLayer.Entity;
+using DocumentsExchange.WebUI.Controllers;
+using DocumentsExchange.WebUI.Exceptions;
 
 namespace DocumentsExchange.WebUI.Areas.Admin.Controllers
 {
     [Authorize(Roles = Roles.Admin)]
-    public class OrganizationController : Controller
+    public class OrganizationController : BaseController
     {
 
         private readonly IOrganizationProvider _organizationProvider;
@@ -25,6 +28,13 @@ namespace DocumentsExchange.WebUI.Areas.Admin.Controllers
             return View(orgs);
         }
 
+        public ActionResult Organizations()
+        {
+            var orgs = _organizationProvider.GetAll().Result;
+
+            return PartialView(orgs);
+        }
+
         public PartialViewResult Create()
         {
             var org = new Organization() {CreatedDateTime = DateTime.UtcNow};
@@ -34,25 +44,28 @@ namespace DocumentsExchange.WebUI.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Organization org)
+        public async Task<ActionResult> Create(Organization org)
         {
             try
             {
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid)
                 {
-                    var result = _organizationProvider.Add(org).Result;
+                    throw new ValidationException(ModelState);
                 }
-                else
-                {
-                    return PartialView();
-                }
+
+                var result = await _organizationProvider.Add(org);
+                if (!result)
+                    throw new Exception("Невозможно сохранить изменения");
+
+                return Json(new { Success = true });
+
             }
             catch (RetryLimitExceededException)
             {
                 ModelState.AddModelError("", "Невозможно сохранить изменения. Попробуйте позже.");
             }
 
-            return RedirectToAction("Index", "AdminPanel");
+            return Json(new { Success = false });
         }
 
 
@@ -64,25 +77,27 @@ namespace DocumentsExchange.WebUI.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Organization org)
+        public async Task<ActionResult> Edit(Organization org)
         {
             try
             {
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid)
                 {
-                    var result = _organizationProvider.Update(org).Result;
+                    throw new ValidationException(ModelState);
                 }
-                else
-                {
-                    return PartialView();
-                }
+
+                var result = await _organizationProvider.Update(org);
+                if(!result)
+                    throw new Exception("Невозможно сохранить изменения");
+
+                return Json(new { Success = true });
             }
             catch (RetryLimitExceededException)
             {
                 ModelState.AddModelError("", "Невозможно сохранить изменения. Попробуйте позже.");
             }
 
-            return RedirectToAction("Index","AdminPanel");
+            return Json(new { Success = false });
         }
 
         public ActionResult Delete(int id)

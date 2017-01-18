@@ -1,30 +1,74 @@
 ﻿@model DocumentsExchange.DataLayer.Entity.Organization
 
 <div class="container">
-    <h3>Добавить организацию:</h3>
+    <h3>Редактировать организацию:</h3>
 
-    @using (Html.BeginForm("Edit", "Organization", null, FormMethod.Post, new { id = "EditOrgForm" }))
+    @using (Html.BeginForm("Edit", "Organization", null, FormMethod.Post, new {id = "updateOrgForm", @class = "form-horizontal" }))
     {
         @Html.AntiForgeryToken()
-        <div class="form-horizontal">
 
-            @Html.ValidationSummary(true)
-            @Html.Partial("_Organization")
 
-        </div>
-
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default" id="editOrgBtn">Сохранить</button>
-            </div>
-        </div>
+        @Html.ValidationSummary(true)
+        @Html.Partial("_Organization")
 
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                @Html.ActionLink("Удалить", "Delete", new { id = Model.Id }, new { @class = "btn btn-danger" })
+                <button type="submit" class="btn btn-default pull-left" id="updateOrgBtn">Сохранить</button>
+                @Html.ActionLink("Удалить", "Delete", new {id = Model.Id}, new {@class = "btn btn-danger pull-left", @id= "deleteOrgBtn", @style = "margin-left: 15px"})
             </div>
         </div>
-
     }
 </div>
+
+<script>
+    $(function() {
+        $('#updateOrgBtn').click(function (e) {
+            var $form = $(this).closest('form');
+
+            $form.find('[data-val-field],[data-val-summary]').html('');
+
+            Helpers.submitForm({
+                form: $form,
+                ajaxOptions: {
+                    data: $form.serialize(),
+                    url: $form.get(0).action
+                }
+            }).then(function (data) {
+                debugger;
+                if (data.success === true) {
+                    $('#allOrgsTable').load('@Url.Action("Organizations")');
+                }
+
+                console.log(data);
+            });
+
+            return false;
+        });
+
+   
+        @*$('#deleteOrgBtn').click(function (e) {
+            var $form = $(this).closest('form');
+
+            $form.find('[data-val-field],[data-val-summary]').html('');
+
+            Helpers.submitForm({
+                form: $form,
+                ajaxOptions: {
+                    data: $form.serialize(),
+                    url: $form.get(0).action
+                }
+            }).then(function (data) {
+                debugger;
+                if (data.success === true) {
+                     $('#allOrgsTable').load('@Url.Action("Organizations")');
+                    $('#orgContainer').load('@Url.Action("Create")');
+                }
+
+                console.log(data);
+            });
+
+            return false;
+        });*@
+    });
+</script>

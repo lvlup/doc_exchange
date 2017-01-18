@@ -1,0 +1,57 @@
+﻿@model IEnumerable<DocumentsExchange.DataLayer.Entity.Organization>
+
+<div style="padding: 10px">
+    <button class="btn btn-primary" data-url="@Url.Action("Create")">Добавить организацию</button>
+</div>
+
+
+<table class="table table-bordered table-condensed">
+
+        <thead>
+            <tr>
+                id
+            </tr>
+
+            <tr>
+                Название
+            </tr>
+
+            <tr>
+                Активность
+            </tr>
+
+            <tr>
+                Дата создания
+            </tr>
+
+        </thead>
+
+        <tbody id="allOrgsTableBody">
+            @if (@Model != null)
+            {
+                foreach (var org in Model)
+                {
+                    <tr>
+
+                        <td>
+                            <span class="lead">@org.Id</span>
+                        </td>
+
+                        <td>
+                            <a href="javascript:void(0)" data-url="@Url.Action("Edit", new {orgId = org.Id})">@org.Name</a>
+                        </td>
+
+                        <td>
+                            <span class="lead">@(org.IsActive ? "Да" : "Нет")</span>
+                        </td>
+
+                        <td>
+                            <span class="lead">@org.CreatedDateTime.ToString("dd/MM/yyyy")</span>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+</table>
+
+

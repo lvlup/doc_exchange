@@ -310,6 +310,8 @@
     <Content Include="Areas\Admin\Views\ActiveSite\Index.cshtml" />
     <Content Include="Areas\Admin\Views\User\Users.cshtml" />
     <Content Include="Areas\Admin\Views\User\PasswordReset.cshtml" />
+    <Content Include="Areas\Admin\Views\Organization\Organizations.cshtml" />
+    <Content Include="Areas\Admin\Views\FileCategory\Caregories.cshtml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\App\chatService.js" />
     <Content Include="Scripts\App\helpers.js" />
@@ -341,7 +343,6 @@
     <Compile Include="Areas\Admin\Controllers\ActiveSiteController.cs" />
     <Compile Include="Areas\Admin\Controllers\IpController.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
-    <Compile Include="Areas\Admin\Controllers\OrganizationsController.cs" />
     <Compile Include="AutoFac\MainModule.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminPanelController.cs" />

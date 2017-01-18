@@ -4,65 +4,18 @@
     Layout = null;
 }
 
-<div id="allOrgsTable" class="container-fluid">
-    <table class="table table-bordered table-condensed">
-
-        <thead>
-        <tr>
-            id
-        </tr>
-
-        <tr>
-            Название
-        </tr>
-
-        <tr>
-            Активность
-        </tr>
-
-        <tr>
-            Дата создания
-        </tr>
-
-        </thead>
-
-        <tbody id="allOrgsTableBody">
-        @if (@Model != null)
-        {
-            foreach (var org in Model)
-            {
-                <tr>
-
-                    <td>
-                        <span class="lead">@org.Id</span>
-                    </td>
-
-                    <td>
-                        <a href="javascript:void(0)" data-url="@Url.Action("Edit", new {orgId = org.Id})">@org.Name</a>
-                    </td>
-
-                    <td>
-                        <span class="lead">@(org.IsActive ? "Да" : "Нет")</span>
-                    </td>
-
-                    <td>
-                        <span class="lead">@org.CreatedDateTime.ToString("dd/MM/yyyy")</span>
-                    </td>
-                </tr>
-            }
-        }
-        </tbody>
-    </table>
+<div class="container-fluid" id="allOrgsTable">
+    @Html.Action("Organizations")
 </div>
 
-<div id="addingOrgForm">
+<div id="orgContainer">
     @Html.Action("Create")
 </div>
 
 <script>
-    $(function () {
-        $('#allOrgsTableBody').on('click', 'td >  a[data-url]', function (e) {
-            $('#addingOrgForm').load($(this).data('url'));
+    $(function() {
+        $('#allOrgsTable').on('click', '[data-url]', function(e) {
+            $("#orgContainer").load($(this).data('url'));
         });
     });
 </script>

@@ -1,30 +1,55 @@
 ﻿@model DocumentsExchange.DataLayer.Entity.FileCategory
 
 <div class="container">
-    <h3>Добавить тип документа:</h3>
+    <h3>Редактировать тип документа:</h3>
 
-    @using (Html.BeginForm("Edit", "FileCategory", null, FormMethod.Post, new { id = "EditFileCategoryForm" }))
+    @using (Html.BeginForm("Edit", "FileCategory", null, FormMethod.Post, new {id = "EditFileCategoryForm", @class = "form-horizontal"}))
     {
         @Html.AntiForgeryToken()
-        <div class="form-horizontal">
 
-            @Html.ValidationSummary(true)
-            @Html.Partial("_FileCategory")
-
-        </div>
-
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default" id="editFileCategoryBtn">Сохранить</button>
-            </div>
-        </div>
+        @Html.ValidationSummary(true)
+        @Html.Partial("_FileCategory")
 
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                @Html.ActionLink("Удалить", "Delete", new { id = Model.Id }, new { @class = "btn btn-danger" })
+                <button type="submit" class="btn btn-default pull-left" id="updateFileCategoryBtn">Сохранить</button>
+                @Html.ActionLink("Удалить", "Delete", new {id = Model.Id}, new {@class = "btn btn-danger  pull-left",id= "deleteFileCategoryBtn",
+                                @style = "margin-left: 15px"})
             </div>
-         </div>
+        </div>
 
     }
 </div>
+
+<script>
+    $(function() {
+        $('#updateFileCategoryBtn').click(function (e) {
+            var $form = $(this).closest('form');
+
+            $form.find('[data-val-field],[data-val-summary]').html('');
+
+            Helpers.submitForm({
+                form: $form,
+                ajaxOptions: {
+                    data: $form.serialize(),
+                    url: $form.get(0).action
+                }
+            }).then(function (data) {
+                debugger;
+                if (data.success === true) {
+                    $('#allFileCategoriesTable').load('@Url.Action("Caregories")');
+                }
+
+                console.log(data);
+            });
+
+            return false;
+        });
+
+        @*$('#deleteFileCategoryBtn').click(function (e) {
+            $('#allFileCategoriesTable').load('@Url.Action("Caregories")');
+            $('#categoryContainer').load('@Url.Action("Create")');
+        });*@
+    });
+</script>

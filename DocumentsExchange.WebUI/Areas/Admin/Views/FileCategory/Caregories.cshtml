@@ -1,0 +1,54 @@
+﻿@model IEnumerable<DocumentsExchange.DataLayer.Entity.FileCategory>
+
+<div style="padding: 10px">
+    <button class="btn btn-primary" data-url="@Url.Action("Create")">Добавить тип документа</button>
+</div>
+
+<table class="table table-bordered table-condensed">
+
+    <thead>
+        <tr>
+            id
+        </tr>
+
+        <tr>
+            Название
+        </tr>
+
+        <tr>
+            Активность
+        </tr>
+
+        <tr>
+            Дата создания
+        </tr>
+
+    </thead>
+
+    <tbody id="allFileCategoriesTableBody">
+        @if (@Model != null)
+        {
+            foreach (var fc in Model)
+            {
+                <tr>
+
+                    <td>
+                        <span class="lead">@fc.Id</span>
+                    </td>
+
+                    <td>
+                        <a href="javascript:void(0)" data-url="@Url.Action("Edit", new {id = fc.Id})">@fc.Name</a>
+                    </td>
+
+                    <td>
+                        <span class="lead">@(fc.IsActive ? "Да" : "Нет")</span>
+                    </td>
+
+                    <td>
+                        <span class="lead">@fc.CreatedDateTime.ToString("dd/MM/yyyy")</span>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

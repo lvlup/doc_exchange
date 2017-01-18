@@ -1,30 +1,48 @@
 ﻿@model DocumentsExchange.DataLayer.Entity.Organization
-    
+
 <div class="container">
     <h3>Добавить организацию:</h3>
 
-    @using (Html.BeginForm("Create", "Organization", null, FormMethod.Post, new { id = "AddOrgForm" }))
+    @using (Html.BeginForm("Create", "Organization", null, FormMethod.Post, new {id = "AddOrgForm", @class = "form-horizontal"}))
     {
         @Html.AntiForgeryToken()
-        <div class="form-horizontal">
-            
-            @Html.ValidationSummary(true)
-            @Html.Partial("_Organization")
+        @Html.ValidationSummary(true)
+        @Html.Partial("_Organization")
 
-        </div>
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-default" id="addOrgBtn">Сохранить</button>
             </div>
         </div>
-
-
-        @*<div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <button  class="btn btn-default" id="deleteOrgBtn">Удалить</button>
-                </div>
-            </div>*@
-
     }
 </div>
+
+
+<script>
+    $(function() {
+        $('#addOrgBtn').click(function (e) {
+            var $form = $(this).closest('form');
+
+            $form.find('[data-val-field],[data-val-summary]').html('');
+
+            Helpers.submitForm({
+                form: $form,
+                ajaxOptions: {
+                    data: $form.serialize(),
+                    url: $form.get(0).action
+                }
+            }).then(function (data) {
+                debugger;
+                if (data.success === true) {
+                    $('#allOrgsTable').load('@Url.Action("Organizations")');
+                    $('#orgContainer').load('@Url.Action("Create")');
+                }
+
+                console.log(data);
+            });
+
+            return false;
+        });
+    });
+</script>
