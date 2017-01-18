@@ -6,8 +6,6 @@
     @using (Html.BeginForm("Edit", "Organization", null, FormMethod.Post, new {id = "updateOrgForm", @class = "form-horizontal" }))
     {
         @Html.AntiForgeryToken()
-
-
         @Html.ValidationSummary(true)
         @Html.Partial("_Organization")
 

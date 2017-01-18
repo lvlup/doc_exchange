@@ -14,7 +14,7 @@ namespace DocumentsExchange.DataLayer.Entity
 
         [DisplayName("Название")]
         [MaxLength(20)]
-        [Required(ErrorMessage = "Введите название файла")]
+        [Required(ErrorMessage = "Введите название организации")]
         public string Name { get; set; }
 
         [DisplayName("Дата создания")]

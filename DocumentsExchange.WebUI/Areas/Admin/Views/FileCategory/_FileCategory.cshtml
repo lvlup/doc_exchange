@@ -3,6 +3,10 @@
 @Html.HiddenFor(model => model.Id)
 @Html.HiddenFor(model => model.CreatedDateTime)
 
+<div data-val-summary>
+
+</div>
+
 <div class="form-group">
     @Html.LabelFor(p => p.IsActive, new { @class = "col-sm-2 control-label" })
     <div class="col-sm-10">
@@ -16,6 +20,6 @@
     <label class="col-sm-2 control-label">Название:</label>
     <div class="col-sm-10">
         @Html.TextBoxFor(p => p.Name, new { @class = "form-control" })
-        @Html.ValidationMessageFor(p => p.Name, null, new { @class = "text-danger" })
+        @Html.ValidationMessageFor(p => p.Name, null, new { @class = "text-danger", @data_val_field = "true" })
     </div>
 </div>
