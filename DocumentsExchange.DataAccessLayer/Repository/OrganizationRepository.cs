@@ -38,6 +38,33 @@ namespace DocumentsExchange.DataAccessLayer.Repository
             return null;
         }
 
+
+        public async Task<IEnumerable<Organization>> GetUserOrganizations(int userId)
+        {
+            using (var context = _contextFactory.Create())
+            {
+                try
+                {
+                    var userSet = context.Set<User>();
+                    var existingUser =
+                        await userSet.Include(u=>u.Organizations)
+                                 .SingleOrDefaultAsync(u=>u.Id == userId)
+                                 .ConfigureAwait(false);
+
+                    if (existingUser == null)
+                        throw new Exception("");
+
+                    return existingUser.Organizations;
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(e);
+                }
+            }
+
+            return null;
+        }
+
         public async Task<bool> Create(Organization organization)
         {
             bool result = false;
